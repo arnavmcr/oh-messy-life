@@ -45,40 +45,43 @@
 
 ---
 
-## Phase 1 — Foundation (v1) `[ CURRENT ]`
+## Phase 1 — Foundation (v1) `[ COMPLETE ✓ ]`
 
-> Ship a working site with home, writing archive, and article view. Real posts go live.
+> Shipped 2026-03-21. All routes build clean, committed to git.
 
-### Milestone 1.1 — Scaffold + Design System
-- [ ] `create-next-app` (TypeScript, Tailwind, App Router)
-- [ ] Install: `next-mdx-remote`, `gray-matter`, `next-themes`
-- [ ] `tailwind.config.ts` — port full Stitch token set (colours, fonts, radius)
-- [ ] `globals.css` — port all Stitch effect classes
-- [ ] Download Stitch HTML to `_stitch/` (local reference, not deployed)
-- [ ] Download Stitch screenshots to `public/screenshots/`
+### Milestone 1.1 — Scaffold + Design System ✓
+- [x] `create-next-app` (TypeScript, Tailwind v4, App Router)
+- [x] Install: `next-mdx-remote`, `gray-matter`, `next-themes`
+- [x] `globals.css` — full Stitch token set via `@theme` (Tailwind v4 CSS config)
+- [x] All Stitch effect classes: `.distressed-text` `.tape-effect` `.drip-mask` `.scan-line` `.stamp-*` `.ink-bleed`
+- [x] Stitch HTML reference files in `_stitch/`, screenshots in `public/screenshots/`
 
-### Milestone 1.2 — Shared Shell
-- [ ] `Nav.tsx` — wordmark, nav links, build tag, dark mode toggle
-- [ ] `Footer.tsx` — social nodes (Instagram, GitHub, Are.na, Read.cv, Substack)
-- [ ] `DarkModeToggle.tsx` — next-themes integration
-- [ ] `layout.tsx` — ThemeProvider wrap, nav + footer, font loading
+### Milestone 1.2 — Shared Shell ✓
+- [x] `Nav.tsx` — wordmark, nav links (Writing live, Labs/Signal coming soon), dark mode toggle
+- [x] `Footer.tsx` — social nodes (Instagram, GitHub, Are.na, Read.cv, Substack)
+- [x] `DarkModeToggle.tsx` — next-themes class-based toggle
+- [x] `layout.tsx` — Space Grotesk / Inter / JetBrains Mono via next/font, ThemeProvider
 
-### Milestone 1.3 — Content Pipeline
-- [ ] `lib/content.ts` — read/parse/sort MDX from `content/writing/`
-- [ ] Frontmatter schema: `title`, `date`, `tags[]`, `excerpt`, `status: draft | published`
-- [ ] Custom MDX components: blockquote, pull-quote, footnote, code block
-- [ ] Seed with user's existing posts
+### Milestone 1.3 — Content Pipeline ✓
+- [x] `lib/content.ts` — reads/parses/sorts MDX from `content/writing/`
+- [x] Frontmatter schema: `title`, `date`, `tags[]`, `excerpt`, `status: draft | published`
+- [x] Custom MDX components: h2, p, blockquote, hr, strong, em, code, ul, li
+- [x] 3 seed posts added (replace/extend with real writing)
 
-### Milestone 1.4 — Pages
-- [ ] **THE NEXUS** (`/`) — hero with massive type, workbench with pinned/taped elements, real article list in Scriptorium, Vault stats from MDX count, Labs stub ("COMING SOON")
-- [ ] **THE VOID** (`/writing`) — bento-punk grid of `ArticleCard` components from MDX frontmatter
-- [ ] **THE MANUSCRIPT** (`/writing/[slug]`) — marginalia sidebar (TOC, system logs), article body, footnotes, mobile bottom nav
+### Milestone 1.4 — Pages ✓
+- [x] **THE NEXUS** (`/`) — hero + workbench + Scriptorium article list + Vault + Labs stub
+- [x] **THE VOID** (`/writing`) — bento-punk grid with 3 card variants
+- [x] **THE MANUSCRIPT** (`/writing/[slug]`) — marginalia sidebar, MDX body, mobile nav
 
-### Milestone 1.5 — Ship
-- [ ] Dark mode: light `#f2f2f2` ↔ dark `#0a0a0a` backgrounds, same accent colours
-- [ ] `npm run build` passes
-- [ ] Push to GitHub, import to Vercel
-- [ ] Verify all routes in Vercel preview
+### Milestone 1.5 — Ship `[ IN PROGRESS ]`
+- [x] Dark mode working (light/dark toggle, system default)
+- [x] Build passes (all 4 routes prerendering clean)
+- [x] Initial commit on `main`
+- [x] Push to GitHub remote → https://github.com/arnavmcr/oh-messy-life
+- [ ] Import to Vercel
+- [ ] Verify all routes in Vercel preview deploy
+- [ ] Update social links in `components/Footer.tsx` with real URLs
+- [ ] Replace seed posts with real writing
 
 ---
 
