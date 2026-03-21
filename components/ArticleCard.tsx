@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ArticleCardProps {
   slug: string;
@@ -6,6 +7,7 @@ interface ArticleCardProps {
   date: string;
   excerpt?: string;
   tags?: string[];
+  coverImage?: string;
   variant?: 'default' | 'featured' | 'compact';
   rotation?: string;
 }
@@ -16,6 +18,7 @@ export default function ArticleCard({
   date,
   excerpt,
   tags = [],
+  coverImage,
   variant = 'default',
   rotation = '0deg',
 }: ArticleCardProps) {
@@ -31,6 +34,11 @@ export default function ArticleCard({
           <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-zinc-400">
             #{slug.slice(0, 5).toUpperCase()}
           </div>
+          {coverImage && (
+            <div className="relative w-full aspect-[16/9] mb-6 overflow-hidden">
+              <Image src={coverImage} alt={title} fill className="object-cover" />
+            </div>
+          )}
           <div className="text-secondary font-mono text-xs mb-4 flex items-center gap-2">
             <span className="w-2 h-2 bg-secondary block" />
             {year} / ESSAY

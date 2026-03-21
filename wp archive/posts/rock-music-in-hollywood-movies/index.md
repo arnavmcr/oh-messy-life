@@ -1,0 +1,28 @@
+---
+title: "Rock Music in Hollywood Movies"
+date: 2016-05-18
+categories: 
+  - "editorials"
+  - "music"
+  - "writing"
+---
+
+_**A 'listicle'. Original can be found [here.](http://www.chordsunited.com/blog/everything-else/5/33/1/some-of-the-best-rock-music-in-hollywood.html)**_
+
+Movies, the most nascent of all the pop-culture advents, are an irreversibly integral part of not just the millennial, but anyone born or alive in the post-WWII period. Originating as an exclusive right that the aristocracy had, then to cinema and theatre halls and now to computer screens, access to movies have trickled down as time has gone by. They served as entertainment for the viewers, a medium of propaganda for governments and are now often used to document the lives and times of individuals.
+
+Modern day movies include visual story-telling and dialogues usually from on-screen actors, supplemented with a healthy dose of auditory narration. Initially, music in films was limited to orchestral, instrumental scores. These tended to set the atmosphere and mood for the events unfolding on-screen. While this component has not changed, the past few decades have seen the incorporation of (pop) music and songs by artists to further the cause of the existing score. The music used was written by artists and bands usually as part of other albums/tracks, and not solely intended on being used in movies.  British and American movies have used lyrically loaded and popular music to add a unique dimension to the movie, and can often be used as a selling point for the film. It has a symbiotic effect as it gives both artists and the movies an expanded audience.<!--more-->
+
+![forrest](images/forrest.jpg)
+
+Of the plethora of movies with commercial music used as a soundtrack, there are a select few that stand a cut above the rest. They distinguish themselves with their selection of the music and with their intelligent and appropriate usage of the music.
+
+Forrest Gump, generation defining film dissolved a handful of landmark rock n’ roll events in the film itself – including a strapping cameo by Elvis in the opening few minutes. The film used the most iconic music of the post-war period, featuring the likes of CCR, Bob Dylan and Jefferson Airplane. Several of the most memorable scenes of the movie were supplemented by a healthy dosage of the Doors’ brand of psychedelic rock, including classics like ‘Break on Through (To the Other Side)’ and ‘Soul Kitchen’. Lynyrd Skynard’s anthems, ‘Free Bird’ and ‘Sweet Home Alabama’ and Hendrix’s guitar master class ‘All Along the Watchtower’, gave this legendary movie a legendary soundtrack.
+
+A quite stark contrast to Forrest Gump but still (in a very odd manner) a generation defining romantic film, Twilight may have received a lot of flak for their sappy story and Kristen Stewart’s arduous performance, but the same cannot be said for their soundtrack.  The artists featured on the soundtrack are reminiscent of any mammoth festival, with the likes of Muse, Linkin Park and Mutemath, the ‘headlining acts’ followed by several indie stalwarts such as Iron & Wine and Blue Foundation diversifying the lineup. The other films in the series too have stellar features from acts like the Killers, OK Go and the magnificent Thom Yorke. Muse even wrote a song exclusively used in the film Eclipse, ‘Neutron Star Collision’. While having a star studded soundtrack is not the only pre-requisite of a good film, the usage of these tracks was subtle so as to not take away attention from the story while simultaneously giving the movie an added appeal.
+
+Perhaps my favorite soundtrack of all is that of cult martial-arts teenage film, Never Back Down. While the story-line is rather clichéd, the soundtrack is a mélange of contemporary alternative music. The entire film is littered with modern rock classics, beginning with the ominous, self-damning ‘Above and Below’ by the Bravery. Other songs used are ‘Teenagers’ by emo legends My Chemical Romance, and ‘Under the Knife’ by protest music veterans Rise Against. The movie is centered around a final fight between the protagonist and the antagonist, and while the soundtrack leading up until the fight serves as an impossible precedent to match, the climax of the film manages to do so. Using a remixed version of rap legend (and soon to be President of the United States) Kanye West’s most overused work-out song ‘Stronger’ in the build-up to the fight and the immensely popular Travis Barker’s heavy cover of Soulja Boy’s ‘Crank Dat’ during the events immediately preceding and during the fight, the entire scene will imprint itself into the viewer’s mind. The movie ends with the feel-good, alternative anthem ‘Time Won’t Let Me Go’ by the Bravery that has this flavor of familiarity that resonates with the audience.
+
+Movies without a deftly put-together soundtrack often fall flat on their face, and those with one have access to another medium through which they can connect with the audience. While it is impossible to list all movies with incredible soundtracks, there are a few that deserve to be acknowledged – School of Rock (a movie impossible to hate with a soundtrack that is universally loved), the Transformers series (featuring robots fighting to hard-hitting rock heavyweights like Linkin Park, Disturbed, Green Day and Avenged Sevenfold) and Yes Man (Jim Carrey singing ‘Jumper’ by Third Eye Blind is absolutely phenomenal).
+
+Music continues to proliferate in more mediums than the usual, but it’s incorporation into movies has definitely been the best-received of the lot.

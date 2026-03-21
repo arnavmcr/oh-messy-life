@@ -1,0 +1,32 @@
+---
+title: "The Bread and 'Bass' of All Bands"
+date: 2016-05-18
+categories: 
+  - "editorials"
+  - "music"
+  - "writing"
+---
+
+_**An article discussing the importance of the bass player to all bands. Original can be found [here.](http://www.chordsunited.com/blog/everything-else/5/36/1/bread-and-bass-of-all-bands.html)**_
+
+ 
+
+Often mistaken as a roadie or band manager, the bass player and his ubiquitous four string, weapon of mass destruction face more hurdles than his lead guitar counterparts. The most common of the onslaught of questions is why the bass has only four strings, whether they couldn’t learn how to play a regular guitar and if the bass means that they can only play the ‘basics’ of the guitar. While all bass players have immunized themselves to these questions and are armed with ready answers to these and a host of other questions, the plight of the bass player is one of the most unnecessary and baffling situations in modern music.
+
+As one half of the rhythm section, the bass player works in cohesion with the drummer of the band to control the lower end of the band’s sound, giving other instruments a literal base and keeping them in time. An oft-used technique is for the bass note to be played in unison with the bass drum, and while this is often not the case nowadays, it was a sure-shot way of ensuring a tight rhythm section. As time passed on and music both diversified and became easier to access, the bass followed suit. Various new techniques spawned, moving the instrument away from its traditional finger-style playing. Picking the bass (as is done with guitars), slapping and tapping are all styles of playing the bass that have surged in popularity since their inception. This gives the instrument a wide array of sounds which manifests itself in the band’s music.<!--more-->
+
+![Flea3](images/flea3.jpg)
+
+Any band with three instrumentalists quintessentially has a dynamic bass player. From Rush to Green Day, the size of the band and the responsibility given to the bassist are often inversely proportional. Bass players in big bands are probably as talented as bassists in smaller bands, but their creative freedom is shrouded amongst a host of other keyboardists or rhythm guitarists, and thus they find it more difficult to distinguish themselves as individuals.
+
+While most bassists restrict themselves to being protectors of the low-end, with their long, booming notes, there are a host of bass players who have pushed the envelope and brought the instrument to the forefront of the band’s sound (where it rightly belongs).
+
+Flea, my gateway to becoming a bass player, has carved himself a place at the throne of modern musicians. His percussive, rhythmic methods have given the Chili Peppers the means to a fresh take on funk music. The band (or the Flea) is one of the few that use the slap-pop technique ever so-oft in their music, with the Flea handling not just rhythm duties but playing lead and melodious sections as well. His distorted, booming intro to ‘Around the World’ and slap-bass master class on ‘Higher Ground’ are some of his finest moments. His ability to exercise restraint while still running all over the fretboard gives the guitarist of the band freedom to express themselves through a wide-range of effects based riffs and solos. This combination has propelled the band and their bass player to modern music stardom.
+
+Age-defying and generation defining Canadian rock-trio Rush comprise recent memory’s most incredible musicians. Their bass player, Geddy Lee is considered to be not just an incredible bassist but also one of the nicest people in the industry. His intricate, seamless basslines are played with a vigor and verve, and are technically some of the most challenging songs to play. While being a legendary bass player, Geddy Lee doubles up as a vocalist and a synth player on occasion, making him one of the most versatile musicians of our time. He is often seen playing the bass with his hands, keyboards with his feet and singing the anthem ‘Tom Sawyer’. The word ‘tight’ would be an understatement, as watching Rush live is watching an exceptionally well-rehearsed band effortlessly transcending time signatures and chord sequences, well into their 60s. ‘Yyz’ remains a benchmark in any musician’s life and remains one of music’s most spellbinding instrumental arrangements.
+
+Alternative rock’s favorite sons, Muse, too are a trio renowned for their arena-filling and festival headlining live shows. Christopher Wolhemstone handles bass duties for the band, and is truly modern bass player. His extensive use of bass effects, especially the big muff and other fuzz pedals distinguish him from the variety of other bass players. Early Muse music is largely written around bass lines, such as ‘Time is Running Out’. Their music was often formulaic, with a hard-hitting intro followed by a bass-drum verse where uber-talented vocalist/guitarist Matthew Bellamy was given a ‘break’ so to speak, and allowed to express himself with little or no guitar, followed by a massive chorus and subsequently a breakdown or bridge. The role of the bass has evolved with the band, and his incorporated newer forms of electronic such as the Misa Kitara (on ‘Madness’) and even slap bass (on ‘Panic Station’). Of all the bass lines written by Wolhemstone, none is more impressive than ‘Hysteria’. It is rapid, fluid and finger-numbing.
+
+Bass players have been resigned to the background of most bands, but there are a number of bassists who have broken this ‘norm’ – Roger Waters of Pink Floyd, Mark Hoppus of Blink-182 and Paul McCartney of the legendary Beatles – all handled the vocals of the band, whereas bass-players such as Justin Chancellor of Tool, John Myung of Dream Theater and Tim Commerford of Rage Against the Machine and Audioslave, have been revered as this generations most phenomenal bass players.
+
+Even though they may not be the flashiest or the most popular of a band’s roster, the bass player is an essential part of the band. His omnipotent dazed, disinterested look and his reliable nature make him/her the unsung hero of modern music.

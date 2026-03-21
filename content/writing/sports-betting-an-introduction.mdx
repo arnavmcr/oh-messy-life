@@ -1,0 +1,163 @@
+---
+title: "Sports Betting: An Introduction"
+date: "2017-09-04"
+category: "college"
+subcategory: "sports"
+tags: []
+excerpt: "The first article of a series on sports betting, being written for the statistics blog in college."
+status: "published"
+---
+
+_The first article of a series on sports betting, being written for the statistics blog in college._
+
+_None of the articles in this series advocate betting. They are simply used to bring out a unique, real-world application of statistics._
+
+For all the moral reprehensions and societal disapprovals that betting comes with, it is a fantastic exercise in a plethora of statistical concepts and models. Through the forthcoming series of articles, Statis Quo aims at breaking down betting in all its manifestations – with a special emphasis on how betting in the sports world operates, and how these concepts are closely linked with classroom statistics.
+
+Establishing the Fault-Lines: Betting versus Gambling
+
+Both betting and gambling are premised on a similar concept i.e. monetizing the outcomes of uncertain events, however there exist differences between the two.
+
+In gambling, money is placed on the occurrence or non-occurrence of an event, the results of which are not known. If the result of the event is in line with the money placed, the initial sum plus an additional sum is given to the individual. This additional sum is based on ‘odds’, a term that will be explained later in the article.
+
+Betting is a subset of gambling. In several colloquial definitions, it is the action of gambling. It is improper to say that an individual ‘gambled Rs. 100 on Manchester United winning’, however it is more appropriate to say that an individual ‘bet Rs. 100 on Manchester United winning’. Betting often refers to a structured agreement between parties, with set, well-defined parameters detailing the relation between the betting party and central authority that accepts bets. Once again, in colloquial terms, betting is often considered a more nuanced, empirical activity when compared to gambling, which is associated with degeneracy and addiction.
+
+Betting in India: Several Shades of Gray
+
+While gambling in India is illegal, there exists a flourishing lottery market, with crores of Rupees at stake on a daily basis, and an uber-exclusive horserace betting market. Conventional casinos, too, are restricted to a minute number of locations. The law prohibits betting of any form within India, however specifies nothing about betting with companies registered in other countries. This legal ambivalence implies that online betting through agencies like Bet365 and Betfair is not illegal.
+
+Betting 101
+
+When on any betting website or compendium, the first thing one is confronted with is odds. There are several forms in which odds can be presented; however the two most common methods of presentation are the decimal method, and the fractional method.
+
+Decimal Method:
+
+ 
+
+Table 1: Decimal Odds
+
+| Full- Time Result | Odds | Implication |
+| --- | --- | --- |
+| Liverpool Win | 2.1 | For every unit bet on a Liverpool win, 2.1 units are returned |
+| Draw | 3.8 | For every unit bet on a draw 3.8 units are returned |
+| Arsenal Win | 3.5 | For every unit bet on an Arsenal win, 3.5 units are returned |
+
+The given table shows how decimal odds are presented for a Premier League match between Liverpool and Arsenal.
+
+Fractional Method:
+
+Table 2: Fractional Odds
+
+| Full-Time Result | Odds | Implication |
+| --- | --- | --- |
+| Liverpool Win | 11/10 | For every 10 units bet on a Liverpool win, 11 units are returned |
+| Draw | 14/5 | For every 5 units bet on a draw, 14 units are returned |
+| Arsenal Win | 5/2 | For every 2 units bet on Arsenal, 5 units are returned |
+
+ 
+
+These odds are set by bookmakers, and are a reflection of probabilities that are calculated for a particular time-frames. It is essential to examine how these odds can be properly interpreted as probabilities.
+
+Table 3: Calculating Probabilities from Decimal Odds
+
+| FT Result | Odds | Calculation | Probability (%) |
+| --- | --- | --- | --- |
+| Liverpool Win | 2.1 | (1/2.1) x 100 | 47.6 |
+| Draw | 3.5 | (1/3.5) x 100 | 26.3 |
+| Arsenal Win | 3.8 | (1/3.8) x 100 | 28.5 |
+
+ 
+
+Table 4: Calculating Probabilities from Fractional Odds
+
+| FT Result | Odds | Calculation | Probability (%) |
+| --- | --- | --- | --- |
+| Liverpool Win | 11/10 | (10/11+10) x 100 | 47.6 |
+| Draw | 14/5 | (14/14+5) x 100 | 26.3 |
+| Arsenal Win | 5/2 | (2/5+2) x 100 | 28.5 |
+
+ 
+
+A manner of interpreting the above table is by considering that for each unit bet, what is the likely return. As a result becomes increasingly likely, the return decreases. Thus, as the figure in the ‘Odds’ column goes up, the result is less likely to occur.
+
+An obtrusive counter intuition from the above tables is that the sum of all probabilities is greater than 1. The sum of the probabilities that exceeds 1 reflects the bookmakers’ margin. As is the case with any business, it is necessary for the service-provider to ensure some income – this is the manner in which bookmakers, for the most part, ensure risk-free profit. This can be labeled as arbitrage.
+
+Assume the following scenario:
+
+There exist three individuals, none with any existing biases. Betting purely according to odds, a large bet on Liverpool would seem appropriate, followed by a medium sized bet on an Arsenal win, and a slightly smaller bet on a draw.
+
+This is shown in Table 5.
+
+Table 5: Amount Bet based on Initial Probabilities
+
+| FT Result | Probability (%) | Amount Bet |
+| --- | --- | --- |
+| Liverpool Win | 47.6 | 150 |
+| Draw | 26.3 | 80 |
+| Arsenal Win | 28.5 | 90 |
+
+ 
+
+Therefore the total intake prior to the game for the bookmakers is (150 + 80 + 90 = 320). The amount bet is relative to the odds, better odds imply a higher investment. While the amount bet is solely a function of the odds, the number has been rounded up to the nearest 10 to show that bookmakers’ margins are flexible and substantive. The probabilities add up to roughly 1.02, which means a 2% profit for bookmakers.
+
+The payoffs for the given odds are:
+
+Table 6: Payoff According to Initial Probabilities
+
+| FT Result | Amount Bet | Payoff (Amount bet x odds) |
+| --- | --- | --- |
+| Liverpool Win | 150 | 315 |
+| Draw | 80 | 304 |
+| Arsenal Win | 90 | 315 |
+
+ 
+
+It is clear that regardless of the outcome, the bookmakers will make a profit, as shown in Table 7.
+
+Table 7: Profit According to Initial Pay-Offs
+
+| FT Result | Amount Bet | Payoff | Profit % |
+| --- | --- | --- | --- |
+| Liverpool Win | 150 | 315 | 1.5625 |
+| Draw | 80 | 304 | 5 |
+| Arsenal Win | 90 | 315 | 1.5625 |
+
+ 
+
+Odds are sensitive not just to a priori models, but also to market forces of demand and supply. In table 5, the Amount Bet is based solely on odds. It is not unusual that the amount that is bet is greater or less than expected. This is shown in Table 8.
+
+Table 8: Divergence in Expected Amount Bet and Actual Amount Bet with Revised Payoffs
+
+| FT Result | Expected Amount Bet | Payoff | Actual Amount Bet | Payoff |
+| --- | --- | --- | --- | --- |
+| Liverpool Win | 150 | 315 | 120 | 252 |
+| Draw | 80 | 304 | 100 | 380 |
+| Arsenal Win | 90 | 315 | 100 | 350 |
+
+ 
+
+As is seen in Table 8, if the amount bet is changed, it leads to fluctuations in the payoff, which exceeds the inflow in some cases. This means that there exist cases where the bookmakers can make a loss, which is an unacceptable business situation. To ensure that the arbitrage situation is restored, the odds are changed in opposite directions.
+
+In order to dissuade more people from betting on a certain result, odds are slashed. This is a direct function of the demand for that specific result.
+
+Table 9: Revised Odds according to Actual Amount Bet
+
+| FT Result | Amount Bet | Revised Odds | Payoff |
+| --- | --- | --- | --- |
+| Liverpool Win | 120 | 2.6 | 312 |
+| Draw | 100 | 3 | 300 |
+| Arsenal Win | 100 | 3.15 | 315 |
+
+The revised profit table is as follows:
+
+Table 10: Revised Profit
+
+| FT Result | Amount Bet | Payoff | Profit % |
+| --- | --- | --- | --- |
+| Liverpool Win | 120 | 312 | 2.5 |
+| Draw | 100 | 300 | 6.25 |
+| Arsenal Win | 100 | 315 | 1.5625 |
+
+ 
+
+It is evident that odds have two major determinants – priori models, and market forces. Bookmakers constantly adjust their odds to minimize the chance of future loss, a feature of betting that several punters attempt to capitalize on. These themes will be explored in upcoming articles.

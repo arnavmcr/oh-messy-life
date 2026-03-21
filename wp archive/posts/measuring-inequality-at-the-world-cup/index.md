@@ -1,0 +1,74 @@
+---
+title: "Measuring Inequality at the World Cup"
+date: 2019-02-24
+categories: 
+  - "sports"
+coverImage: "action-backlit-beach-978695.jpg"
+---
+
+An article that attempts to quantify the levels of inequality present within groups at the 2018 FIFA World Cup. Original article can be found [here.](https://xaviers.edu.in/acadmap/2018/07/21/in-search-of-the-real-g-o-d/)
+
+Predicting the World Cup
+
+The most eagerly awaited month in the quadrennial calendar of football fans is beyond doubt mid-June to mid-July in the non-leap even years. The FIFA World Cup is a melange of visceral emotion, dazzling skill and various political undertones that create absolutely spellbinding narratives, hallowed stories passed on till time immemorial. But behind the scenes of jubilation, frenzy and heartbreak that inevitably takes place at every World Cup lies a mountain of data that has become commonplace and instrumental in shaping modern football. It is by dissecting, assimilating and listening to this data that one can draw informed conclusions regarding the World Cup – free from nationalistic or media propagated biases.
+
+**What Sets the World Cup Apart?**
+
+What sets the World Cup apart from other tournaments, especially in terms of predictability, are two things. The first being its pan-global nature and second, its format. Unlike the quadrennial EURO or Copa America tournaments, the World Cup pits teams from across continents against one another. This makes quantifying team strengths increasingly challenging, as results need to be corrected for their cross-continental differences. This would be straightforward in other continental tournaments. The second difference is due to its short span – winning the World Cup takes just 7 games. This is not the case in the case of leagues (the Premier League, the La Liga or even the ISL), where team performances get ironed out over the course of the season. Overachieving teams in the first half of the season eventually lose their steam, and regress to their mean (expected position).
+
+The World Cup prohibits much space for reversion to the mean, or the law of large numbers from being applied. Due to the short nature of the tournament, the underdog phenomenon gets amplified – teams need to perform in a minimal number of matches in order to progress to a considerably late stage of the tournament. Although notable outliers do exist (Leicester in Premier League 2015-16), the length of leagues makes them far more predictable than the World Cup. Another advantage is the recursive nature of longer tournaments, with data from the same season being used to predict matches at future stages.
+
+Prior to a single ball being kicked on the field, the World Cup has fans, pundits and coaches heavily invested in debate and discourse upon a single topic – the draw. The draw can make or break the chances of a team at a major tournament, as the composition of a group is vital in determining whether one can progress to later stages of the tournament. Perhaps the most popular of topics is the ‘Group of Death’.
+
+**Group of Death**
+
+The ‘Group of Death’ is a phrase widely used  by fans on a regular basis in the lead-up to every major tournament. It typically refers to a group that has more teams that ‘deserve’ to qualify for the next round than available spaces will allow. These groups entail high intensity, ferocious football comprising equally matched opponents. However,
+
+This article seeks to strip away the term from its colloquial usage, adopting an objective analysis of the term. The Group of Death is expected to be the one with the highest degree of competition. This would be typical of groups that have greater numbers of evenly matched teams.
+
+**Measuring Dominance**
+
+Using the Team Strengths that comprise the foundation of all predictions made on this Blog, we were able to quantitatively assess the strength of each group. Along with this, the Herfindahl – Hirschman Index (HHI), a concentration ratio used to estimate and therefore dominance in markets, was used in order to understand the actual levels of competition that exist within each group. Market concentration describes the control a firm has over the market – highly concentrated markets imply greater power and dominance possessed by a firm or set of firms, while markets that are not concentrated are more competitive, as firms share relatively analogous agency. A monopolised market will have an HHI of 10000 (100^2), while a perfectly competitive market will tend to a very low value.
+
+The football equivalent of this uses the strength of teams as a proxy for market share. Each of the 32 teams are assigned a score and then are divided into their groups. The ‘market share’ enjoyed by each team is the percentage value of their team strength. For example, in Group A, to calculate Russia’s market share, we first take their team strength and divide it by the summation of all the team strengths. We then multiply this value by 100 in order to convert it into a percentage. This value is their ‘market share’, which indicates how much of the group they are likely to control.
+
+The value of the Team Strength metric is calculated using a model that incorporates teams’ performance in international fixtures over 70 year period. Scores have been corrected for time, to give recent form greater importance , for geographies in order to incorporate the strengths of certain qualifying confederations and for tournament, weighing tournaments such as the World Cup higher than others, such as the Copa America or the EUROs.
+
+The HHI is used extensively by anti-trust regulators to ensure that the defined threshold of monopolisation within a market has not been breached. It is calculated as the summation of the squared values of the market shares of all firms in the market. Smaller the HHI, more competitive the market.
+
+Graph #1 – Adjusted HHI
+
+| **Group** |       **Teams** |       **Average Strength** |    **Adjusted HHI** | **Average Strength** |
+| --- | --- | --- | --- | --- |
+| A | Russia, Saudi Arabia,  Uruguay, Egypt | 1.79912 | 0.989520549 |  |
+| B | Portugal, Spain,  Morocco, Iran | 2.124895 | 0.997551622 |  |
+| C | France, Australia,  Peru, Denmark | 1.95841 | 1.000242056 |  |
+| D | Argentina, Iceland  Croatia, Nigeria | 2.071312 | 1.001278055 |  |
+| E | Brazil, Switzerland,  Costa Rica, Serbia | 2.099265 | 1.022115183 |  |
+| F | Germany, Mexico,  Sweden, Korea Republic | 2.048298 | 1.011642044 |  |
+| G | Belgium, Panama,  Tunisia, England | 1.992556 | 0.993076323 |  |
+| H | Poland, Senegal,  Colombia, Japan | 1.906143 | 0.984574168 |  |
+
+ 
+
+Table #1 – List of Teams and Groupwise HHI
+
+ 
+
+It is abundantly clear from the above data that the definitional Group of Death is Group H – Poland, Senegal, Colombia and Japan. Perhaps the only truly cosmopolitan of all the Groups, Group H lack a traditional bigwig in their midst. Comprising 4 sides with minimal expectation yet an abundance of vigour and passion, Group H is likely to see flowing, attacking football.
+
+**What Competitiveness Implies**
+
+However, there is a corollary to the competitiveness that groups will offer. So while games may be more competitive, they are unlikely to be of the calibre on display in the other groups. This is of little effect however, as the World Cup, on the whole, puts the brightest, most exciting talents from across the world onto the same pitch.
+
+This correlation between the HHI and the average is moderate, with a value of 0.622. As the HHI increases, so does the average group strength – stronger groups are less competitive.
+
+All in all, it is clear that the lesser known names of Group H and A– the Senegal’s, the Saudi Arabia’s and the Russia’s are likely to play out edge of the seat thrillers, with some of the best attacking talent in the world on display – Mo Salah, Robert Lewandowski, James Rodrigues – all taking centre stage.
+
+There are a plethora of World Cup Predictions furnished by a wide variety of organisations, ranging from bloggers to large investment banks such as Goldman Sachs. Most make tall claims of using machine learning, artificial intelligence and other data science buzzwords to lend greater credibility to their results, however most predicted one of two teams to win the World Cup – Brazil or Germany. Predicting the World Cup is a futile exercise as there is little statistical backing to explain Germany’s first round exit, Russia progressing ahead of Spain and Argentina being held to a draw by Iceland. This unpredictable, romantic nature of the World Cup is what makes predicting it a fruitless activity.
+
+ 
+
+End Note:
+
+A drawback of using HHI within the context of sport is that all groups have the same number of teams, meaning that the resultant HHI is very close to one another, almost equal to 4x(25^2), as the average market shares do not veer far away from the mean of 25%. The highest market share of any team was Brazil, with 34%, and the lowest shared by the likes of Australia, Saudi Arabia and Nigeria, with around 20%.

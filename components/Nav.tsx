@@ -1,13 +1,24 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import DarkModeToggle from './DarkModeToggle';
+import { CATEGORY_MAP } from '@/lib/categories';
 
-const navLinks = [
-  { href: '/writing', label: 'WRITING' },
-  { href: '/projects', label: 'LABS', soon: true },
-  { href: '/music', label: 'SIGNAL', soon: true },
+const accentHover: Record<string, string> = {
+  primary: 'hover:text-primary',
+  secondary: 'hover:text-secondary',
+  tertiary: 'hover:text-tertiary',
+};
+
+const comingSoon = [
+  { href: '/projects', label: 'LABS' },
+  { href: '/music', label: 'SIGNAL' },
 ];
 
 export default function Nav() {
+  const [writingOpen, setWritingOpen] = useState(false);
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur-sm flex justify-between items-center w-full px-4 py-3 border-b border-black/10 dark:border-white/10">
       <div className="flex items-center gap-6">
@@ -20,16 +31,55 @@ export default function Nav() {
 
         <div className="h-8 w-[1px] bg-black/10 dark:bg-white/10 mx-2" />
 
+        {/* Desktop nav */}
         <div className="hidden md:flex gap-6 items-center font-label uppercase tracking-widest text-[10px] font-bold">
-          {navLinks.map(({ href, label, soon }) =>
-            soon ? (
-              <span key={label} className="opacity-30 cursor-not-allowed">{label}</span>
-            ) : (
-              <Link key={label} href={href} className="hover:text-primary transition-colors">
-                {label}
-              </Link>
-            )
-          )}
+          {/* WRITING with dropdown */}
+          <div className="group relative">
+            <Link
+              href="/writing"
+              className="hover:text-primary transition-colors"
+            >
+              WRITING
+            </Link>
+            {/* Dropdown panel */}
+            <div className="absolute top-full left-0 mt-2 hidden group-hover:block bg-white dark:bg-black border border-black/10 dark:border-white/10 min-w-[200px] z-50 shadow-lg">
+              {Object.entries(CATEGORY_MAP).map(([catKey, cat]) => (
+                <div key={catKey} className="border-b border-black/5 dark:border-white/5 last:border-0">
+                  <Link
+                    href={`/writing/${catKey}`}
+                    className="block px-4 py-2 font-mono text-[10px] tracking-widest uppercase font-bold hover:text-secondary hover:bg-secondary/5 transition-colors border-l-2 border-secondary"
+                  >
+                    {cat.label}
+                  </Link>
+                  <div className="pl-2">
+                    {Object.entries(cat.subcategories).map(([subKey, sub]) => (
+                      <Link
+                        key={subKey}
+                        href={`/writing/${catKey}/${subKey}`}
+                        className={`block px-4 py-1.5 font-mono text-[9px] tracking-widest uppercase opacity-70 ${accentHover[sub.accentColor ?? 'primary']} hover:opacity-100 transition-all`}
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {comingSoon.map(({ label }) => (
+            <span key={label} className="opacity-30 cursor-not-allowed">{label}</span>
+          ))}
+        </div>
+
+        {/* Mobile nav */}
+        <div className="md:hidden flex items-center">
+          <button
+            onClick={() => setWritingOpen((v) => !v)}
+            className="font-mono text-[10px] tracking-widest uppercase font-bold hover:text-primary transition-colors"
+          >
+            WRITING {writingOpen ? '▲' : '▼'}
+          </button>
         </div>
       </div>
 
@@ -42,6 +92,44 @@ export default function Nav() {
           terminal
         </span>
       </div>
+
+      {/* Mobile dropdown */}
+      {writingOpen && (
+        <div className="absolute top-full left-0 right-0 bg-white dark:bg-black border-b border-black/10 dark:border-white/10 md:hidden z-50">
+          <div className="px-4 py-2">
+            <Link
+              href="/writing"
+              className="block py-2 font-mono text-[10px] tracking-widest uppercase font-bold hover:text-primary transition-colors"
+              onClick={() => setWritingOpen(false)}
+            >
+              ALL WRITING
+            </Link>
+            {Object.entries(CATEGORY_MAP).map(([catKey, cat]) => (
+              <div key={catKey} className="mb-2">
+                <Link
+                  href={`/writing/${catKey}`}
+                  className="block py-1.5 font-mono text-[10px] tracking-widest uppercase font-bold text-secondary border-l-2 border-secondary pl-3"
+                  onClick={() => setWritingOpen(false)}
+                >
+                  {cat.label}
+                </Link>
+                <div className="pl-5">
+                  {Object.entries(cat.subcategories).map(([subKey, sub]) => (
+                    <Link
+                      key={subKey}
+                      href={`/writing/${catKey}/${subKey}`}
+                      className={`block py-1 font-mono text-[9px] tracking-widest uppercase opacity-60 ${accentHover[sub.accentColor ?? 'primary']} hover:opacity-100 transition-all`}
+                      onClick={() => setWritingOpen(false)}
+                    >
+                      {sub.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

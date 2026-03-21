@@ -1,0 +1,21 @@
+---
+title: "Economics Paper: Consumer Behaviour"
+date: 2016-10-27
+categories: 
+  - "economics"
+  - "papers"
+---
+
+A brief paper that was part of my curriculum in my course on Microeconomics, the paper delves into analysing the behaviour of consumers' purchasing patterns with regards to six goods - toothbrushes, toothpastes, sugarcane juice, lemonade, milk and newspapers.
+
+The goods were analysed in pairs - complementary goods, competitive goods and unrelated goods.
+
+The paper was adjudged as the highest in the class. It was worked on by four of us, who were randomly put in the same group.
+
+The paper can be found [here.](https://coalesceweb.wordpress.com/wp-content/uploads/2016/10/cia-ii-g10.pdf "cia-ii-g10")
+
+The data bank to the paper can be found [here.](https://coalesceweb.wordpress.com/wp-content/uploads/2016/10/final-bank-g10.pdf "final-bank-g10")
+
+A compendium of pie charts used to analyse the data can be found [here.](https://coalesceweb.wordpress.com/wp-content/uploads/2016/10/pie-charts-g10.pdf "pie-charts-g10")
+
+An personal analysis of the paper can be found [here.](https://coalesceweb.wordpress.com/wp-content/uploads/2016/10/lessons-learnt-roll-no-60.pdf "lessons-learnt-roll-no-60")

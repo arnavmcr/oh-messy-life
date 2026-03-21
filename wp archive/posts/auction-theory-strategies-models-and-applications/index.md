@@ -1,0 +1,13 @@
+---
+title: "Auction Theory: Strategies, Models and Applications"
+date: 2018-05-12
+categories: 
+  - "economics"
+  - "papers"
+---
+
+A research paper that delineated a few basic concepts surrounding auction theory. It describes applications of the same in the Indian Public System.
+
+Presented at the Annual Freddie Mehta Economics Seminar in January 2018.
+
+You can find the paper here: [Final Draft - Auction Theory](https://coalesceweb.wordpress.com/wp-content/uploads/2018/05/final-draft-auction-theory.pdf "Final Draft - Auction Theory")

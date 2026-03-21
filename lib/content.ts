@@ -10,6 +10,9 @@ export interface PostMeta {
   date: string;
   excerpt?: string;
   tags?: string[];
+  category?: string;
+  subcategory?: string;
+  coverImage?: string;
   status?: 'draft' | 'published';
 }
 
@@ -30,9 +33,12 @@ export function getAllPosts(): PostMeta[] {
     return {
       slug,
       title: data.title ?? slug,
-      date: data.date ?? '2024-01-01',
+      date: String(data.date ?? '2024-01-01'),
       excerpt: data.excerpt,
       tags: data.tags ?? [],
+      category: data.category,
+      subcategory: data.subcategory,
+      coverImage: data.coverImage,
       status: data.status ?? 'published',
     } as PostMeta;
   });
@@ -52,9 +58,12 @@ export function getPost(slug: string): Post | null {
   return {
     slug,
     title: data.title ?? slug,
-    date: data.date ?? '2024-01-01',
+    date: String(data.date ?? '2024-01-01'),
     excerpt: data.excerpt,
     tags: data.tags ?? [],
+    category: data.category,
+    subcategory: data.subcategory,
+    coverImage: data.coverImage,
     status: data.status ?? 'published',
     content,
   };
@@ -66,4 +75,14 @@ export function getAllSlugs(): string[] {
     .readdirSync(WRITING_DIR)
     .filter((f) => f.endsWith('.mdx'))
     .map((f) => f.replace(/\.mdx$/, ''));
+}
+
+export function getPostsByCategory(category: string): PostMeta[] {
+  return getAllPosts().filter((p) => p.category === category);
+}
+
+export function getPostsBySubcategory(category: string, subcategory: string): PostMeta[] {
+  return getAllPosts().filter(
+    (p) => p.category === category && p.subcategory === subcategory
+  );
 }

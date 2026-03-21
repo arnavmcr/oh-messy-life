@@ -1,0 +1,10 @@
+---
+title: "Alienation in Free Verse"
+draft: true
+---
+
+The past few years have seen poetry emerge from the confines of scribbled private journals, shared with the "person you wanted to spend the rest of your life with", to scribbled private journals shared on Instagram and to crowds who, at the very least, appear transfixed by your verses, and expect this to be reciprocated when they'd perform. A fascinating democratisation of art in line with the growing "power" of individuals, where everyone with a smartphone was a photographer, everyone with a ukelele a musician and everyone who'd read Daffodils for their 8th standard exams a poet.
+
+From the outset though, I'd like to clarify that poetry has been one of the few art forms I am unable to wrap my head around. I did not have the attention span to grasp the constant metaphors and imagery, however poignant it may have been.
+
+I was very fortunate to witness poetry's unique trajectory in my

@@ -1,0 +1,42 @@
+---
+title: "A Moon Shaped Pool - Album Review"
+date: 2016-05-18
+categories: 
+  - "album-reviews"
+  - "music"
+  - "writing"
+---
+
+_**A review of Radiohead's 2016 album 'A moon Shaped Pool'. Original can be found [here.](http://www.chordsunited.com/blog/reviews/2/40/1/album-review-radiohead-a-moon-shape-pool.html)**_
+
+Radiohead, have for some time now, been the envy of marketing firms from all over the world – their ability to create an inexplicable yet completely justified hype by using non-conventional means only adds to the band’s pervasive, intrusive character. Dubbed as a ‘hipster’ band by jealous onlookers, announcement of Radiohead releases often send the realms of the internet into an uncontrollable frenzy. The band, in their usual obscure fashion, used cryptic and not-so-cryptic messages to reveal to the world that music since 2011’s ‘King of Limbs’ would be available this past Sunday. While the term ‘album’ is often an understatement when referring to the band’s releases, ‘A Moon Shaped Pool’ pools together tried and tested techniques (musical and otherwise) into an eleven track journey.
+
+Our first taste of (new) material was in the form of ‘Burn the Witch’ which has featured at live shows since the turn of the millennium, an unfortunate feature that plagues this album. The band’s inclusion of songs previously recorded and performed did dilute the overall appeal to the seasoned Radiohead fan. ‘Burn the Witch’ opens the record with violent violins and a synth-like bass tone highlighting the subtle chord progressions. Yorke’s ubiquitous meandering vocals blend well with the arrangement on one of the records more pacey songs.
+
+<!--more-->
+
+![moon-shaped-pool-radiohead](images/moon-shaped-pool-radiohead.jpg)
+
+The song ends with a chaotic build-up which anti-climactically leads into ‘Daydreaming’, the second single. The band has explored their electronic side even further, using granular synths to set the morose, almost elusive tone for the song. Features of ambient music appear extensively, such as the regular, even bass tone controlling the rhythm section in the absence of any percussion. The track ebbs and flows from abrasive string arrangements to vague, off-putting vocals. The outro of the song has vocals being recited backward, with ‘efil ym fo flah’ translating to the lucidly profound ‘Half of my life’. Mind-bogglingly unusual yet effortlessly monumental, the lyrics of ‘Daydreaming’ explore every day scenarios in the search of deeper meaning, testament to the band’s constant pursuit of philosophical enrichment.
+
+Succeeding ‘Daydreaming’ is ‘Decks Dark’, which opens with lofi drums and murmurs of synthesizers. Thom’s wailing vocals delve into personal and impersonal concepts, discussing the ultimate fate of the human race as well as the ultimate fate of him and his longtime partner who split in 2015. Rhtyhm guitars make their cameo on the song that is controlled by bass notes sprawling the fretboard. An instrumental section shows off an array of guitar effects and is the closest semblance to a guitar solo for most parts of the album. Arpeggios flood the background of the arrangement, which uses heavily delayed and reverbed guitars (typical of the XX).
+
+‘Desert Island Disk’, the fourth song on the record, quite suggestively uses an acoustic guitar reminiscent of a desert. Wavy, spacey guitar notes control lower ends of the otherwise empty sonic spectrum. The slightly unsettling guitar riff is perennial, and the lyrics address questions about deeper consciousness as well as the more personal questions debating love and its nature.  Elements of psych-rock are quite evident on the track, exploring musical boundaries that the band may have previously felt constricted by.
+
+‘Ful Stop’, the usual wonderfully intelligent title, begins with a reinvention of the traditional sense of the phrase drum and bass which is looped for a long duration, after which a string arrangement almost-identical to that of ‘New Paths to Helicon’ by Mogwai is used. An odd build-up leads to a seemingly distant vocal line that almost mocks the listener. A beautifully frenetic verse with a plethora of textures being built on one another is a reminder of the band’s status as champions of alternative music. Every instrument used is disconnected from one another – with guitars circling one another, drums playing in unusual time and the bass and synths running around the sonic spectrum – yet somehow this cognizance is almost transcendental.
+
+The shortest song off the record, ‘Glass Eyes’ delves into a lush soundscape with strings and keyboards setting an impeccably ominous, somber tone. The listener is transported to an almost surreal land, with flowing vocal lines and dreamy instrumental sections. A sojourn in Radiohead’s world, the song is testament to the bands lyrical and musical versatility.
+
+‘Identikit’ greets the listener with a slightly off-putting, odd bass line accompanied by a simple drum beat. Incoherent, spacey vocals are textured upon one another and are enveloped by running bass lines, showers of guitars strums and the occasional scratch. Anthemic parts of the song involve larger than life choirs, whose role in the background of the song enhances its effect. Air guitar worthy solos and intelligent bass mastery bring the song to a close, held together by a basic-enough drum beat.
+
+‘The Numbers’, up next, uses once again synthesizers to set the pace and tone for the song. The track emanates an almost folk-like feeling, with allusions to the immediate effects of global warming omnipresent. The band demands the disbanding of the current status-quo while reminding the human race of the obligations it owes to Mother Nature. A protest song masked by orchestral arrangements and imperial piano riffs adds to the bands repertoire something unusual, but it does (dare I say) add an element of monotony to the record.
+
+ 
+
+‘Present Tense’, another one of those songs whose name itself perplexes the listener, begins with an eerie introductory phase which leads into a vocoder-laden verse. Deft guitar complement the verse and are something that has eluded other tracks on the record. Radiohead have never felt restricted to the boundaries and norms that plague the music world, and this song exemplifies their complete disregard for the ‘verse-chorus’ model. The song also sees the presence of an easy-listening, peaceful segment which has marching drums, euphoric strings and slightly subdued guitars which are a treat to the ear.
+
+‘Tinker Tailor Soldier Sailor Rich Man Poor Man Beggar Man Thief’ presents itself in a similar manner to its predecessors with synths and programmed drums. These highlight the soothing, intoxicating nature of the song before the vocals take their toll on the listener. The sparse use of delayed notes and the tinges of ambience provide the perfect pedestal for the vocals to discuss themes of paranoia and deceit. Chimes and the bass guitar showcase the arbitrariness and unpredictability of the song, with the instruments deviating from the expected cohesive arrangement. The exceptionally powerful strings and processed guitars too play their part in this non-cohesive yet impeccable song.
+
+To cap off the record, ‘True Love Waits’ is the Radiohead version of a ballad. While the song has been played extensively over the past two decades, its studio version is unlike its live performances. The melancholic, mellow song mourns the end of Yorke’s relationship and urges one to ‘not leave’. Coarse, raspy vocals regret the end of the relationship and in depressing fashion pleads that this not be the end. The song is a stark contrast to the first track on the album, fittingly capping off a journey across the spectrum.
+
+It is beyond any modicum of doubt that Radiohead are pioneers of electronic, rock and alternative music and will continue to inspire generations upon generations of musicians to come, but ‘A Moon Shaped Pool’ does feel like an album slightly hastily put together. An almost disinterested (alphabetical) track listing and the inclusion of previously written and recorded songs points to an unheard of laziness and a step back from the perfectionism we know and expect. Not to take away from the band’s ethereal sound or the Greenwood brothers’ electronic genius or Selway’s ‘less is more’ mantra with the drums, or O’Brien’s ability to spew melody, but the album does pose questions about the direction in which the band is heading. Ful stop.

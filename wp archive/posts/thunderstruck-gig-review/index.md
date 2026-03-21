@@ -1,0 +1,30 @@
+---
+title: "Thunderstruck - Gig Review"
+date: 2016-05-18
+categories: 
+  - "gig-reviews"
+  - "music"
+  - "writing"
+---
+
+_**Original article can be found [here.](http://www.chordsunited.com/blog/reviews/2/22/1/thundestruck-sies-fest-review-pangea-awks.html)**_
+
+The annual music festival held at SIES College, quite aptly eponymous to the famed AC/DC song, held its latest edition at the Shanmukananda Hall earlier this week. The event started with bizarrely long lines and an army of volunteers inspecting every move made by the eager onslaught of students. While the gates were slated to open at 5:30, it wasn’t until 7:15 that the jubilant crowd was allowed to make its way inside. This delay was a tad off-putting, but is something that has typified the college circuit and is probably necessary to ensure the safety of the performers and audience.
+
+As I entered the auditorium, the scale of the event soon dawned upon me, with the entire room packed. The seating arrangement was rather awkward and didn’t suit the atmosphere but all that dissipated as the first band aswekeepsearching came on, to a rapturous audience. The comfort of the seats was traded for the crowded stage-front, where the most devout of AWKS’s fans assembled themselves. Their post-rock, shoegaze sounded was well received by the viewers and their nine song set-list ebbed and flowed, as did their sound. <!--more-->The atmosphere was palpable, with the band’s deftly used electronics and synths weaved layer upon layer, creating sonic tension and expectation. The rhythm section of the band stuck to their guns, and gave a tight, well-rehearsed performance. It was unfortunate to note that the bass was occasionally drowned out by the rest of the band, and certain clear patterns amongst the band’s lower end emerged, with the repeated use of a technique where the bass plays for the first half of the phrase, matching the bass drum. The grimey, distorted bass sound did fill the room with its vibrations but was underutilized, while the use of brushes and chimes by the drummer created an ethereal atmosphere.
+
+ 
+
+_**Photo by Suraj Sharma**_
+
+![Pangea - SIES fest - 2](images/pangea-sies-fest-2.jpg)
+
+While post-rock bands are not usually bands with vocals, it was refreshing to hear such powerful pipes in a genre that tends to overlook their utility. The synth sections translated well into a live set-up, and the multi-instrumental nature provided for versatility with the keyboardist doubling up as a guitar player. The sprawling, intricate melodies were as prominent as ever, although it was disappointing to note that there was a backing track used for vocals, on occasion. While the two-guitar set-up was used to perfection during the build-ups, the break-downs felt oddly empty, but the massive, euphoric break-downs on songs like B303 and Catalogues were nothing short of magical. The introduction of Coshish guitarist Shrikant Sreenivasan was much to the delight of the audience, and while his mere presence was enough to elevate the excitement in the room; his undoubted mastery of the guitar wowed the fazed onlookers.
+
+While AWKS were definitely more aggressive than the average post-rock band, they have certainly established themselves as the torch-bearers for the future of the genre in India. Their live act was a journey, with exploration and emotion leading the way and transcendence from this world to another. If a handful of kinks can be ironed out, it will be no surprise to see the band touring not just Russia, but the entire world.
+
+Up next were prog-metal stalwarts Pangea, with their unique brand of heavy music. The crowd itself was littered with Pangea shirts, testament to the group’s pious fans. The performance opened with their usual high-intensity riffs and captivating breakdowns, with the crowd receptive and appreciative to all their little intricacies and quirks. The sophomore song, “Women Can’t Behave on Buses”, showed off the musical dexterity of the instrumentalists and their incredible stage presence. Jai Row’s command over the drum set was impeccable, and was evident as the set progressed. The wavering synths between tracks provided the perfect interlude and lead guitarist Akshay Rajpurohit’s intermittent banter had the crowd in splits. The usual charisma the band displays shone on this occasion, with the inconspicuous demeanor of Shadaab and Kuber serving a fitting contrast to Krishna and Akshay’s on-stage antics. One of the highlights of the shows was Krishna’s bass slides on “This is NG Taking”, that immersed the band into a dynamic, vivid soundscape.
+
+Regardless of all the spectacular songwriting and magnificent releases Pangea do most definitely possess, it is their iconic live performances that have institutionalized the band into the scene. Their live set has three guitars, immaculately synchronized, each with their distinctive tone. Their numerous hours put in by the band to craft a live set as complex as this has most definitely paid off. The vast array of pedals and processors were each put to use to weave together a beautiful, joyous live experience held together by an extraordinary rhythm section.
+
+While both bands would certainly find hugging and hand holding a rare occurrence at their shows, the juvenile yet overenthusiastic crowd responded and participated in both performances. The audience may have been oblivious to the nuances of prog-metal or post-rock, but left Shankmukananda Hall as satisfied, changed individuals.

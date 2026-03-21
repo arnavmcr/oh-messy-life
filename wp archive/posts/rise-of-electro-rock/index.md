@@ -1,0 +1,28 @@
+---
+title: "Rise of Electro-rock"
+date: 2016-05-18
+categories: 
+  - "editorials"
+  - "music"
+  - "writing"
+---
+
+The Summer of Love, considered the zenith of hippie culture, saw psychedelia manifest itself not just through substances but also music. Psychedelic rock, a seemingly inconspicuous musical trend, would pave the way for two seemingly opposing genres to move into the mainstream. The two genres – rock and electronic – are undoubtedly the two ‘flower children’ of the past couple of decades.
+
+The early 1970s saw the advent of the Moog synthesizer amongst a plethora of other instruments that really set the tone for electronic music. Simultaneously, rock ‘n’ roll began to foray onto the airwaves growing steadily in popularity, until rather anti-climactically rock faded away from the public eye in the 1980s with ‘pop’ music stealing the limelight. The electronic movement too died down, and was used more to supplement other genres of music rather than being at the forefront. Two styles of music that were reduced to underground movements in the 1980s rather meteorically rose to stardom in the subsequent decades – both individually and together.
+
+<!--more-->While definitions and classifications do often differ, the term ‘electro-rock’ or ‘electronic rock’ generally refers to rock music that uses elements of electronic music, including synthesizers, samplers, sequencers or the excessive use of effects.  Psychedelic rock, for instance, tends to use guitar tones that are put through several effects pedals and processed into a unique sound characteristic of the genre, and its extensive use of keyboards have led to its categorization under electro-rock. Samples too have been incorporated into several landmark psych-rock albums such as on ‘Time’ and ‘Another Brick in the Wall’, off Pink Floyd’s genre-defining albums.  Thus the categorization of bands into electro-rock may be contested and debated, but general consensus is that it has a rather broad scope.
+
+Perhaps the most iconic bands of the early 21st century, Radiohead started out as young alt-rock, grunge band, with songs like ‘Creep’ breaking charts and records everywhere. The turn of the century saw a paradigm shift in the band’s sound with guitars traded for samplers and synths giving the band a textured, minimal sound. Kid A had become the benchmark for any alternative, rock or electronic album with its layered instrumental arrangements supplemented by Thom Yorke’s wavering, mind-altering vocals. The resultant sound was mature, contemporary and cosmopolitan, not to mention hugely successful. Their use of electronics was more direct and unobtrusive, leading to the five-piece being dubbed as pioneers of the style.
+
+Working along a similar timeline, the late 1990s saw the emergence of another one of modern rock’s great bands- Muse, who were also from the United Kingdom. While not so evident on their debut album ‘Showbiz’, Muse used a vast range of electronics in the albums that followed. ‘Origin of Symmetry’, the band’s sophomore album used synths on tracks like ‘Bliss’ and ‘Screenager’, along with the heavy distorting of guitar tones with a vast array of fuzz, chorus and overdrive pedals. The albums that followed too had use of similar effects and samples, but the more orchestral sound explored on ‘Resistance’ did push the electronics on the back-foot. It was 2012 when Muse decided to push their sound into a more synth based one. Vocalist Bellamy has been quoted saying that Muse wanted to take on elements of Dubstep, as they felt that the emphasis had shifted from rock to electronic. He felt that mosh-pits too, had moved to electronic shows. The dystopian, apocalyptic ‘Unsustainable’ and the ode to Bellamy’s son ‘Follow Me’ exemplify Muse’s departure into a vivid electro-rock sound.
+
+One of the 2010s success stories, Tame Impala, are renowned for their use of electronics, with their incorporation of analog synths along with heavily processed samples on their albums. Their music is taken to the next level with their electronics, as vocalist and guitarist Kevin Parker makes use of frequency converters to manifest his sonic endeavors into a visual experience.
+
+The most popular criticism of electronic music is its inability to make a captivating live show, but it is safe to say that electro-rock is free from these criticisms. The aforementioned bands have each received numerous accolades for their magnificent, other worldly live acts. Radiohead shows are often characterized by band-members running around the stage connecting wires and instruments, Muse shows with mosh-pits and Tame Impala shows with marijuana. Other bands with dynamic and absorbing live-acts include Enter Shikari and the Killers. While not typical electro-rock bands, Rage Against the Machine and Tool may too fall into this category for their repeated manipulation of sound and use of guitar and bass effects.
+
+While electro-rock is considered a genre of its own, there are several bands that make the transition from traditional to more diverse acts, as was the case with Radiohead. Coldplay, on their new album can be seen making a similar transformation.
+
+Electro-rock is the marriage of this generation’s two most loved genres into an explosive, versatile and diverse child. Its undeniable appeal will ensure that it will never shift into oblivion, and always remain a part of our musical culture.
+
+_**Featured image source -**_ tameimpala.com
