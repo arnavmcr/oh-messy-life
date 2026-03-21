@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>THE MANUSCRIPT_VOID // OH MESSY LIFE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary": "#3800c2",
+                        "outline-variant": "#eabcb6",
+                        "primary-fixed-dim": "#ffb4ab",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2f3131",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#cbc3ff",
+                        "on-tertiary-fixed-variant": "#00522e",
+                        "primary-container": "#ea0018",
+                        "surface-tint": "#c00011",
+                        "on-tertiary-fixed": "#00210f",
+                        "secondary-fixed": "#e5deff",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#dadada",
+                        "surface-container-low": "#f3f3f4",
+                        "tertiary-container": "#2a8453",
+                        "on-surface-variant": "#5f3e3b",
+                        "on-primary-container": "#fffbff",
+                        "tertiary": "#006a3c",
+                        "on-secondary-fixed-variant": "#4000dc",
+                        "surface-bright": "#f9f9f9",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#ffdad6",
+                        "on-secondary-fixed": "#180064",
+                        "secondary-container": "#4d09ff",
+                        "inverse-on-surface": "#f0f1f1",
+                        "on-background": "#1a1c1c",
+                        "on-primary": "#ffffff",
+                        "background": "#f9f9f9",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e8e8e8",
+                        "outline": "#946e69",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#c7bfff",
+                        "tertiary-fixed-dim": "#81d9a0",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#93000a",
+                        "on-tertiary-container": "#f6fff5",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface": "#f9f9f9",
+                        "on-primary-fixed": "#410002",
+                        "primary": "#bb0010",
+                        "surface-container": "#eeeeee",
+                        "inverse-primary": "#ffb4ab",
+                        "surface-variant": "#e2e2e2",
+                        "on-surface": "#1a1c1c",
+                        "tertiary-fixed": "#9df5bb"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48; }
+        .clip-path-drip { clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 95% 75%, 90% 95%, 85% 75%, 80% 90%, 75% 80%, 70% 100%, 65% 85%, 60% 95%, 55% 80%, 50% 90%, 45% 75%, 40% 95%, 35% 80%, 30% 100%, 25% 85%, 20% 95%, 15% 80%, 10% 90%, 5% 75%, 0% 85%); }
+        .clip-path-drip-top { clip-path: polygon(0% 15%, 5% 25%, 10% 10%, 15% 20%, 20% 5%, 25% 15%, 30% 0%, 35% 20%, 40% 5%, 45% 25%, 50% 10%, 55% 20%, 60% 5%, 65% 15%, 70% 0%, 75% 20%, 80% 10%, 85% 25%, 90% 5%, 95% 25%, 100% 15%, 100% 100%, 0% 100%); }
+        .scribble-circle { border: 2px solid currentColor; border-radius: 48% 52% 50% 50% / 40% 40% 60% 60%; transform: rotate(-3deg); }
+        .tape-effect { position: relative; }
+        .tape-effect::before { content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(-2deg); width: 60px; height: 20px; background: rgba(56, 0, 194, 0.4); backdrop-filter: blur(2px); z-index: 10; }
+        .ink-bleed { filter: url(#ink-filter); }
+    </style>
+</head>
+<body class="bg-surface-container-lowest font-body text-on-surface selection:bg-primary selection:text-white">
+<!-- Ink Filter SVG -->
+<svg height="0" style="position: absolute; width: 0; height: 0;" version="1.1" width="0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<filter id="ink-filter">
+<feturbulence basefrequency="0.05" numoctaves="2" result="noise" type="fractalNoise"></feturbulence>
+<fedisplacementmap in="SourceGraphic" in2="noise" scale="2"></fedisplacementmap>
+</filter>
+</defs>
+</svg>
+<!-- Top Navigation -->
+<header class="bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md docked full-width top-0 z-50 border-b-4 border-double border-[#FF1721] flex justify-between items-center w-full px-6 py-4 max-w-none">
+<div class="font-space-grotesk font-bold text-2xl tracking-tighter text-[#FF1721] italic">OH MESSY LIFE</div>
+<nav class="hidden md:flex gap-8">
+<a class="font-space-grotesk uppercase tracking-tighter text-sm text-zinc-900 dark:text-zinc-100 opacity-70 hover:text-[#006a3c] hover:skew-x-2 transition-transform" href="#">WRITING</a>
+<a class="font-space-grotesk uppercase tracking-tighter text-sm text-zinc-900 dark:text-zinc-100 opacity-70 hover:text-[#006a3c] hover:skew-x-2 transition-transform" href="#">PROJECTS</a>
+<a class="font-space-grotesk uppercase tracking-tighter text-sm text-[#3800c2] underline decoration-wavy decoration-2 underline-offset-4" href="#">ARCHIVES</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#FF1721]" data-icon="terminal">terminal</span>
+</div>
+</header>
+<main class="relative min-h-screen pt-24 pb-32 px-6 md:px-12 max-w-7xl mx-auto overflow-hidden">
+<!-- Background Scribbles -->
+<div class="absolute top-40 right-10 text-secondary/10 pointer-events-none -rotate-12">
+<span class="material-symbols-outlined text-[200px]" data-icon="draw">draw</span>
+</div>
+<div class="absolute bottom-20 left-0 text-primary/5 pointer-events-none rotate-45 scale-150">
+<span class="material-symbols-outlined text-[300px]" data-icon="brush">brush</span>
+</div>
+<!-- Page Header -->
+<div class="mb-20 relative">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-l-8 border-primary pl-6 py-2">
+<div>
+<div class="font-mono text-[10px] tracking-[0.3em] text-on-surface-variant mb-2">SPEC_VERSION: 0.9.4 // STATUS: VOLATILE</div>
+<h1 class="font-headline font-black text-6xl md:text-8xl tracking-tighter uppercase leading-none italic">
+                        THE <span class="text-secondary ink-bleed">MANUSCRIPT</span>_<br/>
+                        VOID
+                    </h1>
+</div>
+<div class="md:text-right">
+<div class="font-mono text-[10px] tracking-widest text-on-surface-variant">LOG_ACCESS: GRANTED</div>
+<div class="scribble-circle px-4 py-1 inline-block mt-2 text-tertiary font-bold rotate-2">
+                        VOL. 01 / 2024
+                    </div>
+</div>
+</div>
+<!-- Red Drip Accent -->
+<div class="absolute -bottom-10 left-0 w-full h-8 bg-primary clip-path-drip opacity-20"></div>
+</div>
+<!-- Archive List (Bento-Punk Hybrid) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12 relative z-10">
+<!-- Article 1 -->
+<div class="md:col-span-7 group">
+<div class="tape-effect bg-surface-container-highest p-8 transform -rotate-1 transition-transform hover:rotate-0 duration-300 shadow-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 font-mono text-[10px] text-zinc-400">#001_A</div>
+<div class="text-secondary font-mono text-xs mb-4 flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary block"></span> 2024 / ESSAY
+                    </div>
+<h2 class="font-headline font-black text-4xl md:text-5xl leading-none mb-4 group-hover:text-primary transition-colors underline decoration-4 decoration-tertiary/30">
+                        THE ARCHITECTURE OF NOISE
+                    </h2>
+<p class="font-body text-on-surface-variant max-w-md italic mb-6">
+                        A clinical study on how static creates the most honest form of communication in digital spaces.
+                    </p>
+<div class="flex gap-4">
+<span class="bg-primary text-white font-mono text-[10px] px-2 py-0.5">READ_NOW</span>
+<span class="border border-outline-variant font-mono text-[10px] px-2 py-0.5">METADATA_EXTRACTED</span>
+</div>
+<!-- Drip texture -->
+<div class="absolute bottom-0 right-0 w-24 h-4 bg-tertiary clip-path-drip opacity-40"></div>
+</div>
+</div>
+<!-- Hand-drawn detail -->
+<div class="hidden md:flex md:col-span-5 items-center justify-center text-tertiary">
+<div class="relative">
+<span class="material-symbols-outlined text-8xl" data-icon="error">error</span>
+<div class="absolute top-full left-0 font-mono text-[10px] mt-4 uppercase rotate-12 bg-yellow-200 text-black px-2">Warning: Raw Content</div>
+</div>
+</div>
+<!-- Article 2 -->
+<div class="md:col-span-4 md:col-start-2 group">
+<div class="bg-surface-container-low border-b-[12px] border-secondary p-6 transform rotate-2 transition-transform hover:rotate-1 duration-300">
+<div class="text-primary font-mono text-xs mb-2 italic">2023 / FRAGMENT</div>
+<h2 class="font-headline font-bold text-3xl leading-tight mb-4">
+                        POST-HUMAN<br/>SENTIMENT
+                    </h2>
+<p class="font-body text-sm text-on-surface-variant mb-6">
+                        Notes found on a discarded hard drive near the canal.
+                    </p>
+<div class="w-12 h-1 bg-on-surface-variant opacity-20"></div>
+</div>
+</div>
+<!-- Article 3 -->
+<div class="md:col-span-6 group">
+<div class="relative bg-white p-10 border-4 border-double border-zinc-200 group-hover:border-primary transition-colors shadow-xl">
+<div class="absolute -top-4 -left-4 bg-tertiary text-white font-mono text-[10px] p-2 rotate-[-15deg]">VERIFIED_LOG</div>
+<div class="text-zinc-400 font-mono text-xs mb-4">2022 / MANIFESTO</div>
+<h2 class="font-headline font-black text-4xl md:text-6xl tracking-tighter uppercase mb-6 leading-none ink-bleed text-zinc-900 group-hover:text-secondary">
+                        VANDALISM AS<br/>UI DESIGN
+                    </h2>
+<p class="font-body text-on-surface mb-8 border-l-2 border-primary pl-4">
+                        Why the perfect pixel is the enemy of the perfect experience. We need more spills, more scratches, more grit.
+                    </p>
+<div class="flex justify-between items-center">
+<div class="h-[2px] flex-grow bg-zinc-100 mr-4"></div>
+<span class="material-symbols-outlined text-secondary" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Article 4 -->
+<div class="md:col-span-5 md:col-start-7 group">
+<div class="tape-effect bg-surface-container-highest p-8 transform rotate-1 transition-transform hover:rotate-0 duration-300 shadow-sm relative overflow-hidden">
+<div class="absolute -right-4 top-10 rotate-90 font-mono text-[10px] tracking-widest opacity-20">ENCRYPTED_DATA</div>
+<div class="text-tertiary font-mono text-xs mb-4 flex items-center gap-2">
+<span class="w-2 h-2 bg-tertiary block"></span> 2023 / REVIEW
+                    </div>
+<h2 class="font-headline font-black text-3xl leading-none mb-4 group-hover:text-primary">
+                        GLITCH GOSPELS
+                    </h2>
+<p class="font-body text-sm text-on-surface-variant mb-6">
+                        The rhythmic beauty of broken electronics.
+                    </p>
+<div class="bg-secondary/10 p-2 font-mono text-[10px] text-secondary">
+                        TAGS: [AUDIO] [HARDWARE] [DECAY]
+                    </div>
+</div>
+</div>
+<!-- Article 5 -->
+<div class="md:col-span-8 group">
+<div class="p-8 border-t-8 border-primary bg-surface-container-lowest hover:bg-white transition-colors">
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="bg-zinc-900 text-white font-mono text-[9px] px-2 py-0.5">REF_99</span>
+<span class="bg-primary text-white font-mono text-[9px] px-2 py-0.5">2024</span>
+</div>
+<h2 class="font-headline font-black text-5xl md:text-7xl tracking-tighter leading-[0.85] italic group-hover:skew-x-[-10deg] transition-transform">
+                        SYSTEM<br/> FAILURE <br/>SUCCESS
+                    </h2>
+<p class="font-body mt-6 max-w-xl text-lg leading-relaxed">
+                        A deep dive into the philosophy of failing upward in the digital age. When the system breaks, the humans finally speak.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Floating Action (Optional) -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="bg-primary text-white p-4 font-mono font-bold uppercase tracking-tighter text-sm flex items-center gap-3 hover:-translate-y-1 hover:translate-x-1 transition-transform">
+<span>SUBMIT_VOID</span>
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<footer class="w-full px-8 py-12 grid grid-cols-1 md:grid-cols-2 gap-4 bg-zinc-100 dark:bg-zinc-900 border-t-[10px] border-[#006a3c] clip-path-drip-top">
+<div class="flex flex-col gap-2">
+<div class="font-mono font-black text-[#FF1721] text-xl tracking-tighter italic">OH MESSY LIFE</div>
+<p class="font-mono text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400">SYSTEM STATUS: RUNNING // OH MESSY LIFE © 2024</p>
+</div>
+<div class="flex flex-wrap md:justify-end gap-6 self-end">
+<a class="font-mono text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 hover:bg-[#FF1721] hover:text-white transition-colors px-2 py-1" href="#">STAY_MESSY</a>
+<a class="font-mono text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 hover:bg-[#FF1721] hover:text-white transition-colors px-2 py-1" href="#">LOG_OUT</a>
+<a class="font-mono text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 hover:bg-[#FF1721] hover:text-white transition-colors px-2 py-1" href="#">SOURCE_CODE</a>
+</div>
+</footer>
+</body></html>
