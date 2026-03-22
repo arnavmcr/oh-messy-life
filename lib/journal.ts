@@ -17,11 +17,10 @@ export interface JournalEntryMeta {
   date: string;
   issue: number;
   status: 'draft' | 'published';
-  sections: Pick<JournalSection, 'title' | 'collapsible' | 'bulletList'>[];
+  sections: JournalSection[];
 }
 
-export interface JournalEntry extends Omit<JournalEntryMeta, 'sections'> {
-  sections: JournalSection[];
+export interface JournalEntry extends JournalEntryMeta {
   prev: { slug: string; title: string; issue: number } | null;
   next: { slug: string; title: string; issue: number } | null;
 }
@@ -33,7 +32,7 @@ function classifySection(heading: string): Pick<JournalSection, 'collapsible' | 
   if (lower.includes('what is this')) {
     return { collapsible: true, bulletList: false };
   }
-  if (lower === 'other random things' || lower === 'other fun things') {
+  if (lower.includes('other random things') || lower.includes('other fun things')) {
     return { collapsible: false, bulletList: true };
   }
   return { collapsible: false, bulletList: false };
@@ -82,11 +81,7 @@ export function getAllJournalEntries(): JournalEntryMeta[] {
     const raw = fs.readFileSync(path.join(RECORD_DIR, file), 'utf-8');
     const { data, content } = matter(raw);
 
-    const sections = parseSections(content).map(({ title, collapsible, bulletList }) => ({
-      title,
-      collapsible,
-      bulletList,
-    }));
+    const sections = parseSections(content);
 
     return {
       slug,
