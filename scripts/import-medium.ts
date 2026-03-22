@@ -187,3 +187,52 @@ async function processImages(content: string, slug: string): Promise<string> {
 
   return content;
 }
+
+async function processFile(filepath: string): Promise<void> {
+  const filename = path.basename(filepath, '.md');
+  const slug = slugify(filename);
+  const category = CATEGORY_MAP[slug];
+
+  if (!category) {
+    console.log(`[SKIP] ${slug} — no category mapping`);
+    return;
+  }
+
+  const raw = fs.readFileSync(filepath, 'utf-8');
+
+  const title = parseTitle(raw);
+  const date = parseDate(raw);
+  const body = stripBoilerplate(raw);
+  const bodyWithLocalImages = await processImages(body, slug);
+  const excerpt = extractExcerpt(bodyWithLocalImages);
+
+  const frontmatter = serializeFrontmatter({
+    title,
+    date,
+    category,
+    tags: [],
+    ...(excerpt ? { excerpt } : {}),
+    status: 'published',
+  });
+
+  const outPath = path.join(OUT_DIR, `${slug}.mdx`);
+  fs.writeFileSync(outPath, `${frontmatter}\n${bodyWithLocalImages}`, 'utf-8');
+  console.log(`[OK] ${slug} → ${category}`);
+}
+
+async function main(): Promise<void> {
+  fs.mkdirSync(OUT_DIR, { recursive: true });
+  fs.mkdirSync(IMG_PUBLIC, { recursive: true });
+
+  const files = fs.readdirSync(MEDIUM_DIR)
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => path.join(MEDIUM_DIR, f));
+
+  for (const filepath of files) {
+    await processFile(filepath);
+  }
+
+  console.log('\nDone.');
+}
+
+main().catch(console.error);
