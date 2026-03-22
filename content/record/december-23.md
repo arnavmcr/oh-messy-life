@@ -18,7 +18,7 @@ Also - feel free to reply/not reply at your own pace/convenience. The goal with 
 
 3 broad sections - highlights, lowlights and next steps (yes, very original).
 
-## Highlights
+### Highlights
 
 ### Music festivals and a return to innocence
 
@@ -54,7 +54,7 @@ Every day I was in Bangalore in December, I ate a home-cooked meal. I’ve disco
 
 ![](https://tidal-seahorse-bc0.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F743a16a0-8cd9-4648-bd76-d789f79e3cf6%2F9396dda9-2d08-4e91-8189-fcedfcf78253%2FWhatsApp_Image_2023-12-13_at_20.15.22_f9e7501e.jpg?table=block&id=8e0d3588-ffd1-4b44-81c9-589458ab63b7&spaceId=743a16a0-8cd9-4648-bd76-d789f79e3cf6&width=860&userId=&cache=v2)
 
-## Lowlights
+### Lowlights
 
 ### HBS & “waiting to exhale”
 
@@ -68,7 +68,7 @@ In the build-up to the HBS result and after (actually, for the better part of 20
 
 I’m glad that I am able to accept and share this, as it is something I’ve never really done openly, and now work on addressing it 
 
-## Next steps
+### Next steps
 
 ### Moving on from Scaler
 

@@ -17,10 +17,13 @@ export interface JournalEntryMeta {
   date: string;
   issue: number;
   status: 'draft' | 'published';
-  sections: JournalSection[];
+  sections: Omit<JournalSection, 'body'>[];
+  featured?: boolean;
+  note?: string;
 }
 
 export interface JournalEntry extends JournalEntryMeta {
+  sections: JournalSection[];
   prev: { slug: string; title: string; issue: number } | null;
   next: { slug: string; title: string; issue: number } | null;
 }
@@ -69,10 +72,19 @@ function parseSections(markdown: string): JournalSection[] {
   return sections;
 }
 
+// --- Module-level cache ---
+
+let entriesCache: JournalEntryMeta[] | null = null;
+
 // --- Public API ---
 
 export function getAllJournalEntries(): JournalEntryMeta[] {
-  if (!fs.existsSync(RECORD_DIR)) return [];
+  if (entriesCache) return entriesCache;
+
+  if (!fs.existsSync(RECORD_DIR)) {
+    entriesCache = [];
+    return entriesCache;
+  }
 
   const files = fs.readdirSync(RECORD_DIR).filter((f) => f.endsWith('.md'));
 
@@ -81,7 +93,11 @@ export function getAllJournalEntries(): JournalEntryMeta[] {
     const raw = fs.readFileSync(path.join(RECORD_DIR, file), 'utf-8');
     const { data, content } = matter(raw);
 
-    const sections = parseSections(content);
+    const sections = parseSections(content).map(({ title, collapsible, bulletList }) => ({
+      title,
+      collapsible,
+      bulletList,
+    }));
 
     return {
       slug,
@@ -90,12 +106,16 @@ export function getAllJournalEntries(): JournalEntryMeta[] {
       issue: Number(data.issue ?? 0),
       status: (data.status ?? 'published') as 'draft' | 'published',
       sections,
+      ...(data.featured ? { featured: true } : {}),
+      ...(data.note ? { note: String(data.note) } : {}),
     } satisfies JournalEntryMeta;
   });
 
-  return entries
+  entriesCache = entries
     .filter((e) => e.status === 'published')
     .sort((a, b) => a.issue - b.issue);
+
+  return entriesCache;
 }
 
 export function getJournalEntry(slug: string): JournalEntry | null {
@@ -106,6 +126,8 @@ export function getJournalEntry(slug: string): JournalEntry | null {
   const { data, content } = matter(raw);
 
   const status = (data.status ?? 'published') as 'draft' | 'published';
+  if (!data.status || data.status === 'draft') return null;
+
   const issue = Number(data.issue ?? 0);
   const sections = parseSections(content);
 
@@ -127,6 +149,8 @@ export function getJournalEntry(slug: string): JournalEntry | null {
     issue,
     status,
     sections,
+    ...(data.featured ? { featured: true } : {}),
+    ...(data.note ? { note: String(data.note) } : {}),
     prev,
     next,
   };
