@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archive Index Mockup v3</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #fff;
+    font-family: 'Space Grotesk', 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  .masthead {
+    border-bottom: 2px solid #FF1721;
+    padding-bottom: 1.5rem;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .masthead-title {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -3px;
+    line-height: 1;
+    color: #fff;
+  }
+  .masthead-meta {
+    text-align: right;
+    font-size: 10px;
+    color: #555;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    line-height: 1.8;
+  }
+
+  .index-header {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #1a1a1a;
+    color: #2a2a2a;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid #111;
+    align-items: start;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    opacity: 0;
+    transform: translateY(6px);
+    animation: fadeUp 0.35s ease forwards;
+  }
+  .entry:hover { background: rgba(255,255,255,0.025); margin: 0 -1rem; padding: 0.9rem 1rem; }
+  .entry:hover .entry-title { color: #FF1721; }
+  .entry:hover .entry-num { color: #FF1721; }
+  .entry:hover .entry-arrow { opacity: 1; transform: translateX(0); }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .entry-num {
+    font-size: 10px;
+    color: #2e2e2e;
+    font-family: monospace;
+    transition: color 0.2s;
+    padding-top: 3px;
+  }
+  .entry-body { min-width: 0; }
+  .entry-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    transition: color 0.15s;
+    line-height: 1.3;
+  }
+  .entry-sections {
+    font-size: 10px;
+    color: #3a3a3a;
+    margin-top: 0.3rem;
+    line-height: 1.5;
+    letter-spacing: 0.2px;
+  }
+  .entry-sections.rich { color: #444; }
+
+  .entry-right {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding-top: 2px;
+  }
+  .entry-badge {
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 2px 5px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .badge-new { border-color: #3800c2; color: #3800c2; }
+  .badge-first { border-color: #1e1e1e; color: #333; }
+  .entry-arrow {
+    color: #FF1721;
+    font-size: 13px;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all 0.15s ease;
+  }
+
+  /* Year breaks */
+  .year-break {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 1rem;
+    padding: 2.5rem 0 0.6rem;
+    opacity: 0;
+    animation: fadeUp 0.35s ease forwards;
+  }
+  .year-label {
+    font-size: 9px;
+    color: #2a2a2a;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding-top: 3px;
+  }
+  .year-rule {
+    height: 1px;
+    background: linear-gradient(to right, #1e1e1e, transparent);
+    margin-top: 7px;
+  }
+
+  /* Age-based title dimming */
+  .entry-title.age-new  { color: #ffffff; }
+  .entry-title.age-mid  { color: #aaaaaa; }
+  .entry-title.age-old  { color: #666666; }
+
+  .footer-note {
+    margin-top: 4rem;
+    font-size: 9px;
+    color: #222;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    padding-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.4s ease 1.3s forwards;
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-title">THE<br>RECORD</div>
+  <div class="masthead-meta">
+    21 issues<br>
+    Dec 2023 – present<br>
+    Monthly
+  </div>
+</div>
+
+<div class="index-header">
+  <span>#</span>
+  <span>Entry &amp; sections</span>
+</div>
+
+<!-- 2026 -->
+<div class="year-break" style="animation-delay:0.02s">
+  <span class="year-label">2026</span>
+  <div class="year-rule"></div>
+</div>
+
+<div class="entry" style="animation-delay:0.06s">
+  <span class="entry-num">021</span>
+  <div class="entry-body">
+    <div class="entry-title age-new">December '25, January &amp; February '26</div>
+    <div class="entry-sections rich">The hubris of knowing · A decade of wonder · Left write left · Reflections two years on</div>
+  </div>
+  <div class="entry-right">
+    <span class="entry-badge badge-new">Latest</span>
+    <span class="entry-arrow">→</span>
+  </div>
+</div>
+
+<!-- 2025 -->
+<div class="year-break" style="animation-delay:0.10s">
+  <span class="year-label">2025</span>
+  <div class="year-rule"></div>
+</div>
+
+<div class="entry" style="animation-delay:0.14s">
+  <span class="entry-num">020</span>
+  <div class="entry-body">
+    <div class="entry-title age-new">October &amp; November '25</div>
+    <div class="entry-sections rich">Other random things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.18s">
+  <span class="entry-num">019</span>
+  <div class="entry-body">
+    <div class="entry-title age-new">September '25</div>
+    <div class="entry-sections rich">Turn-based living · Sense and sensibilities · What you say · Other random things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.22s">
+  <span class="entry-num">018</span>
+  <div class="entry-body">
+    <div class="entry-title age-new">July &amp; August '25</div>
+    <div class="entry-sections rich">Let me be me · Unknown return date · Other random things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.26s">
+  <span class="entry-num">017</span>
+  <div class="entry-body">
+    <div class="entry-title age-new">May &amp; June '25</div>
+    <div class="entry-sections rich">Overcorrection · Other random things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.30s">
+  <span class="entry-num">016</span>
+  <div class="entry-body">
+    <div class="entry-title age-new">April '25</div>
+    <div class="entry-sections rich">Shark Tank India · Temptation Island · Kaun banega crorepati · Other random things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.34s">
+  <span class="entry-num">015</span>
+  <div class="entry-body">
+    <div class="entry-title age-new">March '25</div>
+    <div class="entry-sections rich">In defence of a bucket-list · SeeSaw · AI-yo technology · Other random things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.38s">
+  <span class="entry-num">014</span>
+  <div class="entry-body">
+    <div class="entry-title age-new">February '25</div>
+    <div class="entry-sections rich">A long goodbye · Again again again and on and on and on · Other random things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.42s">
+  <span class="entry-num">013</span>
+  <div class="entry-body">
+    <div class="entry-title age-new">January '25</div>
+    <div class="entry-sections rich">Just keep running · Dhandha mode · A certain romance · Other random things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<!-- 2024 -->
+<div class="year-break" style="animation-delay:0.46s">
+  <span class="year-label">2024</span>
+  <div class="year-rule"></div>
+</div>
+
+<div class="entry" style="animation-delay:0.50s">
+  <span class="entry-num">012</span>
+  <div class="entry-body">
+    <div class="entry-title age-mid">December '24</div>
+    <div class="entry-sections rich">Reflections a year on from starting this · Parallel quest · Hocus focus · Other random things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.54s">
+  <span class="entry-num">011</span>
+  <div class="entry-body">
+    <div class="entry-title age-mid">November '24</div>
+    <div class="entry-sections rich">Putt yourself out there · HSR Payout · Et tu · Other random things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.58s">
+  <span class="entry-num">010</span>
+  <div class="entry-body">
+    <div class="entry-title age-mid">October '24</div>
+    <div class="entry-sections rich">The world has turned and left me here · NIRP · Other fun things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.62s">
+  <span class="entry-num">009</span>
+  <div class="entry-body">
+    <div class="entry-title age-mid">September '24</div>
+    <div class="entry-sections rich">Die on a hill · Be above it · Put tru men · Other fun things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.66s">
+  <span class="entry-num">008</span>
+  <div class="entry-body">
+    <div class="entry-title age-mid">August '24</div>
+    <div class="entry-sections rich">Quelle surprise · Small golf, medium plans · People just do nothing</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.70s">
+  <span class="entry-num">007</span>
+  <div class="entry-body">
+    <div class="entry-title age-mid">June &amp; July '24</div>
+    <div class="entry-sections rich">In Undertow · Home, like no place is there · The summer ends · Forget about life</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.74s">
+  <span class="entry-num">006</span>
+  <div class="entry-body">
+    <div class="entry-title age-mid">May '24</div>
+    <div class="entry-sections rich">Why this is late · Days are short and years are also short · How far we've come, how far left to go</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.78s">
+  <span class="entry-num">005</span>
+  <div class="entry-body">
+    <div class="entry-title age-mid">April '24</div>
+    <div class="entry-sections rich">Lowlights · Panic! at the office · Highlights · Committing to Bangalore · Flat and flatmates · A run to remember</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.82s">
+  <span class="entry-num">004</span>
+  <div class="entry-body">
+    <div class="entry-title age-mid">March '24</div>
+    <div class="entry-sections rich">Systems check · The unease of doing business · Same-same but different · When the sun hits</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.86s">
+  <span class="entry-num">003</span>
+  <div class="entry-body">
+    <div class="entry-title age-mid">February '24</div>
+    <div class="entry-sections rich">Lowlights · Individualisation of loneliness · Stopping and starting and stopping · Highlights · The return of intuition · Becoming my mother · The habit of doing · Other random things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<div class="entry" style="animation-delay:0.90s">
+  <span class="entry-num">002</span>
+  <div class="entry-body">
+    <div class="entry-title age-mid">January '24</div>
+    <div class="entry-sections rich">Lowlights · Being uninspired, constrained and "bias-for-action" · Highlights · Living slowly and sometimes fast · Falling in love with Obsidian again · The goodness in people · Other random things</div>
+  </div>
+  <div class="entry-right"><span class="entry-arrow">→</span></div>
+</div>
+
+<!-- 2023 -->
+<div class="year-break" style="animation-delay:0.94s">
+  <span class="year-label">2023</span>
+  <div class="year-rule"></div>
+</div>
+
+<div class="entry" style="animation-delay:0.98s">
+  <span class="entry-num">001</span>
+  <div class="entry-body">
+    <div class="entry-title age-old">December '23</div>
+    <div class="entry-sections">What to expect? · Highlights · Music festivals and a return to innocence · Winter and picking up where you left off · Meal-prep · Lowlights · HBS &amp; "waiting to exhale" · Anxiety, it's all about me · Next steps · Moving on from Scaler</div>
+  </div>
+  <div class="entry-right">
+    <span class="entry-badge badge-first">First</span>
+    <span class="entry-arrow">→</span>
+  </div>
+</div>
+
+<div class="footer-note">
+  Est. December 2023 &nbsp;·&nbsp; Published monthly &nbsp;·&nbsp; Written from Mumbai
+</div>
+
+</body>
+</html>

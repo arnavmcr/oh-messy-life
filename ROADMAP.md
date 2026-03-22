@@ -1,6 +1,6 @@
 # Oh Messy Life — Product Roadmap
 
-> A public personal archive. Full technical vandalism aesthetic. Built in Next.js, hosted on Vercel, content in MDX. Generalist's living document: writing, projects, music, professional journey. Ship the core, expand iteratively.
+> A public personal archive. Full technical vandalism aesthetic. Built in Next.js, hosted on Vercel, content in MDX/MD. Generalist's living document: writing, projects, music, professional journey. Ship the core, expand iteratively.
 
 ---
 
@@ -25,29 +25,36 @@
 ```
 /                     THE NEXUS        ← dense workbench home
 /writing              THE VOID         ← writing archive (bento-punk grid)
-/writing/[slug]       THE MANUSCRIPT   ← article view (marginalia sidebar)
+/writing/[slug]       THE MANUSCRIPT   ← article view
+/writing/college      THE COLLEGE      ← category page
+/writing/college/[s]  THE SUBCATEGORY  ← subcategory page
+/record               THE RECORD       ← journal archive (monthly entries) ← IN PROGRESS
+/record/[slug]        THE ENTRY        ← individual monthly entry
 /projects             THE LABS         ← project showcases (future)
 /projects/[slug]      THE LAB_ENTRY    ← individual project (future)
 /music                THE SIGNAL       ← photo archive + library browser (future)
 /about                THE CODEX        ← professional journey (future)
 ```
 
+> `/record` codename "THE RECORD" is a placeholder — this is a flagship IP and the name will change.
+
 ---
 
 ## Stack
-- **Framework:** Next.js 15 (App Router, TypeScript)
+- **Framework:** Next.js 16.2.1 (App Router, TypeScript)
 - **Styling:** Tailwind CSS v4 + custom globals (Stitch effect classes)
-- **Content:** MDX files + `gray-matter` + `next-mdx-remote`
-- **Dark mode:** `next-themes`
+- **Content (writing):** MDX files + `gray-matter` + `next-mdx-remote`
+- **Content (record):** `.md` files + `gray-matter` + `next-mdx-remote/rsc` `compileMDX` for section bodies
+- **Dark mode:** `next-themes` (class-based, `.dark` on `<html>`)
+- **Fonts:** Google Fonts via `next/font` (Space Grotesk, Inter, JetBrains Mono)
+- **Icons:** Material Symbols Outlined
 - **Hosting:** Vercel
-- **Domain:** TBD
-- **Name/copy:** Placeholder for now
 
 ---
 
 ## Phase 1 — Foundation (v1) `[ COMPLETE ✓ ]`
 
-> Shipped 2026-03-21. All routes build clean, committed to git.
+> Shipped 2026-03-21. Content migration and category system completed same day.
 
 ### Milestone 1.1 — Scaffold + Design System ✓
 - [x] `create-next-app` (TypeScript, Tailwind v4, App Router)
@@ -57,31 +64,72 @@
 - [x] Stitch HTML reference files in `_stitch/`, screenshots in `public/screenshots/`
 
 ### Milestone 1.2 — Shared Shell ✓
-- [x] `Nav.tsx` — wordmark, nav links (Writing live, Labs/Signal coming soon), dark mode toggle
+- [x] `Nav.tsx` — wordmark, Writing with subcategory dropdown, coming-soon stubs, dark mode toggle
 - [x] `Footer.tsx` — social nodes (Instagram, GitHub, Are.na, Read.cv, Substack)
 - [x] `DarkModeToggle.tsx` — next-themes class-based toggle
 - [x] `layout.tsx` — Space Grotesk / Inter / JetBrains Mono via next/font, ThemeProvider
 
 ### Milestone 1.3 — Content Pipeline ✓
 - [x] `lib/content.ts` — reads/parses/sorts MDX from `content/writing/`
-- [x] Frontmatter schema: `title`, `date`, `tags[]`, `excerpt`, `status: draft | published`
-- [x] Custom MDX components: h2, p, blockquote, hr, strong, em, code, ul, li
-- [x] 3 seed posts added (replace/extend with real writing)
+- [x] `lib/categories.ts` — category/subcategory config with accent colors and post-it annotations
+- [x] Frontmatter schema: `title`, `date`, `category`, `subcategory`, `tags[]`, `excerpt`, `coverImage`, `status`
+- [x] `scripts/import-wp.ts` — one-off WP archive → MDX migration (90+ posts imported)
 
 ### Milestone 1.4 — Pages ✓
-- [x] **THE NEXUS** (`/`) — hero + workbench + Scriptorium article list + Vault + Labs stub
-- [x] **THE VOID** (`/writing`) — bento-punk grid with 3 card variants
-- [x] **THE MANUSCRIPT** (`/writing/[slug]`) — marginalia sidebar, MDX body, mobile nav
+- [x] **THE NEXUS** (`/`) — hero + workbench + article teasers + Vault section
+- [x] **THE VOID** (`/writing`) — bento-punk grid with 3 card variants + rotations
+- [x] **THE MANUSCRIPT** (`/writing/[slug]`) — MDX body, prev/next nav
+- [x] **THE COLLEGE** (`/writing/college`) — category page
+- [x] **Subcategory pages** (`/writing/college/[subcategory]`) — filtered view
 
-### Milestone 1.5 — Ship `[ IN PROGRESS ]`
-- [x] Dark mode working (light/dark toggle, system default)
-- [x] Build passes (all 4 routes prerendering clean)
-- [x] Initial commit on `main`
-- [x] Push to GitHub remote → https://github.com/arnavmcr/oh-messy-life
+### Milestone 1.5 — Ship `[ PARTIAL ]`
+- [x] Dark mode working
+- [x] Build passes clean
+- [x] Pushed to GitHub → https://github.com/arnavmcr/oh-messy-life
 - [ ] Import to Vercel
 - [ ] Verify all routes in Vercel preview deploy
 - [ ] Update social links in `components/Footer.tsx` with real URLs
-- [ ] Replace seed posts with real writing
+
+---
+
+## Phase 1.6 — The Record (Journal Archive) `[ IN PROGRESS ]`
+
+> 21 monthly journal entries (Dec 2023–Feb 2026) exported from Notion, to be published as a flagship standalone section. Name "The Record" is a placeholder.
+
+### Design decisions (locked)
+- **Archive index** `/record`: numbered issue list, year-grouped, staggered fade-in animation on load, section titles visible as muted subtitle text, brightness dims on older entries, hover turns title red + shows arrow
+- **Individual entry** `/record/[slug]`: editorial/magazine long-read, linear scroll, `###` headings rendered as named chapter breaks
+- **"What is this and why am I doing this?" section**: collapsed by default, toggle reveals it
+- **"Other random things" / "Other fun things"**: distinct bullet-list visual treatment (lighter type, more spacing)
+- **Architecture**: `.md` files with YAML frontmatter (gray-matter) + structure-aware section parser. No MDX authoring — frontmatter is the escape hatch for per-entry overrides.
+
+### Content schema — `content/record/*.md`
+```yaml
+---
+title: "March '25"
+date: "2025-03-01"
+slug: "march-25"
+issue: 15
+status: published
+# optional per-entry overrides:
+# featured: true
+# note: "short note shown in archive index"
+---
+```
+
+### Section detection rules (in `lib/journal.ts`)
+- Heading contains `"What is this"` (case-insensitive) → `collapsible: true`
+- Heading matches `"Other random things"` or `"Other fun things"` (case-insensitive) → `bulletList: true`
+- `"Links to previous months"` → strip entirely, do not render
+
+### Milestones
+- [ ] `scripts/migrate-journal.ts` — convert 21 Notion exports → `content/record/*.md`
+- [ ] `lib/journal.ts` — section-aware parser: `getAllJournalEntries()`, `getJournalEntry(slug)` with prev/next
+- [ ] `components/CollapsibleSection.tsx` — client component (`'use client'`) for the collapsible "what is this" toggle
+- [ ] `app/record/page.tsx` — animated archive index
+- [ ] `app/record/[slug]/page.tsx` — editorial entry page with `generateStaticParams`
+- [ ] `components/Nav.tsx` — add RECORD as top-level nav link (no dropdown)
+- [ ] Add `.superpowers/` to `.gitignore`
 
 ---
 
@@ -89,41 +137,28 @@
 
 > Showcase work with varying levels of interactivity.
 
-### Project card types
-- **Simple** — title, description, tags, link (text-only)
-- **Case study** — annotated scroll: images, code snippets, diagrams, commentary (MDX-driven)
-- **Live embed** — iframe/sandbox of running project
-- **Graph** — D3/force-directed graph showing connections between projects/ideas (Obsidian-style)
-
 ### Milestones
 - [ ] `/projects` — THE LABS listing page (grid of project cards)
 - [ ] `/projects/[slug]` — THE LAB_ENTRY template (MDX for case studies)
 - [ ] Live embed component (sandboxed iframe with fallback)
 - [ ] Graph visualisation component (D3, lazy-loaded)
-- [ ] Integrate projects into THE NEXUS home (replace Labs stub)
+- [ ] Integrate projects into THE NEXUS home
 
 ---
 
 ## Phase 3 — Signal (Music) `[ PLANNED ]`
 
-> Two sub-sections: photo archive and music library browser.
-
 ### 3a — Photo Archive
-- Gallery grid of photos (gigs, studios, scenes)
-- Lightbox on click
-- Filterable by tag/year
+- Gallery grid of photos (gigs, studios, scenes), lightbox on click, filterable by tag/year
 
 ### 3b — Library Browser
 - Input: existing JSON file of music library
-- Display: browsable archive by artist/album/tag
 - Aesthetic: terminal/database read-out — monospaced, dense, scannable
-- Optional: visualise as graph (artist connections, genre clusters)
 
 ### Milestones
 - [ ] `/music` — THE SIGNAL landing (split: photos vs library)
 - [ ] Photo gallery component with lightbox
 - [ ] Library browser: parse JSON, render as searchable/filterable table
-- [ ] Library graph visualisation (optional stretch)
 
 ---
 
@@ -131,27 +166,20 @@
 
 > Non-linear career story. Career changer — the messiness *is* the point.
 
-### Concepts to explore
-- **Constellation** — skills, roles, projects as connected nodes. Relationships visible at a glance.
-- **Annotated timeline** — horizontal scroll with key inflection points, not a CV
-- **Scrolling narrative** — long-form, story-driven, punctuated by visuals
-
 ### Milestones
-- [ ] Decide on visualisation approach (timeline vs constellation vs narrative)
-- [ ] `/about` — THE CODEX page with chosen visualisation
-- [ ] Content: write the non-linear career narrative
+- [ ] Decide on visualisation approach (constellation vs timeline vs scrolling narrative)
+- [ ] `/about` — THE CODEX page
 
 ---
 
 ## Phase 5 — Polish + Growth `[ FUTURE ]`
 
 - [ ] Real domain + DNS on Vercel
-- [ ] Real name/bio copy
-- [ ] OG images per page (auto-generated with Vercel OG)
-- [ ] RSS feed for writing
-- [ ] Search (Fuse.js client-side or Algolia)
-- [ ] "TERMINAL" easter egg (fake CLI, navigable via keyboard)
-- [ ] Analytics (privacy-respecting: Plausible or Fathom)
+- [ ] OG images per page (Vercel OG)
+- [ ] RSS feed for writing + record
+- [ ] Search (Fuse.js client-side)
+- [ ] "TERMINAL" easter egg (fake CLI, keyboard navigable)
+- [ ] Analytics (Plausible or Fathom)
 - [ ] Performance audit (Core Web Vitals)
 
 ---
@@ -159,9 +187,11 @@
 ## Decisions Log
 | Date | Decision | Rationale |
 |---|---|---|
-| 2026-03-21 | Next.js App Router | Vercel-native, SSG-friendly, App Router is the direction |
-| 2026-03-21 | MDX + gray-matter (no CMS) | Content in repo, version-controlled, no external dependency |
-| 2026-03-21 | Full technical vandalism aesthetic | Committed to the Stitch direction |
+| 2026-03-21 | Next.js App Router | Vercel-native, SSG-friendly |
+| 2026-03-21 | MDX + gray-matter (no CMS) | Content in repo, version-controlled |
+| 2026-03-21 | Full technical vandalism aesthetic | Committed to Stitch direction |
 | 2026-03-21 | Dark mode both (user-toggled) | Accessibility + preference |
-| 2026-03-21 | Core first (home + writing) | Posts exist, ship value fast |
-| 2026-03-21 | Domain TBD | "Oh Messy Life" name likely but not locked |
+| 2026-03-21 | WP content under `college` category | All WP content is undergraduate-era writing |
+| 2026-03-22 | Journal section uses `.md` not `.mdx` | Pure prose, no JSX needed; structure-aware parser gives more control |
+| 2026-03-22 | Journal frontmatter as escape hatch | Auto-structure by default, manual override when needed per entry |
+| 2026-03-22 | Journal as flagship IP ("The Record") | Name is placeholder — will change; treat as premium standalone section |

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archive Index Mockup</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #fff;
+    font-family: 'Space Grotesk', 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  .masthead {
+    border-bottom: 2px solid #FF1721;
+    padding-bottom: 1.5rem;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .masthead-title {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -3px;
+    line-height: 1;
+    color: #fff;
+  }
+  .masthead-meta {
+    text-align: right;
+    font-size: 10px;
+    color: #555;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    line-height: 1.8;
+  }
+
+  .index-header {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #1a1a1a;
+    color: #333;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 0;
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #111;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeUp 0.4s ease forwards;
+    text-decoration: none;
+    color: inherit;
+  }
+  .entry:hover {
+    background: rgba(255,255,255,0.02);
+    margin: 0 -1rem;
+    padding: 1rem;
+  }
+  .entry:hover .entry-title { color: #FF1721; }
+  .entry:hover .entry-num { color: #FF1721; }
+  .entry:hover .entry-arrow { opacity: 1; transform: translateX(0); }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .entry-num {
+    font-size: 11px;
+    color: #333;
+    font-family: monospace;
+    transition: color 0.2s;
+  }
+  .entry-body {}
+  .entry-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ddd;
+    transition: color 0.2s;
+    letter-spacing: -0.3px;
+  }
+  .entry-title.new { color: #fff; }
+  .entry-sections {
+    font-size: 10px;
+    color: #444;
+    margin-top: 0.3rem;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 340px;
+  }
+  .entry-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: right;
+  }
+  .entry-badge {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border: 1px solid #3800c2;
+    color: #3800c2;
+  }
+  .entry-arrow {
+    color: #FF1721;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all 0.2s ease;
+  }
+
+  /* Year breaks */
+  .year-break {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 1rem;
+    padding: 2rem 0 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards;
+  }
+  .year-label {
+    font-size: 9px;
+    color: #333;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding-top: 2px;
+  }
+  .year-rule {
+    height: 1px;
+    background: linear-gradient(to right, #222, transparent);
+    margin-top: 6px;
+  }
+
+  /* Subtle time gradient — older entries slightly dimmer */
+  .entry[data-age="old"] .entry-title { color: #888; }
+  .entry[data-age="mid"] .entry-title { color: #bbb; }
+
+  .footer-note {
+    margin-top: 3rem;
+    font-size: 10px;
+    color: #333;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    padding-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.4s ease 1.2s forwards;
+  }
+
+  /* stagger animation delays */
+  .entry:nth-child(1) { animation-delay: 0.05s; }
+  .entry:nth-child(2) { animation-delay: 0.10s; }
+  .entry:nth-child(3) { animation-delay: 0.15s; }
+  .entry:nth-child(4) { animation-delay: 0.20s; }
+  .entry:nth-child(5) { animation-delay: 0.25s; }
+  .entry:nth-child(6) { animation-delay: 0.30s; }
+  .entry:nth-child(7) { animation-delay: 0.35s; }
+  .entry:nth-child(8) { animation-delay: 0.40s; }
+  .entry:nth-child(9) { animation-delay: 0.45s; }
+  .entry:nth-child(10) { animation-delay: 0.50s; }
+  .entry:nth-child(11) { animation-delay: 0.55s; }
+  .entry:nth-child(12) { animation-delay: 0.60s; }
+  .entry:nth-child(13) { animation-delay: 0.65s; }
+  .entry:nth-child(14) { animation-delay: 0.70s; }
+  .entry:nth-child(15) { animation-delay: 0.75s; }
+  .entry:nth-child(16) { animation-delay: 0.80s; }
+  .entry:nth-child(17) { animation-delay: 0.85s; }
+  .entry:nth-child(18) { animation-delay: 0.90s; }
+  .entry:nth-child(19) { animation-delay: 0.95s; }
+  .entry:nth-child(20) { animation-delay: 1.00s; }
+  .entry:nth-child(21) { animation-delay: 1.05s; }
+  .year-break { animation-delay: 0s; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-title">THE<br>RECORD</div>
+  <div class="masthead-meta">
+    21 issues<br>
+    Dec 2023 – present<br>
+    Monthly
+  </div>
+</div>
+
+<div class="index-header">
+  <span>#</span>
+  <span>Entry</span>
+  <span></span>
+</div>
+
+<div style="position:relative;">
+
+  <!-- 2026 -->
+  <div class="year-break" style="animation-delay:0.02s">
+    <span class="year-label">2026</span>
+    <div class="year-rule"></div>
+  </div>
+
+  <div class="entry" style="animation-delay:0.06s">
+    <span class="entry-num">021</span>
+    <div class="entry-body">
+      <div class="entry-title new">December '25, January &amp; February '26</div>
+      <div class="entry-sections">The hubris of knowing · A decade of wonder · Left write left · Reflections two years on</div>
+    </div>
+    <div class="entry-right">
+      <span class="entry-badge">Latest</span>
+      <span class="entry-arrow">→</span>
+    </div>
+  </div>
+
+  <!-- 2025 -->
+  <div class="year-break" style="animation-delay:0.10s">
+    <span class="year-label">2025</span>
+    <div class="year-rule"></div>
+  </div>
+
+  <div class="entry" style="animation-delay:0.14s">
+    <span class="entry-num">020</span>
+    <div class="entry-body">
+      <div class="entry-title">October &amp; November '25</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" style="animation-delay:0.18s">
+    <span class="entry-num">019</span>
+    <div class="entry-body">
+      <div class="entry-title">September '25</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" style="animation-delay:0.22s">
+    <span class="entry-num">018</span>
+    <div class="entry-body">
+      <div class="entry-title">July &amp; August '25</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" style="animation-delay:0.26s">
+    <span class="entry-num">017</span>
+    <div class="entry-body">
+      <div class="entry-title">May &amp; June '25</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" style="animation-delay:0.30s">
+    <span class="entry-num">016</span>
+    <div class="entry-body">
+      <div class="entry-title">April '25</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" style="animation-delay:0.34s">
+    <span class="entry-num">015</span>
+    <div class="entry-body">
+      <div class="entry-title">March '25</div>
+      <div class="entry-sections">In defence of a bucket-list · SeeSaw · AI-yo technology · Other random things</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" style="animation-delay:0.38s">
+    <span class="entry-num">014</span>
+    <div class="entry-body">
+      <div class="entry-title">February '25</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" style="animation-delay:0.42s">
+    <span class="entry-num">013</span>
+    <div class="entry-body">
+      <div class="entry-title">January '25</div>
+      <div class="entry-sections">Just keep running · Dhandha mode · A certain romance · Other random things</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <!-- 2024 -->
+  <div class="year-break" style="animation-delay:0.46s">
+    <span class="year-label">2024</span>
+    <div class="year-rule"></div>
+  </div>
+
+  <div class="entry" data-age="mid" style="animation-delay:0.50s">
+    <span class="entry-num">012</span>
+    <div class="entry-body">
+      <div class="entry-title">December '24</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" data-age="mid" style="animation-delay:0.54s">
+    <span class="entry-num">011</span>
+    <div class="entry-body">
+      <div class="entry-title">November '24</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" data-age="mid" style="animation-delay:0.58s">
+    <span class="entry-num">010</span>
+    <div class="entry-body">
+      <div class="entry-title">October '24</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" data-age="mid" style="animation-delay:0.62s">
+    <span class="entry-num">009</span>
+    <div class="entry-body">
+      <div class="entry-title">September '24</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" data-age="mid" style="animation-delay:0.66s">
+    <span class="entry-num">008</span>
+    <div class="entry-body">
+      <div class="entry-title">August '24</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" data-age="mid" style="animation-delay:0.70s">
+    <span class="entry-num">007</span>
+    <div class="entry-body">
+      <div class="entry-title">June &amp; July '24</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" data-age="mid" style="animation-delay:0.74s">
+    <span class="entry-num">006</span>
+    <div class="entry-body">
+      <div class="entry-title">May '24</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" data-age="mid" style="animation-delay:0.78s">
+    <span class="entry-num">005</span>
+    <div class="entry-body">
+      <div class="entry-title">April '24</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" data-age="mid" style="animation-delay:0.82s">
+    <span class="entry-num">004</span>
+    <div class="entry-body">
+      <div class="entry-title">March '24</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" data-age="mid" style="animation-delay:0.86s">
+    <span class="entry-num">003</span>
+    <div class="entry-body">
+      <div class="entry-title">February '24</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <div class="entry" data-age="mid" style="animation-delay:0.90s">
+    <span class="entry-num">002</span>
+    <div class="entry-body">
+      <div class="entry-title">January '24</div>
+      <div class="entry-sections">– &nbsp;·&nbsp; –</div>
+    </div>
+    <div class="entry-right"><span class="entry-arrow">→</span></div>
+  </div>
+
+  <!-- 2023 -->
+  <div class="year-break" style="animation-delay:0.94s">
+    <span class="year-label">2023</span>
+    <div class="year-rule"></div>
+  </div>
+
+  <div class="entry" data-age="old" style="animation-delay:0.98s">
+    <span class="entry-num">001</span>
+    <div class="entry-body">
+      <div class="entry-title">December '23</div>
+      <div class="entry-sections">Where it all began</div>
+    </div>
+    <div class="entry-right">
+      <span class="entry-badge" style="border-color:#333;color:#333;">First</span>
+      <span class="entry-arrow">→</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-note">
+  Est. December 2023 &nbsp;·&nbsp; Published monthly &nbsp;·&nbsp; Written from Mumbai
+</div>
+
+<script>
+// Inject the superpowers helper for selections
+</script>
+</body>
+</html>

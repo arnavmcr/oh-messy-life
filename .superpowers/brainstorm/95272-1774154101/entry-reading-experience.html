@@ -1,0 +1,93 @@
+<h2>How should a single monthly entry read?</h2>
+<p class="subtitle">Each entry has 2–5 named sections + a bullet list of random observations. Which reading experience fits?</p>
+
+<div class="cards" style="margin-top: 2rem;">
+
+  <!-- Option A -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)" style="flex:1;min-width:280px;">
+    <div class="card-image" style="background:#0a0a0a;padding:1.5rem;font-family:monospace;min-height:220px;border-bottom:2px solid #333;">
+      <div style="color:#FF1721;font-size:10px;letter-spacing:3px;margin-bottom:1rem;text-transform:uppercase;">ARCHIVE // MARCH '25</div>
+      <div style="color:#fff;font-size:18px;font-weight:700;letter-spacing:-0.5px;line-height:1.2;margin-bottom:0.5rem;">In defence of<br>a bucket-list</div>
+      <div style="color:#666;font-size:11px;margin-bottom:1.2rem;">§ 01 of 04 &nbsp;·&nbsp; ~3 min read</div>
+      <div style="color:#aaa;font-size:12px;line-height:1.6;border-left:2px solid #FF1721;padding-left:0.75rem;">
+        Watching Green Day was an out-of-body experience. They are a band that defined much of my childhood...
+      </div>
+      <div style="margin-top:1rem;display:flex;gap:0.5rem;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#FF1721;"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#333;"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#333;"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#333;"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Editorial / Magazine</h3>
+      <p>Each section is a distinct named chapter with its own heading. You scroll through the full entry linearly. Sections separated by ruled lines or visual breaks. The bullet "Other random things" list gets a distinct treatment (looser, handwritten-feel). Immersive long-read.</p>
+    </div>
+  </div>
+
+  <!-- Option B -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)" style="flex:1;min-width:280px;">
+    <div class="card-image" style="background:#0a0a0a;padding:1.5rem;min-height:220px;border-bottom:2px solid #333;display:flex;flex-direction:column;gap:0.75rem;">
+      <div style="color:#FF1721;font-size:10px;letter-spacing:3px;text-transform:uppercase;">MARCH '25</div>
+      <div style="background:#111;border:1px solid #222;padding:0.75rem;cursor:pointer;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#fff;font-size:13px;font-weight:600;">In defence of a bucket-list</span>
+          <span style="color:#FF1721;font-size:11px;">▶ open</span>
+        </div>
+      </div>
+      <div style="background:#1a1a1a;border:1px solid #FF1721;padding:0.75rem;">
+        <div style="color:#aaa;font-size:11px;margin-bottom:0.5rem;font-weight:600;">SEESAW</div>
+        <div style="color:#888;font-size:11px;line-height:1.5;">Sometimes maybe good, sometimes maybe shit is how I now respond...</div>
+      </div>
+      <div style="background:#111;border:1px solid #222;padding:0.75rem;cursor:pointer;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#fff;font-size:13px;font-weight:600;">AI-yo technology</span>
+          <span style="color:#FF1721;font-size:11px;">▶ open</span>
+        </div>
+      </div>
+      <div style="background:#111;border:1px solid #222;padding:0.75rem;cursor:pointer;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#fff;font-size:13px;font-weight:600;">Other random things</span>
+          <span style="color:#FF1721;font-size:11px;">▶ open</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Accordion / Field Notes</h3>
+      <p>Sections are collapsed by default. Reader taps to expand each one. Feels more like field notes or a dossier — you choose what to read. The entry as a whole feels denser, more scannable. Good for quick revisits.</p>
+    </div>
+  </div>
+
+  <!-- Option C -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)" style="flex:1;min-width:280px;">
+    <div class="card-image" style="background:#0a0a0a;padding:1.5rem;min-height:220px;border-bottom:2px solid #333;">
+      <div style="color:#3800c2;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">MARCH '25 &nbsp;·&nbsp; ISSUE 016</div>
+      <div style="color:#fff;font-size:22px;font-weight:800;letter-spacing:-1px;line-height:1;margin-bottom:1rem;border-bottom:3px solid #FF1721;padding-bottom:0.75rem;">THE RECORD</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+        <div style="background:#111;padding:0.5rem;border-top:2px solid #3800c2;">
+          <div style="color:#888;font-size:9px;letter-spacing:2px;text-transform:uppercase;">Essay</div>
+          <div style="color:#fff;font-size:11px;margin-top:0.25rem;">In defence of a bucket-list</div>
+        </div>
+        <div style="background:#111;padding:0.5rem;border-top:2px solid #006a3c;">
+          <div style="color:#888;font-size:9px;letter-spacing:2px;text-transform:uppercase;">Reflection</div>
+          <div style="color:#fff;font-size:11px;margin-top:0.25rem;">SeeSaw</div>
+        </div>
+        <div style="background:#111;padding:0.5rem;border-top:2px solid #FF1721;">
+          <div style="color:#888;font-size:9px;letter-spacing:2px;text-transform:uppercase;">Technology</div>
+          <div style="color:#fff;font-size:11px;margin-top:0.25rem;">AI-yo technology</div>
+        </div>
+        <div style="background:#111;padding:0.5rem;border-top:2px solid #555;">
+          <div style="color:#888;font-size:9px;letter-spacing:2px;text-transform:uppercase;">Misc</div>
+          <div style="color:#fff;font-size:11px;margin-top:0.25rem;">Other random things</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Issue / Publication</h3>
+      <p>Each monthly entry is framed as an "issue" of a publication (e.g. Issue 016). A grid/bento layout shows sections as articles in a mini front-page. Each section can be clicked into as a standalone piece. Feels most like a real publication.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:1.5rem;font-size:12px;">Click to select. Can combine elements from multiple options — let me know in the terminal.</p>
