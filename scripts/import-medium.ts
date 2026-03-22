@@ -102,3 +102,81 @@ function serializeFrontmatter(fm: Record<string, unknown>): string {
   });
   return `---\n${lines.join('\n')}\n---`;
 }
+
+function deriveImageFilename(url: string): string {
+  // Last path segment, e.g. "1*JKxIDVuZowg2ilLHGLSLRw.png" or "0*5Up-i-1n5tSrN7mA"
+  const segment = url.split('/').pop() ?? 'image';
+  // Sanitize: replace * with nothing, keep alphanumeric/dot/hyphen
+  const sanitized = segment.replace(/\*/g, '').replace(/[^a-zA-Z0-9._-]/g, '-');
+  // If no extension, infer from URL: format:webp → .webp, else .jpg
+  if (!sanitized.includes('.')) {
+    const ext = url.includes('format:webp') ? '.webp' : '.jpg';
+    return sanitized + ext;
+  }
+  return sanitized;
+}
+
+function downloadFile(url: string, destPath: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const protocol = url.startsWith('https') ? https : http;
+    const file = fs.createWriteStream(destPath);
+
+    const req = protocol.get(url, (res) => {
+      // Follow one redirect
+      if (res.statusCode === 301 || res.statusCode === 302) {
+        file.close();
+        fs.unlinkSync(destPath);
+        if (res.headers.location) {
+          downloadFile(res.headers.location, destPath).then(resolve);
+        } else {
+          resolve(false);
+        }
+        return;
+      }
+      if (res.statusCode !== 200) {
+        file.close();
+        fs.unlinkSync(destPath);
+        resolve(false);
+        return;
+      }
+      res.pipe(file);
+      file.on('finish', () => { file.close(); resolve(true); });
+    });
+
+    req.on('error', () => { file.close(); resolve(false); });
+    file.on('error', () => { file.close(); resolve(false); });
+  });
+}
+
+async function processImages(content: string, slug: string): Promise<string> {
+  const destDir = path.join(IMG_PUBLIC, slug);
+  fs.mkdirSync(destDir, { recursive: true });
+
+  // Match all miro.medium.com image URLs
+  const imgRegex = /https:\/\/miro\.medium\.com\/[^\s)"']+/g;
+  const urls = [...new Set(content.match(imgRegex) ?? [])];
+
+  // Filter out author avatar (the 64x64 profile picture)
+  const contentUrls = urls.filter((u) => !u.includes('resize:fill:64:64'));
+
+  for (const url of contentUrls) {
+    const filename = deriveImageFilename(url);
+    const destPath = path.join(destDir, filename);
+    const localPath = `/images/${slug}/${filename}`;
+
+    if (fs.existsSync(destPath)) {
+      // Already downloaded (idempotent re-runs)
+      content = content.split(url).join(localPath);
+      continue;
+    }
+
+    const ok = await downloadFile(url, destPath);
+    if (ok) {
+      content = content.split(url).join(localPath);
+    } else {
+      console.warn(`  [WARN] could not download: ${url}`);
+    }
+  }
+
+  return content;
+}
