@@ -74,6 +74,8 @@
 - [x] `lib/categories.ts` — category/subcategory config with accent colors and post-it annotations
 - [x] Frontmatter schema: `title`, `date`, `category`, `subcategory`, `tags[]`, `excerpt`, `coverImage`, `status`
 - [x] `scripts/import-wp.ts` — one-off WP archive → MDX migration (90+ posts imported)
+- [x] `scripts/import-medium.ts` — one-off Medium archive → MDX migration (4 posts, images self-hosted)
+- [x] New top-level categories: `projects`, `mba`, `essays` added to `lib/categories.ts`
 
 ### Milestone 1.4 — Pages ✓
 - [x] **THE NEXUS** (`/`) — hero + workbench + article teasers + Vault section
@@ -197,3 +199,5 @@ status: published
 | 2026-03-22 | Journal frontmatter as escape hatch | Auto-structure by default, manual override when needed per entry |
 | 2026-03-22 | Journal as flagship IP ("The Record") | Name is placeholder — will change; treat as premium standalone section |
 | 2026-03-22 | Adaptive `###`/`####` section splitting in parser | Newer entries evolved to use `####` for all sections except "What is this"; fixed parser to detect this and promote `####` to top-level when no named `###` sections exist |
+| 2026-03-22 | Medium posts use `projects`, `mba`, `essays` categories (not `college`) | Medium writing is post-grad era; taxonomy will continue to evolve |
+| 2026-03-22 | Medium images self-hosted in `public/images/<slug>/` | Avoids dependency on miro.medium.com CDN going away |

@@ -30,6 +30,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Frontmatter fields: `title`, `date`, `category`, `subcategory`, `tags[]`, `excerpt`, `coverImage`, `status`.
 - `status: draft` hides from all listings. `status: published` is default.
 - Category/subcategory config lives in `lib/categories.ts` — add new categories there.
+- Current top-level categories: `college`, `projects`, `mba`, `essays`. Taxonomy is evolving — check `lib/categories.ts` before assuming a category exists.
 
 ## Content — Record (`content/record/*.md`)
 
@@ -67,7 +68,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Scripts
 
-- Run with `npx tsx scripts/<name>.ts`
+- Run with `node_modules/.bin/tsx scripts/<name>.ts` (global `tsx` may not be available)
 - Follow the pattern in `scripts/import-wp.ts`: read source, transform, write output, log `[OK]` / `[SKIP]` per file.
 
 ## Key files
