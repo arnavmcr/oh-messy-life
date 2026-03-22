@@ -107,7 +107,7 @@ export default function RecordPage() {
           color: var(--color-primary);
         }
         .record-entry:hover {
-          background: rgba(128, 128, 128, 0.04);
+          background: color-mix(in srgb, var(--color-on-surface) 4%, transparent);
         }
       `}</style>
 
