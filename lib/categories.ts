@@ -89,4 +89,25 @@ export const CATEGORY_MAP: Record<string, CategoryConfig> = {
       },
     },
   },
+  projects: {
+    label: 'Projects',
+    accentColor: 'primary',
+    tagline: '',
+    postIts: [],
+    subcategories: {},
+  },
+  mba: {
+    label: 'MBA',
+    accentColor: 'secondary',
+    tagline: '',
+    postIts: [],
+    subcategories: {},
+  },
+  essays: {
+    label: 'Essays',
+    accentColor: 'tertiary',
+    tagline: '',
+    postIts: [],
+    subcategories: {},
+  },
 };
