@@ -25,7 +25,7 @@ function slugify(filename: string): string {
 }
 
 function parseTitle(raw: string): string {
-  const firstLine = raw.split('\n')[0].trim();
+  const firstLine = raw.trim().split('\n')[0].trim();
   return firstLine;
 }
 
