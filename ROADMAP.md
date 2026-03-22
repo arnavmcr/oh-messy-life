@@ -23,7 +23,7 @@
 
 ## Site Map
 ```
-/                     THE NEXUS        ← dense workbench home
+/                     THE NEXUS        ← single-column "oh messy life." hero + content sections
 /writing              THE VOID         ← writing archive (bento-punk grid)
 /writing/[slug]       THE MANUSCRIPT   ← article view
 /writing/college      THE COLLEGE      ← category page
@@ -79,7 +79,7 @@
 - [x] New top-level categories: `projects`, `mba`, `essays`, `music` added to `lib/categories.ts`
 
 ### Milestone 1.4 — Pages ✓
-- [x] **THE NEXUS** (`/`) — hero + workbench + article teasers + Vault section
+- [x] **THE NEXUS** (`/`) — single-column hero ("oh messy life.", four section nav links) + article teasers + Vault section
 - [x] **THE VOID** (`/writing`) — bento-punk grid with 3 card variants + rotations
 - [x] **THE MANUSCRIPT** (`/writing/[slug]`) — MDX body, prev/next nav
 - [x] **THE COLLEGE** (`/writing/college`) — category page
@@ -204,3 +204,4 @@ status: published
 | 2026-03-22 | Medium images self-hosted in `public/images/<slug>/` | Avoids dependency on miro.medium.com CDN going away |
 | 2026-03-22 | Substack "After EOD" posts (6) under new top-level `music` category | These are 2024–2026 posts, distinct from `college → music` (2014–2019); `/music` is a planned route |
 | 2026-03-22 | Substack images self-hosted in `public/images/<slug>/` | Avoids dependency on substackcdn.com CDN |
+| 2026-03-22 | Hero redesigned: removed tech-jargon two-column workbench | Aesthetic shifted from hacker/systems to raw/personal soft-punk; "oh messy life." replaces "THE NEXUS" as the visual anchor |
