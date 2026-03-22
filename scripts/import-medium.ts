@@ -19,7 +19,8 @@ const CATEGORY_MAP: Record<string, string> = {
 function slugify(filename: string): string {
   return filename
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')   // strip non-alphanumeric (removes dots, &, etc.)
+    .replace(/\./g, '-')             // dots → hyphens
+    .replace(/[^a-z0-9\s-]/g, '')   // strip other non-alphanumeric (&, etc.)
     .trim()
     .replace(/\s+/g, '-');           // spaces → hyphens
 }
