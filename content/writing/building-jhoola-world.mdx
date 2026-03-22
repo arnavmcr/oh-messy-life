@@ -1,0 +1,55 @@
+---
+title: "Building jhoola.world"
+date: "2020-06-25"
+category: "projects"
+tags: []
+excerpt: "The past few weeks have seen online courses from a fringe, exploratory indulgence to an inextricable part of our education system. These courses have received mixed reviews — however, there is some co"
+status: "published"
+---
+The past few weeks have seen online courses from a fringe, exploratory indulgence to an inextricable part of our education system. These courses have received mixed reviews — however, there is some consensus over the fact that they will remain embedded in our format of education, but cannot be considered a substitute to work experience.
+
+As India (and nation’s across the world) face some of the highest unemployment rates in the modern world, real-world experience in the form of internships, jobs and other local community projects have dried up. While ‘freelance unpaid’ opportunities are a great platform, access to them is restricted to privileged pockets — both in terms of being able to afford unpaid opportunities and having the network to access them. Online courses do a good job in filling the wide-skill gap that exists, but cannot be seen as a replacement to immersion in a professional setting. Competing for the limited opportunities that exist, still, advantages the privileged.
+
+There is an undeniable degree of escapism that online courses provide, which is why I frequented them back in my early college days. The ability to learn something about anything was astounding, and the opportunity to pick and choose what I’d like to study was unheard of in the Indian college system. Regardless of the flak that these platforms receive, their appeal is undeniable.
+
+What is unfortunate is the limited access to maximising these course’s potential. While the oft-quoted Indian internet penetration statistics sound impressive, the ‘work-readiness’ that corporate India demands is severely lacking. jhoola.world is a small attempt at bridging this gaping gap — translating the hard work and effort of completing an online course into a CV ready line — one that will pass all the AI, SEO-esque tools and allow you to compete with the likes of people who have access to college resources, alumni and career coaches to vet their CVs.
+
+We built jhoola.world in four major steps — the first was to consolidate Coursera’s metadata, the second was to create a sentence structure and it’s composite parts that would form the basis of the finished line, the third to structure the metadata into a readable and relevant format and the fourth was building the front-end for the tool.
+
+**Step #1 — Gathering Coursera’s database**
+
+In order to build out the initial dataset that we could work with, it was essential to gather basic data from Coursera — the name of the course, the university/ organisation that offers it, and it’s description. We used [this](https://www.kaggle.com/mihirs16/coursera-course-data) wonderful database that we found on Kaggle, which had links to 3500+ courses along with their name. For our exercise, we needed richer data, so I built a scraper using Octoparse. I must say, the scraping was far simpler than I expected, but was also extremely time-consuming (this is probably because I was on Octoparse’s free version). This simplicity was primarily due to the fact that the format for all the courses was nearly identical. The “Xpath” for each course was identical, making scraping an easy task. In a few days, we had the names, organisations and descriptions of the courses.
+
+**Step #2 — Creating a Sentence Structure**
+
+As is the case with most sentences on a resume, there is a discernable, visible trend in their structure. They tend to start with a past-perfect verb (studied, built, analysed), followed by a descriptive phrase, and then a past-continuous verb (studying, building, learning) that is followed by a more detailed descriptive phrase/s, that including skills that were acquired. This was a fairly universal format that we observed across several resumes we read.
+
+![A typical sentence with its comprising components](/images/building-jhoola-world/1JKxIDVuZowg2ilLHGLSLRw.png)
+
+‘Phrase-subject’ and ‘phrase-concept’ were compiled using open-source resume resources. They comprise basic phrases that include relevant action verbs in a readable format. All the other components — subject, concept #1 and #2, and skill #1 and #2 were to be extracted from the course description.
+
+**Step #3 — Extracting keywords to fit the sentence format**
+
+This was the most difficult of the 4 steps. As someone who did not have a background in language processing and text mining tools, I struggled with building this in an efficient manner. I did try a few tools like MonkeyLearn, however, the output was nowhere close to what was required. The descriptions were completely unformatted — some only 20 words, others ranging close to 300. I then concluded that doing this manually over the course of a few weeks was the only option.
+
+The manual extraction was nothing short of maddening and was truly a confirmation of Murphy’s law when our database began malfunctioning after a few days of work. Somehow, we managed to finish this without completely losing our minds. We did, however, learn that the diversity of Courses offered is nothing short of incredible. Right from taking care of your pet chicken, to the spiritual journey of women in pre-historic Rome to the business of managing horses, Coursera has a course for everything.
+
+Apart from becoming extremely proficient in summarising and structuring data in short spans of time, the text processing gave us an insight into building solid structures and rules. The intention is to use the same set of rules and replicate them across other platforms — Edx, Udemy and the whole host of others that exist.
+
+**Step #4 — Building the Front End**
+
+Being a side-project that I was using to try and learn and experiment as much as I could, I tried designing the front-end on Figma. It took less than an hour to design the web-interface — Figma is a brilliant and intuitive tool that has a great free version for people just starting their design journey. I’m now prematurely yet deeply embedded in the Figma community — it is definitely my go-to tool for design. The idea was to build something very simple and easy to use, such that the only input was selecting the correct completed course.
+
+**Step #5 onwards — Transforming this into a functioning website**
+
+I was fortunate to have the help of my good friend Anay help me with this. We had a couple of developer friends who helped link databases, write CSS code and all the fun stuff that goes with it. I will enlist his support in writing a separate post on the various steps he undertook.
+
+All in all, building this tool combined my passion for reducing the stark inequality that capitalism necessitates with my fervour for trying new things. If our tool makes it onto one resume, and that one person is able to support their family, save up for their friend’s birthday gift or treat themselves to a drink, we’d have done our bit.
+
+![captionless image](/images/building-jhoola-world/1U5QzmnsDjyT9nkPYlePQ0w.png)
+
+_We’d love to hear from you — whether it’s feedback, suggestions or collaborating on our next project, please do get in touch on arnav@jhoola.world!_
+
+_Huge thanks to Anay, Tanmay, Ritika, Raj, Vanshika, Karan and Ritwik for helping put this together._
+
+_PS — shout out to Radix for getting me hooked onto unique TLDs. I can never go back to a .com ever again :)_
