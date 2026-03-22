@@ -121,7 +121,7 @@ function formatEntryDate(dateStr: string): string {
 
 // ─── Static generation ────────────────────────────────────────────────────────
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   return getAllJournalEntries().map((entry) => ({ slug: entry.slug }));
 }
 
@@ -141,7 +141,7 @@ export default async function EntryPage({ params }: { params: Promise<{ slug: st
   const entry = getJournalEntry(slug);
   if (!entry) notFound();
 
-  // Render all section bodies (async, sequential via Promise.all)
+  // Render all section bodies (async, concurrent via Promise.all)
   const renderedBodies = await Promise.all(entry.sections.map(renderSection));
 
   const formattedDate = formatEntryDate(entry.date);
@@ -157,7 +157,7 @@ export default async function EntryPage({ params }: { params: Promise<{ slug: st
         <div className="font-mono text-[10px] tracking-[2px] uppercase text-outline mb-6">
           {formattedDate}
         </div>
-        <h1 className="font-headline font-black tracking-tighter leading-none" style={{ fontSize: 'clamp(36px, 6vw, 60px)' }}>
+        <h1 className="font-headline font-black tracking-tighter leading-none text-4xl md:text-5xl lg:text-6xl">
           {entry.title}
         </h1>
       </header>
@@ -200,7 +200,7 @@ export default async function EntryPage({ params }: { params: Promise<{ slug: st
                   {section.title}
                 </h2>
               </div>
-              <div className="space-y-0">
+              <div>
                 {body}
               </div>
             </section>

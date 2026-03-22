@@ -16,6 +16,7 @@ export default function CollapsibleSection({ title, children }: CollapsibleSecti
         onClick={() => setOpen((prev) => !prev)}
         className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left transition-colors duration-150 hover:bg-surface-container"
         aria-expanded={open}
+        aria-label={`Toggle: ${title}`}
       >
         <span className="font-mono text-[10px] tracking-[3px] uppercase text-on-surface-variant">
           {title}

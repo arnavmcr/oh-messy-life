@@ -125,8 +125,8 @@ export function getJournalEntry(slug: string): JournalEntry | null {
   const raw = fs.readFileSync(filePath, 'utf-8');
   const { data, content } = matter(raw);
 
-  const status = (data.status ?? 'published') as 'draft' | 'published';
-  if (!data.status || data.status === 'draft') return null;
+  const status = (data.status as string) === 'draft' ? 'draft' : 'published';
+  if (status === 'draft') return null;
 
   const issue = Number(data.issue ?? 0);
   const sections = parseSections(content);
