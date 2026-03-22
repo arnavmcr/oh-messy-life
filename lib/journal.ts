@@ -43,6 +43,14 @@ function classifySection(heading: string): Pick<JournalSection, 'collapsible' | 
 
 function parseSections(markdown: string): JournalSection[] {
   const lines = markdown.split('\n');
+
+  // Newer entries use #### for all sections except the "What is this" boilerplate
+  // (which keeps ###). Detect this so we split on #### too in that case.
+  const hasNamedTripleHashSections = lines.some((line) => {
+    const m = line.match(/^###\s+(.+)/);
+    return m != null && !m[1].toLowerCase().includes('what is this');
+  });
+
   const sections: JournalSection[] = [];
   let currentTitle: string | null = null;
   let currentLines: string[] = [];
@@ -58,10 +66,12 @@ function parseSections(markdown: string): JournalSection[] {
   };
 
   for (const line of lines) {
-    const headingMatch = line.match(/^###\s+(.+)/);
-    if (headingMatch) {
+    const h3Match = line.match(/^###\s+(.+)/);
+    const h4Match = !hasNamedTripleHashSections ? line.match(/^####\s+(.+)/) : null;
+    const match = h3Match ?? h4Match;
+    if (match) {
       flushSection();
-      currentTitle = headingMatch[1].trim();
+      currentTitle = match[1].trim();
       currentLines = [];
     } else {
       currentLines.push(line);

@@ -37,10 +37,11 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Use `lib/journal.ts` functions: `getAllJournalEntries()`, `getJournalEntry(slug)`.
 - Frontmatter fields: `title`, `date`, `slug`, `issue` (integer, 1-based), `status`.
 - Optional overrides: `featured: true`, `note: "string"`.
-- **Section parsing is automatic** — the parser reads `###` headings and classifies them:
+- **Section parsing is automatic** — the parser reads headings and classifies them:
   - Contains "What is this" → `collapsible: true` (hidden by default, user toggles)
   - Matches "Other random things" or "Other fun things" → `bulletList: true` (distinct bullet style)
   - "Links to previous months" → stripped entirely
+- **Heading level is adaptive.** If an entry has no named `###` sections (only `### What is this` and `####` everything else), the parser automatically promotes `####` headings to top-level sections. Entries with named `###` sections (Highlights, Lowlights, etc.) keep `####` as subsections within those sections.
 - Do NOT add `### Links to previous months` sections to new entries — they are stripped anyway.
 - To override section behaviour for one entry, add frontmatter fields rather than editing the parser.
 

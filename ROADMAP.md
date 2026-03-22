@@ -121,15 +121,16 @@ status: published
 - Heading contains `"What is this"` (case-insensitive) → `collapsible: true`
 - Heading matches `"Other random things"` or `"Other fun things"` (case-insensitive) → `bulletList: true`
 - `"Links to previous months"` → strip entirely, do not render
+- **Adaptive heading level:** if an entry has no named `###` sections beyond "What is this", `####` headings are promoted to top-level sections automatically. Entries with named `###` sections keep `####` as body subsections.
 
 ### Milestones
-- [ ] `scripts/migrate-journal.ts` — convert 21 Notion exports → `content/record/*.md`
-- [ ] `lib/journal.ts` — section-aware parser: `getAllJournalEntries()`, `getJournalEntry(slug)` with prev/next
-- [ ] `components/CollapsibleSection.tsx` — client component (`'use client'`) for the collapsible "what is this" toggle
-- [ ] `app/record/page.tsx` — animated archive index
-- [ ] `app/record/[slug]/page.tsx` — editorial entry page with `generateStaticParams`
-- [ ] `components/Nav.tsx` — add RECORD as top-level nav link (no dropdown)
-- [ ] Add `.superpowers/` to `.gitignore`
+- [x] Content migration — 21 Notion exports → `content/record/*.md`
+- [x] `lib/journal.ts` — section-aware parser: `getAllJournalEntries()`, `getJournalEntry(slug)` with prev/next
+- [x] `components/CollapsibleSection.tsx` — client component (`'use client'`) for the collapsible "what is this" toggle
+- [x] `app/record/page.tsx` — animated archive index
+- [x] `app/record/[slug]/page.tsx` — editorial entry page with `generateStaticParams`
+- [x] `components/Nav.tsx` — add RECORD as top-level nav link (no dropdown)
+- [x] Add `.superpowers/` to `.gitignore`
 
 ---
 
@@ -195,3 +196,4 @@ status: published
 | 2026-03-22 | Journal section uses `.md` not `.mdx` | Pure prose, no JSX needed; structure-aware parser gives more control |
 | 2026-03-22 | Journal frontmatter as escape hatch | Auto-structure by default, manual override when needed per entry |
 | 2026-03-22 | Journal as flagship IP ("The Record") | Name is placeholder — will change; treat as premium standalone section |
+| 2026-03-22 | Adaptive `###`/`####` section splitting in parser | Newer entries evolved to use `####` for all sections except "What is this"; fixed parser to detect this and promote `####` to top-level when no named `###` sections exist |
