@@ -75,7 +75,8 @@
 - [x] Frontmatter schema: `title`, `date`, `category`, `subcategory`, `tags[]`, `excerpt`, `coverImage`, `status`
 - [x] `scripts/import-wp.ts` — one-off WP archive → MDX migration (90+ posts imported)
 - [x] `scripts/import-medium.ts` — one-off Medium archive → MDX migration (4 posts, images self-hosted)
-- [x] New top-level categories: `projects`, `mba`, `essays` added to `lib/categories.ts`
+- [x] `scripts/import-substack.ts` — one-off Substack "After EOD" archive → MDX migration (6 posts, images self-hosted)
+- [x] New top-level categories: `projects`, `mba`, `essays`, `music` added to `lib/categories.ts`
 
 ### Milestone 1.4 — Pages ✓
 - [x] **THE NEXUS** (`/`) — hero + workbench + article teasers + Vault section
@@ -201,3 +202,5 @@ status: published
 | 2026-03-22 | Adaptive `###`/`####` section splitting in parser | Newer entries evolved to use `####` for all sections except "What is this"; fixed parser to detect this and promote `####` to top-level when no named `###` sections exist |
 | 2026-03-22 | Medium posts use `projects`, `mba`, `essays` categories (not `college`) | Medium writing is post-grad era; taxonomy will continue to evolve |
 | 2026-03-22 | Medium images self-hosted in `public/images/<slug>/` | Avoids dependency on miro.medium.com CDN going away |
+| 2026-03-22 | Substack "After EOD" posts (6) under new top-level `music` category | These are 2024–2026 posts, distinct from `college → music` (2014–2019); `/music` is a planned route |
+| 2026-03-22 | Substack images self-hosted in `public/images/<slug>/` | Avoids dependency on substackcdn.com CDN |

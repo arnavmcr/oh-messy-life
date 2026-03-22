@@ -110,4 +110,13 @@ export const CATEGORY_MAP: Record<string, CategoryConfig> = {
     postIts: [],
     subcategories: {},
   },
+  music: {
+    label: 'Music',
+    accentColor: 'primary',
+    tagline: 'Scene writing, gig essays, and culture criticism.',
+    postIts: [
+      { text: 'After EOD', rotation: '-1.5deg' },
+    ],
+    subcategories: {},
+  },
 };

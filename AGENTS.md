@@ -30,7 +30,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Frontmatter fields: `title`, `date`, `category`, `subcategory`, `tags[]`, `excerpt`, `coverImage`, `status`.
 - `status: draft` hides from all listings. `status: published` is default.
 - Category/subcategory config lives in `lib/categories.ts` — add new categories there.
-- Current top-level categories: `college`, `projects`, `mba`, `essays`. Taxonomy is evolving — check `lib/categories.ts` before assuming a category exists.
+- Current top-level categories: `college`, `projects`, `mba`, `essays`, `music`. Taxonomy is evolving — check `lib/categories.ts` before assuming a category exists.
 
 ## Content — Record (`content/record/*.md`)
 
