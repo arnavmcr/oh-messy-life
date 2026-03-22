@@ -125,7 +125,7 @@ function downloadFile(url: string, destPath: string): Promise<boolean> {
       // Follow one redirect
       if (res.statusCode === 301 || res.statusCode === 302) {
         file.close();
-        fs.unlinkSync(destPath);
+        try { fs.unlinkSync(destPath); } catch { /* ignore */ }
         if (res.headers.location) {
           downloadFile(res.headers.location, destPath).then(resolve);
         } else {
@@ -135,7 +135,7 @@ function downloadFile(url: string, destPath: string): Promise<boolean> {
       }
       if (res.statusCode !== 200) {
         file.close();
-        fs.unlinkSync(destPath);
+        try { fs.unlinkSync(destPath); } catch { /* ignore */ }
         resolve(false);
         return;
       }
@@ -143,7 +143,14 @@ function downloadFile(url: string, destPath: string): Promise<boolean> {
       file.on('finish', () => { file.close(); resolve(true); });
     });
 
-    req.on('error', () => { file.close(); resolve(false); });
+    req.setTimeout(15000, () => {
+      req.destroy();
+      file.close();
+      try { fs.unlinkSync(destPath); } catch { /* ignore */ }
+      resolve(false);
+    });
+
+    req.on('error', () => { req.destroy(); file.close(); resolve(false); });
     file.on('error', () => { file.close(); resolve(false); });
   });
 }
