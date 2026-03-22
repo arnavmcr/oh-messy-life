@@ -67,19 +67,26 @@ export default function Nav() {
             </div>
           </div>
 
+          <Link href="/record" className="hover:text-primary transition-colors">
+            RECORD
+          </Link>
+
           {comingSoon.map(({ label }) => (
             <span key={label} className="opacity-30 cursor-not-allowed">{label}</span>
           ))}
         </div>
 
         {/* Mobile nav */}
-        <div className="md:hidden flex items-center">
+        <div className="md:hidden flex items-center gap-4">
           <button
             onClick={() => setWritingOpen((v) => !v)}
             className="font-mono text-[10px] tracking-widest uppercase font-bold hover:text-primary transition-colors"
           >
             WRITING {writingOpen ? '▲' : '▼'}
           </button>
+          <Link href="/record" className="font-mono text-[10px] tracking-widest uppercase font-bold hover:text-primary transition-colors">
+            RECORD
+          </Link>
         </div>
       </div>
 
