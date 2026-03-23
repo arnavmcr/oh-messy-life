@@ -81,7 +81,7 @@
 ### Milestone 1.4 — Pages ✓
 - [x] **THE NEXUS** (`/`) — single-column hero ("oh messy life.", four section nav links) + article teasers + Vault section
 - [x] **THE VOID** (`/writing`) — bento-punk grid with 3 card variants + rotations
-- [x] **THE MANUSCRIPT** (`/writing/[slug]`) — MDX body, prev/next nav
+- [x] **THE MANUSCRIPT** (`/writing/[slug]`) — MDX body, centered single-column layout, metadata block, cover image, floating reading pill
 - [x] **THE COLLEGE** (`/writing/college`) — category page
 - [x] **Subcategory pages** (`/writing/college/[subcategory]`) — filtered view
 
@@ -205,3 +205,4 @@ status: published
 | 2026-03-22 | Substack "After EOD" posts (6) under new top-level `music` category | These are 2024–2026 posts, distinct from `college → music` (2014–2019); `/music` is a planned route |
 | 2026-03-22 | Substack images self-hosted in `public/images/<slug>/` | Avoids dependency on substackcdn.com CDN |
 | 2026-03-22 | Hero redesigned: removed tech-jargon two-column workbench | Aesthetic shifted from hacker/systems to raw/personal soft-punk; "oh messy life." replaces "THE NEXUS" as the visual anchor |
+| 2026-03-23 | THE MANUSCRIPT redesigned: removed sidebar, centered single-column | Based on "Refined Portfolio Article" Stitch reference; sidebar felt like dev tool, not reading experience; drop cap + floating pill added |

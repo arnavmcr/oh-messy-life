@@ -53,6 +53,17 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - `Nav.tsx` — fixed header. Sections: WRITING (with dropdown), RECORD (link), coming-soon stubs.
 - Keep components focused. One clear purpose per file.
 
+## THE MANUSCRIPT layout (`app/writing/[slug]/page.tsx`)
+
+- **Single centered column** — `max-w-3xl mx-auto px-8`. No sidebar.
+- **Metadata block** (top, centered): STATUS badge → border-y row with CATALOG_ID (slug), TIMESTAMP (date), KEYWORDS (tags).
+- **Header** (centered): large uppercase title → `h-1 w-24 bg-primary` red divider → italic excerpt (if present).
+- **Cover image**: `next/image` with `fill` inside `relative aspect-video` container. `grayscale hover:grayscale-0 transition-all duration-700`. Only rendered if `post.coverImage` exists.
+- **Article body**: wrapped in `<div className="article-body ...">` — scopes the `.article-body p:first-of-type::first-letter` drop cap rule in `globals.css`.
+- **Floating pill**: fixed `bottom-8 left-1/2 -translate-x-1/2 rounded-full`, contains format_size + contrast (decorative, `aria-hidden`) + ARCHIVE link + share + bookmark (decorative, `aria-hidden`).
+- **Drop cap**: defined in `globals.css` as `.article-body p:first-of-type::first-letter`. Fires on the first `<p>` — ensure articles open with a paragraph, not a heading.
+- **MDX `h2` override**: accepts and renders the `id` prop so in-page anchor links work.
+
 ## Naming conventions (section codenames)
 
 | Route | Codename |
