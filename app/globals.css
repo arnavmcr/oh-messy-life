@@ -189,3 +189,15 @@ body {
 .record-entry:hover {
   background: color-mix(in srgb, var(--color-on-surface) 4%, transparent);
 }
+
+/* Article drop cap */
+.article-body p:first-of-type::first-letter {
+  font-family: var(--font-headline);
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 1;
+  float: left;
+  margin-right: 0.25rem;
+  margin-top: 0.125rem;
+  color: var(--color-primary);
+}
