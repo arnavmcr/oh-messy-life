@@ -18,8 +18,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 const mdxComponents = {
-  h2: ({ children }: { children?: React.ReactNode }) => (
-    <h2 className="font-headline text-xl font-bold uppercase tracking-tight flex items-center gap-3 mb-6 mt-12">
+  h2: ({ children, id }: { children?: React.ReactNode; id?: string }) => (
+    <h2 id={id} className="font-headline text-xl font-bold uppercase tracking-tight flex items-center gap-3 mb-6 mt-12">
       <span className="w-8 h-[2px] bg-primary flex-shrink-0" />
       {children}
     </h2>
@@ -62,11 +62,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const post = getPost(slug);
   if (!post) notFound();
 
-  const formattedDate = new Date(post.date).toLocaleDateString('en-GB', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  }).toUpperCase().replace(/ /g, '_');
+  const dateObj = new Date(post.date);
+  const formattedDate = isNaN(dateObj.getTime())
+    ? 'UNKNOWN'
+    : dateObj.toLocaleDateString('en-GB', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      }).toUpperCase().replace(/ /g, '_');
 
   return (
     <main className="pt-32 pb-32 min-h-screen">
@@ -137,10 +140,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
         <div className="bg-white/80 dark:bg-black/80 backdrop-blur-xl px-6 py-3 rounded-full flex items-center gap-8 shadow-[0_20px_40px_rgba(0,0,0,0.08)] border border-white/20 dark:border-white/10">
           <div className="flex items-center gap-4 border-r border-stone-200 dark:border-stone-700 pr-8">
-            <button className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors" aria-label="Change font size">
+            <button aria-hidden="true" tabIndex={-1} className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors">
               <span className="material-symbols-outlined text-[20px]">format_size</span>
             </button>
-            <button className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors" aria-label="Toggle contrast">
+            <button aria-hidden="true" tabIndex={-1} className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors">
               <span className="material-symbols-outlined text-[20px]">contrast</span>
             </button>
           </div>
@@ -150,10 +153,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             </a>
           </div>
           <div className="flex items-center gap-4 border-l border-stone-200 dark:border-stone-700 pl-8">
-            <button className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors" aria-label="Share">
+            <button aria-hidden="true" tabIndex={-1} className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors">
               <span className="material-symbols-outlined text-[20px]">share</span>
             </button>
-            <button className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors" aria-label="Bookmark">
+            <button aria-hidden="true" tabIndex={-1} className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors">
               <span className="material-symbols-outlined text-[20px]">bookmark</span>
             </button>
           </div>
