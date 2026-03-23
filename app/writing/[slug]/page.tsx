@@ -1,6 +1,7 @@
 import { getPost, getAllSlugs } from '@/lib/content';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -24,12 +25,11 @@ const mdxComponents = {
     </h2>
   ),
   p: ({ children }: { children?: React.ReactNode }) => (
-    <p className="font-body text-zinc-700 dark:text-zinc-300 leading-relaxed mb-4">{children}</p>
+    <p className="font-body text-stone-800 dark:text-stone-200 leading-[1.8] mb-6">{children}</p>
   ),
   blockquote: ({ children }: { children?: React.ReactNode }) => (
-    <blockquote className="relative py-8 px-8 bg-surface-container-low dark:bg-surface-container overflow-hidden my-8 border-l-4 border-primary">
-      <span className="material-symbols-outlined text-primary text-3xl mb-2 block">format_quote</span>
-      <div className="font-headline text-xl font-medium tracking-tight leading-tight text-zinc-900 dark:text-zinc-100">
+    <blockquote className="px-12 border-l-4 border-primary py-4 my-16">
+      <div className="font-headline text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100 leading-tight uppercase">
         {children}
       </div>
     </blockquote>
@@ -50,7 +50,7 @@ const mdxComponents = {
     <ul className="space-y-2 mb-6 ml-4">{children}</ul>
   ),
   li: ({ children }: { children?: React.ReactNode }) => (
-    <li className="font-body text-zinc-700 dark:text-zinc-300 flex gap-3 leading-relaxed">
+    <li className="font-body text-stone-800 dark:text-stone-200 flex gap-3 leading-relaxed">
       <span className="text-primary font-bold flex-shrink-0">—</span>
       <span>{children}</span>
     </li>
@@ -64,103 +64,101 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   const formattedDate = new Date(post.date).toLocaleDateString('en-GB', {
     year: 'numeric',
-    month: 'long',
+    month: 'short',
     day: 'numeric',
-  });
+  }).toUpperCase().replace(/ /g, '_');
 
   return (
-    <main className="lg:ml-64 pt-24 pb-20 px-6 sm:px-12 md:px-24 max-w-7xl mx-auto min-h-screen">
-      {/* Marginalia sidebar (desktop) */}
-      <aside className="hidden lg:flex flex-col fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-zinc-50 dark:bg-zinc-900 border-r border-zinc-200/20 dark:border-zinc-800/20 p-6 overflow-y-auto z-40">
-        <div className="mb-8">
-          <h2 className="text-lg font-black text-zinc-900 dark:text-white font-headline">
-            MARGINALIA_V1.0
-          </h2>
-          <p className="font-label text-[10px] text-zinc-400">{post.slug.toUpperCase()}</p>
-        </div>
-        <div className="space-y-8">
-          <div>
-            <span className="font-headline text-[10px] tracking-widest text-on-surface-variant uppercase block mb-4">
-              SYSTEM_LOGS
-            </span>
-            <div className="space-y-2 font-mono text-[9px] text-zinc-500 leading-tight">
-              <p className="text-tertiary">MOUNTING_ARCHIVE... OK</p>
-              <p>FETCHING_REF_ID: {post.slug.slice(0, 8).toUpperCase()}</p>
-              <p>DECRYPTING_LAYER_04</p>
-              <p className="text-primary animate-pulse">WRITING_TO_BUFFER</p>
-            </div>
+    <main className="pt-32 pb-32 min-h-screen">
+      <article className="max-w-3xl mx-auto px-8">
+
+        {/* Centralized Metadata */}
+        <div className="flex flex-col items-center text-center space-y-8 mb-20">
+          <div className="inline-block bg-primary text-on-primary px-3 py-1 font-label text-[10px] font-bold tracking-widest uppercase">
+            STATUS: DECLASSIFIED
           </div>
-          {post.tags && post.tags.length > 0 && (
-            <div>
-              <span className="font-headline text-[10px] tracking-widest text-on-surface-variant uppercase block mb-3">
-                TAGS
-              </span>
-              <div className="flex flex-wrap gap-1">
-                {post.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="font-mono text-[9px] border border-outline-variant px-2 py-0.5 uppercase"
-                  >
-                    {tag}
-                  </span>
-                ))}
+          <div className="flex flex-wrap justify-center gap-8 border-y border-stone-200 dark:border-stone-800 py-6 w-full">
+            <div className="space-y-1">
+              <p className="font-label text-[10px] text-stone-400 tracking-widest uppercase">CATALOG_ID</p>
+              <p className="font-headline font-bold text-xs tracking-tight text-on-surface uppercase">{post.slug.slice(0, 12).toUpperCase()}</p>
+            </div>
+            <div className="space-y-1">
+              <p className="font-label text-[10px] text-stone-400 tracking-widest uppercase">TIMESTAMP</p>
+              <p className="font-headline font-bold text-xs tracking-tight text-on-surface">{formattedDate}</p>
+            </div>
+            {post.tags && post.tags.length > 0 && (
+              <div className="space-y-1">
+                <p className="font-label text-[10px] text-stone-400 tracking-widest uppercase">KEYWORDS</p>
+                <div className="flex flex-wrap justify-center gap-2 pt-1">
+                  {post.tags.map((tag) => (
+                    <span key={tag} className="border border-outline-variant px-2 py-0.5 font-label text-[9px] text-stone-500 uppercase">
+                      {tag.replace(/ /g, '_')}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+          </div>
+        </div>
+
+        {/* Title + Divider + Excerpt */}
+        <header className="mb-16 text-center">
+          <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter leading-[0.9] text-stone-900 dark:text-stone-100 mb-8 uppercase">
+            {post.title}
+          </h1>
+          <div className="h-1 w-24 bg-primary mb-8 mx-auto" />
+          {post.excerpt && (
+            <p className="font-body italic text-xl md:text-2xl text-stone-500 dark:text-stone-400 leading-relaxed font-light">
+              {post.excerpt}
+            </p>
           )}
-        </div>
-        <div className="mt-auto pt-8 border-t border-zinc-200/10">
-          <div className="relative p-4 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-mono tape-effect -rotate-1">
-            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-4 bg-zinc-300/40 backdrop-blur-sm" />
-            ANOMALY_DETECTED: Contents may contain unverified erraticism.
-          </div>
-        </div>
-      </aside>
+        </header>
 
-      {/* Document Header */}
-      <header className="mb-16 relative">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b-2 border-primary pb-8">
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <span className="bg-primary text-on-primary text-[10px] font-headline font-bold px-2 py-0.5 tracking-tighter">
-                STATUS: DECLASSIFIED
-              </span>
-              {post.tags?.[0] && (
-                <span className="text-zinc-400 text-[10px] font-mono uppercase">
-                  {post.tags[0]}
-                </span>
-              )}
-            </div>
-            <h1 className="font-headline text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9] max-w-2xl">
-              {post.title}
-            </h1>
+        {/* Cover Image */}
+        {post.coverImage && (
+          <div className="w-full aspect-video bg-surface-container-high mb-16 overflow-hidden relative">
+            <Image
+              src={post.coverImage}
+              alt={post.title}
+              fill
+              className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
+            />
           </div>
-          <div className="text-right font-mono text-[10px] text-on-surface-variant flex flex-col items-end">
-            <span>TIMESTAMP: {formattedDate}</span>
-            <span className="text-secondary font-bold mt-1">STRICT_CONFIDENTIAL_PROTOCOL</span>
-          </div>
-        </div>
-      </header>
+        )}
 
-      {/* Article Body */}
-      <article className="max-w-2xl space-y-4">
-        <MDXRemote source={post.content} components={mdxComponents} />
+        {/* Article Body */}
+        <div className="article-body text-lg space-y-0 mb-32">
+          <MDXRemote source={post.content} components={mdxComponents} />
+        </div>
+
       </article>
 
-      {/* Mobile nav */}
-      <nav className="md:hidden fixed bottom-0 w-full bg-white/90 dark:bg-black/90 backdrop-blur-xl border-t border-zinc-200/50 dark:border-zinc-800/50 z-50 flex justify-around items-center h-16 px-4">
-        <a href="/" className="flex flex-col items-center gap-1 text-zinc-400">
-          <span className="material-symbols-outlined">home</span>
-          <span className="text-[8px] font-headline">NEXUS</span>
-        </a>
-        <span className="flex flex-col items-center gap-1 text-primary">
-          <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>description</span>
-          <span className="text-[8px] font-headline">MANUSCRIPT</span>
-        </span>
-        <a href="/writing" className="flex flex-col items-center gap-1 text-zinc-400">
-          <span className="material-symbols-outlined">folder_open</span>
-          <span className="text-[8px] font-headline">VOID</span>
-        </a>
-      </nav>
+      {/* Floating Reading Controls Pill */}
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
+        <div className="bg-white/80 dark:bg-black/80 backdrop-blur-xl px-6 py-3 rounded-full flex items-center gap-8 shadow-[0_20px_40px_rgba(0,0,0,0.08)] border border-white/20 dark:border-white/10">
+          <div className="flex items-center gap-4 border-r border-stone-200 dark:border-stone-700 pr-8">
+            <button className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors" aria-label="Change font size">
+              <span className="material-symbols-outlined text-[20px]">format_size</span>
+            </button>
+            <button className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors" aria-label="Toggle contrast">
+              <span className="material-symbols-outlined text-[20px]">contrast</span>
+            </button>
+          </div>
+          <div className="flex items-center gap-2">
+            <a href="/writing" className="px-6 py-1.5 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 font-label text-[10px] font-bold tracking-widest uppercase hover:bg-primary transition-colors">
+              ARCHIVE
+            </a>
+          </div>
+          <div className="flex items-center gap-4 border-l border-stone-200 dark:border-stone-700 pl-8">
+            <button className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors" aria-label="Share">
+              <span className="material-symbols-outlined text-[20px]">share</span>
+            </button>
+            <button className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors" aria-label="Bookmark">
+              <span className="material-symbols-outlined text-[20px]">bookmark</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
