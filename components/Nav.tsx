@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import DarkModeToggle from './DarkModeToggle';
 import { CATEGORY_MAP } from '@/lib/categories';
@@ -18,6 +18,12 @@ const comingSoon = [
 
 export default function Nav() {
   const [writingOpen, setWritingOpen] = useState(false);
+  const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => { if (closeTimer.current) clearTimeout(closeTimer.current); };
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur-sm flex justify-between items-center w-full px-4 py-3 border-b border-black/10 dark:border-white/10">
@@ -34,7 +40,16 @@ export default function Nav() {
         {/* Desktop nav */}
         <div className="hidden md:flex gap-6 items-center font-label uppercase tracking-widest text-[10px] font-bold">
           {/* WRITING with dropdown */}
-          <div className="group relative">
+          <div
+            className="relative"
+            onMouseEnter={() => {
+              if (closeTimer.current) clearTimeout(closeTimer.current);
+              setDesktopDropdownOpen(true);
+            }}
+            onMouseLeave={() => {
+              closeTimer.current = setTimeout(() => setDesktopDropdownOpen(false), 150);
+            }}
+          >
             <Link
               href="/writing"
               className="hover:text-primary transition-colors"
@@ -42,7 +57,8 @@ export default function Nav() {
               WRITING
             </Link>
             {/* Dropdown panel */}
-            <div className="absolute top-full left-0 mt-2 hidden group-hover:block bg-white dark:bg-black border border-black/10 dark:border-white/10 min-w-[200px] z-50 shadow-lg">
+            {desktopDropdownOpen && (
+            <div className="absolute top-full left-0 mt-2 bg-white dark:bg-black border border-black/10 dark:border-white/10 min-w-[200px] z-50 shadow-lg">
               {Object.entries(CATEGORY_MAP).map(([catKey, cat]) => (
                 <div key={catKey} className="border-b border-black/5 dark:border-white/5 last:border-0">
                   <Link
@@ -65,6 +81,7 @@ export default function Nav() {
                 </div>
               ))}
             </div>
+            )}
           </div>
 
           <Link href="/record" className="hover:text-primary transition-colors">
