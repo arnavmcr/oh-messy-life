@@ -160,19 +160,24 @@ status: published
 
 ---
 
-## Phase 3 — Signal (Music) `[ PLANNED ]`
+## Phase 3 — Signal (Music) `[ IN PROGRESS ]`
 
-### 3a — Photo Archive
-- Gallery grid of photos (gigs, studios, scenes), lightbox on click, filterable by tag/year
+> `/music` currently proxies entirely to `arnav-music-library.vercel.app` via Next.js rewrite. Being restructured into a proper section with a landing page and sub-routes.
 
-### 3b — Library Browser
-- Input: existing JSON file of music library
-- Aesthetic: terminal/database read-out — monospaced, dense, scannable
+### Milestone 3.0 — Nav + Landing + Library rewrite `[ HIGH PRIORITY ]`
+- [ ] Promote SIGNAL in `Nav.tsx` from `comingSoon` span to real link with dropdown (Library + greyed stubs for Gig Archive, T-shirt Archive)
+- [ ] `app/music/page.tsx` — THE SIGNAL landing page with links to sub-sections
+- [ ] Change `next.config.ts` rewrite: `/music/:path*` → `/music/library/:path*` (proxy moves from `/music` to `/music/library`) — test on Vercel preview for asset breakage
 
-### Milestones
-- [ ] `/music` — THE SIGNAL landing (split: photos vs library)
-- [ ] Photo gallery component with lightbox
-- [ ] Library browser: parse JSON, render as searchable/filterable table
+### 3a — Gig Archive `[ PLANNED ]`
+- Gallery grid of gig photos (filterable by year/venue), lightbox on click
+- `app/music/gig-archive/page.tsx`
+
+### 3b — T-shirt Archive `[ PLANNED ]`
+- `app/music/tshirt-archive/page.tsx`
+
+### 3c — Library Browser (existing, being moved)
+- External app at `arnav-music-library.vercel.app`, proxied to `/music/library`
 
 ---
 
