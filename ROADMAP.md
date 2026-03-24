@@ -135,6 +135,12 @@ status: published
 - [x] `components/Nav.tsx` — add RECORD as top-level nav link (no dropdown)
 - [x] Add `.superpowers/` to `.gitignore`
 
+### Milestone 1.7 — Homepage Changelog ✓
+- [x] `content/changelog.json` — manual SITE-type entries
+- [x] `lib/changelog.ts` — merges WRITING + RECORD + SITE entries, sorts by date desc, slices to limit
+- [x] `components/Changelog.tsx` — terminal-feed Server Component, color-coded type labels (WRITING=red, RECORD=purple, SITE=green), no client JS
+- [x] Wired into `app/page.tsx` between hero and content grid
+
 ---
 
 ## Phase 2 — Labs (Projects) `[ PLANNED ]`
@@ -206,3 +212,4 @@ status: published
 | 2026-03-22 | Substack images self-hosted in `public/images/<slug>/` | Avoids dependency on substackcdn.com CDN |
 | 2026-03-22 | Hero redesigned: removed tech-jargon two-column workbench | Aesthetic shifted from hacker/systems to raw/personal soft-punk; "oh messy life." replaces "THE NEXUS" as the visual anchor |
 | 2026-03-23 | THE MANUSCRIPT redesigned: removed sidebar, centered single-column | Based on "Refined Portfolio Article" Stitch reference; sidebar felt like dev tool, not reading experience; drop cap + floating pill added |
+| 2026-03-24 | Homepage changelog: hybrid auto-derived + manual, terminal feed aesthetic | Auto-derives WRITING/RECORD entries from content files; manual `changelog.json` for SITE entries; pure Server Component, no client JS; 10 entries below hero |
