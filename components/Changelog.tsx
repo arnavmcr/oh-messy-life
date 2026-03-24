@@ -19,7 +19,7 @@ export default function Changelog() {
           <span className="font-mono text-[9px] uppercase tracking-widest text-white font-bold">
             CHANGELOG // SITE_LOG
           </span>
-          <span className="font-mono text-[9px] text-primary animate-pulse" aria-hidden>
+          <span className="font-mono text-[9px] text-primary animate-pulse" aria-hidden="true">
             ● LIVE
           </span>
         </div>
@@ -32,11 +32,11 @@ export default function Changelog() {
               href={entry.href}
               className="group flex items-center gap-3 py-2.5 px-1 border-b border-white/5 hover:bg-white/5 transition-colors"
             >
-              <span className="font-mono text-[9px] text-white/20 flex-shrink-0">&gt;</span>
+              <span className="font-mono text-[9px] text-white/20 flex-shrink-0" aria-hidden="true">&gt;</span>
               <span className="font-mono text-[9px] text-zinc-500 w-[72px] flex-shrink-0">{entry.date}</span>
               {typeLabel(entry.type)}
               <span className="font-mono text-[10px] text-zinc-300 flex-grow truncate">{entry.description}</span>
-              <span className="font-mono text-zinc-600 group-hover:text-primary transition-colors flex-shrink-0">↗</span>
+              <span className="font-mono text-zinc-600 group-hover:text-primary transition-colors flex-shrink-0" aria-hidden="true">↗</span>
             </Link>
           ))}
         </div>
