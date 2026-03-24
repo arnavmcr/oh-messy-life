@@ -141,6 +141,10 @@ status: published
 - [x] `components/Changelog.tsx` — terminal-feed Server Component, color-coded type labels (WRITING=red, RECORD=purple, SITE=green), no client JS
 - [x] Wired into `app/page.tsx` between hero and content grid
 
+### Milestone 1.8 — Nav fixes ✓
+- [x] Category pages for `projects`, `mba`, `essays`, `music` — `[slug]/page.tsx` now dual-purpose: detects category keys and renders listing view, otherwise renders article
+- [x] Writing dropdown hover gap fixed — replaced CSS `group-hover` with JS state + 150ms close delay
+
 ---
 
 ## Phase 2 — Labs (Projects) `[ PLANNED ]`
