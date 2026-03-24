@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/content';
+import Changelog from '@/components/Changelog';
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -54,6 +55,9 @@ export default function HomePage() {
           </nav>
         </div>
       </section>
+
+      {/* ── Changelog ──────────────────────────────────────────────────────── */}
+      <Changelog />
 
       {/* ── Content Sections ────────────────────────────────────────────────── */}
       <div className="max-w-[1600px] mx-auto border-x border-black/5 dark:border-white/5 bg-white dark:bg-black">
