@@ -1,5 +1,11 @@
 [
   {
+    "date": "2026-03-25",
+    "type": "SITE",
+    "description": "Album archive is now live — THE LIBRARY",
+    "href": "/music/index.html"
+  },
+  {
     "date": "2026-03-23",
     "type": "SITE",
     "description": "Redesigned article reading page (THE MANUSCRIPT)",
