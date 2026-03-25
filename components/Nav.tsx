@@ -13,16 +13,20 @@ const accentHover: Record<string, string> = {
 
 const comingSoon = [
   { href: '/projects', label: 'LABS' },
-  { href: '/music', label: 'SIGNAL' },
 ];
 
 export default function Nav() {
   const [writingOpen, setWritingOpen] = useState(false);
   const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [signalDropdownOpen, setSignalDropdownOpen] = useState(false);
+  const signalCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    return () => { if (closeTimer.current) clearTimeout(closeTimer.current); };
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+      if (signalCloseTimer.current) clearTimeout(signalCloseTimer.current);
+    };
   }, []);
 
   return (
@@ -88,6 +92,38 @@ export default function Nav() {
             RECORD
           </Link>
 
+          {/* SIGNAL with dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => {
+              if (signalCloseTimer.current) clearTimeout(signalCloseTimer.current);
+              setSignalDropdownOpen(true);
+            }}
+            onMouseLeave={() => {
+              signalCloseTimer.current = setTimeout(() => setSignalDropdownOpen(false), 150);
+            }}
+          >
+            <Link href="/music" className="hover:text-primary transition-colors">
+              SIGNAL
+            </Link>
+            {signalDropdownOpen && (
+              <div className="absolute top-full left-0 mt-2 bg-white dark:bg-black border border-black/10 dark:border-white/10 min-w-[200px] z-50 shadow-lg">
+                <a
+                  href="/music/index.html"
+                  className="block px-4 py-2 font-mono text-[10px] tracking-widest uppercase font-bold hover:text-tertiary hover:bg-tertiary/5 transition-colors border-l-2 border-tertiary"
+                >
+                  LIBRARY
+                </a>
+                <span className="block px-4 py-2 font-mono text-[10px] tracking-widest uppercase font-bold opacity-30 cursor-not-allowed pointer-events-none">
+                  GIG ARCHIVE
+                </span>
+                <span className="block px-4 py-2 font-mono text-[10px] tracking-widest uppercase font-bold opacity-30 cursor-not-allowed pointer-events-none">
+                  T-SHIRT ARCHIVE
+                </span>
+              </div>
+            )}
+          </div>
+
           {comingSoon.map(({ label }) => (
             <span key={label} className="opacity-30 cursor-not-allowed">{label}</span>
           ))}
@@ -103,6 +139,9 @@ export default function Nav() {
           </button>
           <Link href="/record" className="font-mono text-[10px] tracking-widest uppercase font-bold hover:text-primary transition-colors">
             RECORD
+          </Link>
+          <Link href="/music" className="font-mono text-[10px] tracking-widest uppercase font-bold hover:text-primary transition-colors">
+            SIGNAL
           </Link>
         </div>
       </div>
