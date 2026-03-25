@@ -32,7 +32,7 @@
 /record/[slug]        THE ENTRY        ← individual monthly entry
 /projects             THE LABS         ← project showcases (future)
 /projects/[slug]      THE LAB_ENTRY    ← individual project (future)
-/music                THE SIGNAL       ← photo archive + library browser (future)
+/music                THE SIGNAL       ← landing page live; library proxied to /music/index.html
 /about                THE CODEX        ← professional journey (future)
 ```
 
@@ -164,9 +164,9 @@ status: published
 
 > `/music` currently proxies entirely to `arnav-music-library.vercel.app` via Next.js rewrite. Being restructured into a proper section with a landing page and sub-routes.
 
-### Milestone 3.0 — Nav + Landing + Library rewrite `[ HIGH PRIORITY ]`
-- [ ] Promote SIGNAL in `Nav.tsx` from `comingSoon` span to real link with dropdown (Library + greyed stubs for Gig Archive, T-shirt Archive)
-- [ ] `app/music/page.tsx` — THE SIGNAL landing page with links to sub-sections
+### Milestone 3.0 — Nav + Landing + Library rewrite `[ PARTIAL ✓ ]`
+- [x] Promote SIGNAL in `Nav.tsx` from `comingSoon` span to real link with dropdown (Library + greyed stubs for Gig Archive, T-shirt Archive)
+- [x] `app/music/page.tsx` — THE SIGNAL landing page with links to sub-sections
 - [ ] Change `next.config.ts` rewrite: `/music/:path*` → `/music/library/:path*` (proxy moves from `/music` to `/music/library`) — test on Vercel preview for asset breakage
 
 ### 3a — Gig Archive `[ PLANNED ]`
@@ -222,3 +222,4 @@ status: published
 | 2026-03-22 | Hero redesigned: removed tech-jargon two-column workbench | Aesthetic shifted from hacker/systems to raw/personal soft-punk; "oh messy life." replaces "THE NEXUS" as the visual anchor |
 | 2026-03-23 | THE MANUSCRIPT redesigned: removed sidebar, centered single-column | Based on "Refined Portfolio Article" Stitch reference; sidebar felt like dev tool, not reading experience; drop cap + floating pill added |
 | 2026-03-24 | Homepage changelog: hybrid auto-derived + manual, terminal feed aesthetic | Auto-derives WRITING/RECORD entries from content files; manual `changelog.json` for SITE entries; pure Server Component, no client JS; 10 entries below hero |
+| 2026-03-25 | SIGNAL nav: plain `<a>` for `/music/index.html` (not Next.js `<Link>`) | Avoids prefetch of the external library app; drop-in rewrite handles the proxy, no config change needed |
