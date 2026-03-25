@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
+import { COPY } from '@/lib/copy';
 
 export const metadata: Metadata = {
-  title: 'Music — Oh Messy Life',
-  description: 'THE SIGNAL. Crate digging, gigs, and everything in between.',
+  title: COPY.signal.pageTitle,
+  description: COPY.signal.pageDescription,
 };
 
 export default function MusicPage() {
@@ -12,7 +13,7 @@ export default function MusicPage() {
       {/* Metadata strip */}
       <div className="flex items-center gap-3 mb-6">
         <span className="font-mono text-[10px] uppercase tracking-widest opacity-50">
-          THE SIGNAL
+          {COPY.signal.eyebrow}
         </span>
         <span className="stamp-green font-mono text-[9px] uppercase tracking-widest font-bold">
           ACTIVE
@@ -20,10 +21,10 @@ export default function MusicPage() {
       </div>
 
       {/* Header */}
-      <h1 className="font-headline text-5xl font-black uppercase">MUSIC</h1>
+      <h1 className="font-headline text-5xl font-black uppercase">{COPY.signal.heading}</h1>
       <div className="h-1 w-24 bg-primary my-4" />
       <p className="font-body italic opacity-70">
-        Crate digging, live shows, and everything in between.
+        {COPY.signal.tagline}
       </p>
 
       {/* Section cards */}
@@ -35,13 +36,13 @@ export default function MusicPage() {
           className="border border-black/10 dark:border-white/10 p-4 block hover:border-tertiary hover:text-tertiary transition-colors"
         >
           <div className="font-mono text-[9px] uppercase tracking-widest opacity-50">
-            THE LIBRARY
+            {COPY.signal.library.label}
           </div>
           <div className="font-headline uppercase text-lg font-black mt-1">
-            LIBRARY
+            {COPY.signal.library.heading}
           </div>
           <div className="font-body text-sm opacity-70 mt-1">
-            The crate. 8 records, hand-picked.
+            {COPY.signal.library.description}
           </div>
           <div className="mt-3">
             <span className="stamp-green font-mono text-[9px] uppercase tracking-widest font-bold">
@@ -56,13 +57,13 @@ export default function MusicPage() {
           aria-disabled="true"
         >
           <div className="font-mono text-[9px] uppercase tracking-widest opacity-50">
-            THE GIG ARCHIVE
+            {COPY.signal.gigArchive.label}
           </div>
           <div className="font-headline uppercase text-lg font-black mt-1">
-            GIG ARCHIVE
+            {COPY.signal.gigArchive.heading}
           </div>
           <div className="font-body text-sm opacity-70 mt-1">
-            Live shows, documented.
+            {COPY.signal.gigArchive.description}
           </div>
           <div className="mt-3">
             <span className="stamp-red font-mono text-[9px] uppercase tracking-widest font-bold">
@@ -77,13 +78,13 @@ export default function MusicPage() {
           aria-disabled="true"
         >
           <div className="font-mono text-[9px] uppercase tracking-widest opacity-50">
-            THE T-SHIRT ARCHIVE
+            {COPY.signal.tshirtArchive.label}
           </div>
           <div className="font-headline uppercase text-lg font-black mt-1">
-            T-SHIRT ARCHIVE
+            {COPY.signal.tshirtArchive.heading}
           </div>
           <div className="font-body text-sm opacity-70 mt-1">
-            Every shirt, every tour.
+            {COPY.signal.tshirtArchive.description}
           </div>
           <div className="mt-3">
             <span className="stamp-red font-mono text-[9px] uppercase tracking-widest font-bold">

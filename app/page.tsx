@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/content';
 import Changelog from '@/components/Changelog';
+import { COPY } from '@/lib/copy';
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -22,7 +23,7 @@ export default function HomePage() {
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none scan-line" />
         <div className="max-w-[1600px] mx-auto px-8 md:px-16 py-24 md:py-32">
           <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-400 mb-8">
-            public archive
+            {COPY.home.eyebrow}
           </p>
           <h1 className="font-headline font-black text-[80px] md:text-[160px] leading-[0.85] tracking-tighter text-black dark:text-white mb-12">
             oh messy<br />life.
@@ -69,7 +70,7 @@ export default function HomePage() {
                 href="/writing"
                 className="bg-primary text-white font-label text-[10px] uppercase px-4 py-1.5 font-bold tracking-widest hover:bg-primary-dark transition-colors"
               >
-                SCRIPTORIUM // ARCHIVE_01
+                {COPY.home.scriptoriumTag}
               </Link>
               <div className="h-[1px] flex-grow bg-black/10 dark:bg-white/10" />
             </div>
@@ -124,7 +125,7 @@ export default function HomePage() {
             <div className="flex justify-between items-start mb-12">
               <div>
                 <h2 className="font-headline text-4xl font-black text-black dark:text-white tracking-tighter">
-                  LABS_EXT
+                  {COPY.home.labsHeading}
                 </h2>
                 <p className="text-[9px] font-mono opacity-50 uppercase tracking-widest">
                   EXPERIMENTAL_NODE: ENV_PR_01
@@ -141,7 +142,7 @@ export default function HomePage() {
                 COMING_SOON
               </h3>
               <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed">
-                Projects, interactive experiments, and annotated case studies — in construction.
+                {COPY.home.labsDescription}
               </p>
               <div className="w-full bg-zinc-100 dark:bg-zinc-700 h-1.5 overflow-hidden">
                 <div className="bg-tertiary w-1/4 h-full animate-pulse" />
@@ -168,7 +169,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-12 min-h-[300px]">
             <div className="md:col-span-9 bg-secondary p-8 md:p-12 text-white relative overflow-hidden">
               <h2 className="font-headline text-6xl md:text-[100px] font-black mb-8 italic tracking-tighter distressed-text leading-none">
-                VAULT_99
+                {COPY.home.vaultHeading}
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-8 relative z-10">
                 <div className="border-l-2 border-white/20 pl-4">

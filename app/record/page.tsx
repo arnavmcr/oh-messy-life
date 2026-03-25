@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { getAllJournalEntries } from '@/lib/journal';
+import { COPY } from '@/lib/copy';
 
 export const metadata = {
-  title: 'THE RECORD // Oh Messy Life',
-  description: 'A monthly journal — issues, observations, and the ongoing mess of being alive.',
+  title: COPY.record.pageTitle,
+  description: COPY.record.pageDescription,
 };
 
 function getAgeClass(year: number, newestYear: number): string {
@@ -180,7 +181,7 @@ export default function RecordPage() {
         className="record-row mt-16 font-mono text-[9px] tracking-widest text-on-surface-variant/20 uppercase text-center pb-8"
         style={{ animationDelay: `${0.02 + animIndex * 0.04}s` }}
       >
-        Est. December 2023 &nbsp;·&nbsp; Published monthly &nbsp;·&nbsp; Written from Mumbai
+        {COPY.record.footerNote}
       </div>
 
     </main>

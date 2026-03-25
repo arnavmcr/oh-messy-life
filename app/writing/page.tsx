@@ -1,5 +1,6 @@
 import { getAllPosts } from '@/lib/content';
 import ArticleCard from '@/components/ArticleCard';
+import { COPY } from '@/lib/copy';
 
 const rotations = ['-1deg', '2deg', '-0.5deg', '1.5deg', '0deg'];
 const variants: ('featured' | 'compact' | 'default')[] = [
@@ -7,8 +8,8 @@ const variants: ('featured' | 'compact' | 'default')[] = [
 ];
 
 export const metadata = {
-  title: 'THE VOID // Oh Messy Life',
-  description: 'Writing archive',
+  title: COPY.writing.pageTitle,
+  description: COPY.writing.pageDescription,
 };
 
 export default function WritingPage() {

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import DarkModeToggle from './DarkModeToggle';
 import { CATEGORY_MAP } from '@/lib/categories';
+import { COPY } from '@/lib/copy';
 
 const accentHover: Record<string, string> = {
   primary: 'hover:text-primary',
@@ -12,7 +13,7 @@ const accentHover: Record<string, string> = {
 };
 
 const comingSoon = [
-  { href: '/projects', label: 'LABS' },
+  { href: '/projects', label: COPY.nav.labs },
 ];
 
 export default function Nav() {
@@ -58,7 +59,7 @@ export default function Nav() {
               href="/writing"
               className="hover:text-primary transition-colors"
             >
-              WRITING
+              {COPY.nav.writing}
             </Link>
             {/* Dropdown panel */}
             {desktopDropdownOpen && (
@@ -89,7 +90,7 @@ export default function Nav() {
           </div>
 
           <Link href="/record" className="hover:text-primary transition-colors">
-            RECORD
+            {COPY.nav.record}
           </Link>
 
           {/* SIGNAL with dropdown */}
@@ -104,7 +105,7 @@ export default function Nav() {
             }}
           >
             <Link href="/music" className="hover:text-primary transition-colors">
-              SIGNAL
+              {COPY.nav.signal}
             </Link>
             {signalDropdownOpen && (
               <div className="absolute top-full left-0 mt-2 bg-white dark:bg-black border border-black/10 dark:border-white/10 min-w-[200px] z-50 shadow-lg">
@@ -112,13 +113,13 @@ export default function Nav() {
                   href="/music/index.html"
                   className="block px-4 py-2 font-mono text-[10px] tracking-widest uppercase font-bold hover:text-tertiary hover:bg-tertiary/5 transition-colors border-l-2 border-tertiary"
                 >
-                  LIBRARY
+                  {COPY.nav.signalLibrary}
                 </a>
                 <span className="block px-4 py-2 font-mono text-[10px] tracking-widest uppercase font-bold opacity-30 cursor-not-allowed pointer-events-none">
-                  GIG ARCHIVE
+                  {COPY.nav.signalGigArchive}
                 </span>
                 <span className="block px-4 py-2 font-mono text-[10px] tracking-widest uppercase font-bold opacity-30 cursor-not-allowed pointer-events-none">
-                  T-SHIRT ARCHIVE
+                  {COPY.nav.signalTshirtArchive}
                 </span>
               </div>
             )}
@@ -135,20 +136,20 @@ export default function Nav() {
             onClick={() => setWritingOpen((v) => !v)}
             className="font-mono text-[10px] tracking-widest uppercase font-bold hover:text-primary transition-colors"
           >
-            WRITING {writingOpen ? '▲' : '▼'}
+            {COPY.nav.writing} {writingOpen ? '▲' : '▼'}
           </button>
           <Link href="/record" className="font-mono text-[10px] tracking-widest uppercase font-bold hover:text-primary transition-colors">
-            RECORD
+            {COPY.nav.record}
           </Link>
           <Link href="/music" className="font-mono text-[10px] tracking-widest uppercase font-bold hover:text-primary transition-colors">
-            SIGNAL
+            {COPY.nav.signal}
           </Link>
         </div>
       </div>
 
       <div className="flex items-center gap-3">
         <span className="font-label text-[9px] opacity-40 hidden sm:block uppercase font-bold tracking-tighter">
-          BUILD: 0.1.0_ALPHA
+          {COPY.nav.build}
         </span>
         <DarkModeToggle />
         <span className="material-symbols-outlined text-black dark:text-white p-1 hover:text-primary transition-colors text-lg cursor-pointer">
@@ -165,7 +166,7 @@ export default function Nav() {
               className="block py-2 font-mono text-[10px] tracking-widest uppercase font-bold hover:text-primary transition-colors"
               onClick={() => setWritingOpen(false)}
             >
-              ALL WRITING
+              {COPY.nav.allWriting}
             </Link>
             {Object.entries(CATEGORY_MAP).map(([catKey, cat]) => (
               <div key={catKey} className="mb-2">
