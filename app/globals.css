@@ -190,6 +190,10 @@ body {
   background: color-mix(in srgb, var(--color-on-surface) 4%, transparent);
 }
 
+/* Article text scale */
+html.reading-large .article-body { font-size: 1.2em; }
+html.reading-small .article-body { font-size: 0.875em; }
+
 /* Article drop cap */
 .article-body p:first-of-type::first-letter {
   font-family: var(--font-headline);

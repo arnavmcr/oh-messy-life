@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import ArticleCard from '@/components/ArticleCard';
+import ReadingPill from '@/components/ReadingPill';
 
 export async function generateStaticParams() {
   const categorySlugs = Object.keys(CATEGORY_MAP).filter(k => k !== 'college');
@@ -259,32 +260,7 @@ export default async function WritingSlugPage({ params }: { params: Promise<{ sl
 
       </article>
 
-      {/* Floating Reading Controls Pill */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
-        <div className="bg-white/80 dark:bg-black/80 backdrop-blur-xl px-6 py-3 rounded-full flex items-center gap-8 shadow-[0_20px_40px_rgba(0,0,0,0.08)] border border-white/20 dark:border-white/10">
-          <div className="flex items-center gap-4 border-r border-stone-200 dark:border-stone-700 pr-8">
-            <button aria-hidden="true" tabIndex={-1} className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors">
-              <span className="material-symbols-outlined text-[20px]">format_size</span>
-            </button>
-            <button aria-hidden="true" tabIndex={-1} className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors">
-              <span className="material-symbols-outlined text-[20px]">contrast</span>
-            </button>
-          </div>
-          <div className="flex items-center gap-2">
-            <a href="/writing" className="px-6 py-1.5 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 font-label text-[10px] font-bold tracking-widest uppercase hover:bg-primary transition-colors">
-              ARCHIVE
-            </a>
-          </div>
-          <div className="flex items-center gap-4 border-l border-stone-200 dark:border-stone-700 pl-8">
-            <button aria-hidden="true" tabIndex={-1} className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors">
-              <span className="material-symbols-outlined text-[20px]">share</span>
-            </button>
-            <button aria-hidden="true" tabIndex={-1} className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors">
-              <span className="material-symbols-outlined text-[20px]">bookmark</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      <ReadingPill slug={post.slug} title={post.title} />
     </main>
   );
 }

@@ -81,7 +81,7 @@
 ### Milestone 1.4 — Pages ✓
 - [x] **THE NEXUS** (`/`) — single-column hero ("oh messy life.", four section nav links) + article teasers + Vault section
 - [x] **THE VOID** (`/writing`) — bento-punk grid with 3 card variants + rotations
-- [x] **THE MANUSCRIPT** (`/writing/[slug]`) — MDX body, centered single-column layout, metadata block, cover image, floating reading pill
+- [x] **THE MANUSCRIPT** (`/writing/[slug]`) — MDX body, centered single-column layout, metadata block, cover image, floating reading pill (share, text size, bookmark — all functional)
 - [x] **THE COLLEGE** (`/writing/college`) — category page
 - [x] **Subcategory pages** (`/writing/college/[subcategory]`) — filtered view
 
@@ -167,7 +167,7 @@ status: published
 ### Milestone 3.0 — Nav + Landing + Library rewrite `[ PARTIAL ✓ ]`
 - [x] Promote SIGNAL in `Nav.tsx` from `comingSoon` span to real link with dropdown (Library + greyed stubs for Gig Archive, T-shirt Archive)
 - [x] `app/music/page.tsx` — THE SIGNAL landing page with links to sub-sections
-- [ ] Change `next.config.ts` rewrite: `/music/:path*` → `/music/library/:path*` (proxy moves from `/music` to `/music/library`) — test on Vercel preview for asset breakage
+- [x] Library rewrite — not needed. External app has `base href="/music/"`, page file handles `/music`, rewrite handles `/music/:path*` sub-routes. No config change required.
 
 ### 3a — Gig Archive `[ PLANNED ]`
 - Gallery grid of gig photos (filterable by year/venue), lightbox on click
@@ -223,3 +223,4 @@ status: published
 | 2026-03-23 | THE MANUSCRIPT redesigned: removed sidebar, centered single-column | Based on "Refined Portfolio Article" Stitch reference; sidebar felt like dev tool, not reading experience; drop cap + floating pill added |
 | 2026-03-24 | Homepage changelog: hybrid auto-derived + manual, terminal feed aesthetic | Auto-derives WRITING/RECORD entries from content files; manual `changelog.json` for SITE entries; pure Server Component, no client JS; 10 entries below hero |
 | 2026-03-25 | SIGNAL nav: plain `<a>` for `/music/index.html` (not Next.js `<Link>`) | Avoids prefetch of the external library app; drop-in rewrite handles the proxy, no config change needed |
+| 2026-03-29 | Reading pill extracted to `ReadingPill.tsx` client component | Enables Web Share API + clipboard fallback for share, localStorage text-size preference, localStorage bookmark toggle |
