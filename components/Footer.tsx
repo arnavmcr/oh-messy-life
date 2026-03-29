@@ -1,9 +1,10 @@
 const socialLinks = [
-  { label: 'INSTAGRAM', href: '#' },
-  { label: 'GITHUB', href: '#' },
+  { label: 'INSTAGRAM', href: 'https://instagram.com/arnavmcr' },
+  { label: 'GITHUB', href: 'https://github.com/arnavmcr' },
   { label: 'ARE.NA', href: '#' },
   { label: 'READ.CV', href: '#' },
-  { label: 'SUBSTACK', href: '#' },
+  { label: 'SUBSTACK', href: 'https://arnavmcr.substack.com' },
+  { label: 'EMAIL', href: 'mailto:shetharnav98@gmail.com' },
 ];
 
 export default function Footer() {
