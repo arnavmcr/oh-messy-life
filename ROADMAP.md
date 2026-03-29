@@ -85,13 +85,13 @@
 - [x] **THE COLLEGE** (`/writing/college`) — category page
 - [x] **Subcategory pages** (`/writing/college/[subcategory]`) — filtered view
 
-### Milestone 1.5 — Ship `[ PARTIAL ]`
+### Milestone 1.5 — Ship `[ COMPLETE ✓ ]`
 - [x] Dark mode working
 - [x] Build passes clean
 - [x] Pushed to GitHub → https://github.com/arnavmcr/oh-messy-life
-- [ ] Import to Vercel
-- [ ] Verify all routes in Vercel preview deploy
-- [ ] Update social links in `components/Footer.tsx` with real URLs
+- [x] Import to Vercel
+- [x] Verify all routes in Vercel preview deploy
+- [x] Update social links in `components/Footer.tsx` with real URLs
 
 ---
 
