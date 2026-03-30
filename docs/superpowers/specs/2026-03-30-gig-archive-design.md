@@ -11,11 +11,31 @@ A photo gallery displaying ~350 gig photos sourced from a single Google Photos a
 
 ---
 
+## Types
+
+Defined in `lib/types.ts` (add to existing file or create if absent):
+
+```ts
+export interface GigPhoto {
+  id: string;           // Cloudinary public ID (also used as stable unique key)
+  thumbnailUrl: string;
+  fullUrl: string;
+  band: string | null;
+  event: string | null;
+  city: string | null;
+  month: string | null; // e.g. "November"
+  year: number | null;
+  title: string;        // raw original title, always present
+}
+```
+
+---
+
 ## Data Layer
 
 ### Manifest: `content/gig-archive.json`
 
-Array of photo objects, one per gig photo:
+Array of `GigPhoto` objects, one per gig photo:
 
 ```json
 [
@@ -84,8 +104,18 @@ Server Component. At build time:
   - `uniqueArtists`: count of distinct `band` values
   - `uniqueEvents`: count of distinct `event` values
   - `uniqueCities`: count of distinct `city` values
-- Derives filter option lists (sorted): years, bands, events, cities
+- Derives filter option lists: years descending (newest first), bands/events/cities alphabetically ascending. Null values are excluded from filter lists.
+- If `content/gig-archive.json` does not exist at build time, the page renders an empty state ("No photos yet") without erroring.
 - Passes all data as props to `<GigArchive />` client component
+
+**Props passed to `<GigArchive />`:**
+```ts
+{
+  photos: GigPhoto[];
+  stats: { totalPhotos: number; yearRange: string; uniqueArtists: number; uniqueEvents: number; uniqueCities: number };
+  filterOptions: { years: number[]; bands: string[]; events: string[]; cities: string[] };
+}
+```
 
 **Metadata:**
 ```ts
@@ -113,11 +143,27 @@ Renders the full interactive page body: header, stats, filters, grid, and lightb
 
 **Photo count:** Shown between active filter tags and the grid — "N photos".
 
+**Empty filter state:** If the active filter combination returns zero photos, show a message — "No photos match the selected filters." — with a "Clear filters" link.
+
+**Hover overlay null handling:** If a metadata field is null (unparseable title), omit that field from the overlay. Show only the fields that are present. If all fields are null, show the raw `title` string instead.
+
+**`GigLightbox` is rendered inside `GigArchive`**, conditionally mounted when `lightboxIndex !== null`.
+
 ### `components/GigLightbox.tsx` — `'use client'`
 
 Full-screen overlay triggered by clicking a grid photo.
 
-**Layout:** Photo (3/4 width) + metadata panel (1/4 width). Prev/next arrows overlaid on the photo. Metadata panel shows: Artist, Event, City, Date, Photo index (e.g. "7 / 350").
+**Props:**
+```ts
+{
+  photos: GigPhoto[];        // the currently filtered photo array
+  index: number;             // currently shown photo index within filtered array
+  onClose: () => void;
+  onNavigate: (index: number) => void;
+}
+```
+
+**Layout:** Photo (3/4 width) + metadata panel (1/4 width). Prev/next arrows overlaid on the photo. Metadata panel shows: Artist, Event, City, Date (displayed as `"${month} ${year}"`, e.g. "November 2024"), Photo index (e.g. "7 / 350"). Null fields are omitted from the panel.
 
 **Navigation:** Prev/next arrows. Keyboard: `ArrowLeft` / `ArrowRight` to navigate, `Escape` to close.
 
@@ -127,8 +173,20 @@ Full-screen overlay triggered by clicking a grid photo.
 
 ## Navigation Updates
 
-- `components/Nav.tsx`: promote Gig Archive from greyed stub to active link pointing to `/music/gig-archive`
-- `app/music/page.tsx`: enable the Gig Archive card (remove `opacity-40 cursor-not-allowed pointer-events-none`, change stamp from `stamp-red` COMING SOON to `stamp-green` ACTIVE, wrap in `<Link>`)
+- `components/Nav.tsx`: promote Gig Archive from greyed `<span>` stub to `<Link href="/music/gig-archive">`. Label text already comes from `COPY` — no copy change needed.
+- `app/music/page.tsx`: enable the Gig Archive card — remove `opacity-40 cursor-not-allowed pointer-events-none` and `aria-disabled`, change stamp from `stamp-red` COMING SOON to `stamp-green` ACTIVE, wrap the `<div>` in `<Link href="/music/gig-archive">`.
+
+## Next.js Config
+
+Add `res.cloudinary.com` to `remotePatterns` in `next.config.ts` (or `next.config.js`) so `next/image` can serve Cloudinary URLs:
+
+```ts
+images: {
+  remotePatterns: [
+    { protocol: 'https', hostname: 'res.cloudinary.com' },
+  ],
+},
+```
 
 ---
 
@@ -164,4 +222,6 @@ Full-screen overlay triggered by clicking a grid photo.
 | `components/GigLightbox.tsx` | New — client component (lightbox) |
 | `components/Nav.tsx` | Update — enable Gig Archive link |
 | `app/music/page.tsx` | Update — enable Gig Archive card |
+| `next.config.ts` | Update — add Cloudinary to remotePatterns |
+| `lib/types.ts` | New or update — add `GigPhoto` interface |
 | `ROADMAP.md` | Update — mark 3a in progress |
