@@ -169,9 +169,17 @@ status: published
 - [x] `app/music/page.tsx` — THE SIGNAL landing page with links to sub-sections
 - [x] Library rewrite — not needed. External app has `base href="/music/"`, page file handles `/music`, rewrite handles `/music/:path*` sub-routes. No config change required.
 
-### 3a — Gig Archive `[ PLANNED ]`
-- Gallery grid of gig photos (filterable by year/venue), lightbox on click
-- `app/music/gig-archive/page.tsx`
+### 3a — Gig Archive `[ IN PROGRESS ]`
+- [x] `lib/types.ts` — `GigPhoto` interface
+- [x] `lib/gig-utils.ts` — title parser
+- [x] `scripts/sync-gig-photos.ts` — Google Photos → Cloudinary sync
+- [x] `scripts/get-google-token.ts` — one-time OAuth helper
+- [x] `app/music/gig-archive/page.tsx` — Server Component page
+- [x] `components/GigArchive.tsx` — filters + photo grid
+- [x] `components/GigLightbox.tsx` — lightbox with keyboard nav
+- [x] `components/Nav.tsx` — Gig Archive link enabled
+- [x] `app/music/page.tsx` — Gig Archive card active
+- [ ] Run sync script with real credentials to populate manifest
 
 ### 3b — T-shirt Archive `[ PLANNED ]`
 - `app/music/tshirt-archive/page.tsx`
