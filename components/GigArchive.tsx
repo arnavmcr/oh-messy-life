@@ -181,10 +181,7 @@ export default function GigArchive({ photos, stats, filterOptions }: Props) {
 
       {/* Grid */}
       {filteredPhotos.length > 0 && (
-        <div
-          className="grid"
-          style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '3px' }}
-        >
+        <div className="grid grid-cols-4 gap-[3px]">
           {filteredPhotos.map((photo, idx) => {
             const overlay = [photo.band, photo.event, photo.city, photo.month && photo.year ? `${photo.month} ${photo.year}` : null]
               .filter(Boolean)

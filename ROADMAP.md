@@ -169,7 +169,7 @@ status: published
 - [x] `app/music/page.tsx` — THE SIGNAL landing page with links to sub-sections
 - [x] Library rewrite — not needed. External app has `base href="/music/"`, page file handles `/music`, rewrite handles `/music/:path*` sub-routes. No config change required.
 
-### 3a — Gig Archive `[ IN PROGRESS ]`
+### 3a — Gig Archive `[ COMPLETE ✓ ]`
 - [x] `lib/types.ts` — `GigPhoto` interface
 - [x] `lib/gig-utils.ts` — title parser
 - [x] `scripts/sync-gig-photos.ts` — Google Photos → Cloudinary sync
