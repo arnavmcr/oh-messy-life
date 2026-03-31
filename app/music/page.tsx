@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { COPY } from '@/lib/copy';
 
 export const metadata: Metadata = {
@@ -51,10 +52,10 @@ export default function MusicPage() {
           </div>
         </a>
 
-        {/* GIG ARCHIVE — stub */}
-        <div
-          className="border border-black/10 dark:border-white/10 p-4 opacity-40 cursor-not-allowed pointer-events-none"
-          aria-disabled="true"
+        {/* GIG ARCHIVE — active */}
+        <Link
+          href="/music/gig-archive"
+          className="border border-black/10 dark:border-white/10 p-4 block hover:border-tertiary hover:text-tertiary transition-colors"
         >
           <div className="font-mono text-[9px] uppercase tracking-widest opacity-50">
             {COPY.signal.gigArchive.label}
@@ -66,11 +67,11 @@ export default function MusicPage() {
             {COPY.signal.gigArchive.description}
           </div>
           <div className="mt-3">
-            <span className="stamp-red font-mono text-[9px] uppercase tracking-widest font-bold">
-              COMING SOON
+            <span className="stamp-green font-mono text-[9px] uppercase tracking-widest font-bold">
+              ACTIVE
             </span>
           </div>
-        </div>
+        </Link>
 
         {/* T-SHIRT ARCHIVE — stub */}
         <div

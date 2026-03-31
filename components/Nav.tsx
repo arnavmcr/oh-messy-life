@@ -115,9 +115,12 @@ export default function Nav() {
                 >
                   {COPY.nav.signalLibrary}
                 </a>
-                <span className="block px-4 py-2 font-mono text-[10px] tracking-widest uppercase font-bold opacity-30 cursor-not-allowed pointer-events-none">
+                <Link
+                  href="/music/gig-archive"
+                  className="block px-4 py-2 font-mono text-[10px] tracking-widest uppercase font-bold hover:text-tertiary hover:bg-tertiary/5 transition-colors border-l-2 border-tertiary"
+                >
                   {COPY.nav.signalGigArchive}
-                </span>
+                </Link>
                 <span className="block px-4 py-2 font-mono text-[10px] tracking-widest uppercase font-bold opacity-30 cursor-not-allowed pointer-events-none">
                   {COPY.nav.signalTshirtArchive}
                 </span>
