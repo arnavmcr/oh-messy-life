@@ -17,15 +17,16 @@ Create `lib/types.ts` (this file does not currently exist):
 
 ```ts
 export interface GigPhoto {
-  id: string;           // Cloudinary public ID (also used as stable unique key)
+  id: string;             // Cloudinary public ID (also used as stable unique key)
+  googlePhotoId: string;  // Google Photos mediaItem.id — used by sync script for diffing, not exposed in UI
   thumbnailUrl: string;
   fullUrl: string;
   band: string | null;
   event: string | null;
   city: string | null;
-  month: string | null; // e.g. "November"
+  month: string | null;   // e.g. "November"
   year: number | null;
-  title: string;        // raw original title, always present
+  title: string;          // raw original title, always present
 }
 ```
 
