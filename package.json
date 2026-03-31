@@ -21,6 +21,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cloudinary": "^2.9.0",
     "dotenv": "^17.3.1",
     "googleapis": "^171.4.0",
     "tailwindcss": "^4",
