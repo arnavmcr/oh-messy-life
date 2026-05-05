@@ -163,6 +163,16 @@ const mdxComponents = {
       {children}
     </code>
   ),
+  a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
+    <a
+      href={href}
+      className="text-primary underline underline-offset-2 hover:text-primary-dark transition-colors"
+      target={href?.startsWith('http') ? '_blank' : undefined}
+      rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
+    >
+      {children}
+    </a>
+  ),
   ul: ({ children }: { children?: React.ReactNode }) => (
     <ul className="space-y-2 mb-6 ml-4">{children}</ul>
   ),

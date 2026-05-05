@@ -63,7 +63,7 @@ const mdxComponents = {
   a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
     <a
       href={href}
-      className="text-secondary underline underline-offset-2 hover:text-primary transition-colors"
+      className="text-primary underline underline-offset-2 hover:text-primary-dark transition-colors"
       target={href?.startsWith('http') ? '_blank' : undefined}
       rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
     >

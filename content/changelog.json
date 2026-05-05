@@ -1,5 +1,11 @@
 [
   {
+    "date": "2026-05-05",
+    "type": "FIX",
+    "description": "Improved link readability — replaced unreadable dark blue with red accent on article and record entry pages",
+    "href": "/writing"
+  },
+  {
     "date": "2026-03-25",
     "type": "SITE",
     "description": "Album archive is now live — THE LIBRARY",
