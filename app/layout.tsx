@@ -23,9 +23,26 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400', '700'],
 });
 
+const SITE_URL = 'https://oh-messy-life.vercel.app';
+
 export const metadata: Metadata = {
   title: 'Oh Messy Life',
-  description: 'A public personal archive. Writing, projects, music, and the non-linear record of a generalist.',
+  description: 'Oh Messy Life is part confessional, part ledger.',
+  metadataBase: new URL(SITE_URL),
+  openGraph: {
+    title: 'Oh Messy Life',
+    description: 'Oh Messy Life is part confessional, part ledger.',
+    url: SITE_URL,
+    siteName: 'Oh Messy Life',
+    images: [{ url: '/og-image.png', width: 1080, height: 1080, alt: 'Oh Messy Life' }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Oh Messy Life',
+    description: 'Oh Messy Life is part confessional, part ledger.',
+    images: ['/og-image.png'],
+  },
 };
 
 export default function RootLayout({
