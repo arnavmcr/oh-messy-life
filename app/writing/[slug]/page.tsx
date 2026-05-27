@@ -58,7 +58,7 @@ function CategoryPage({ slug }: { slug: string }) {
   const posts = getPostsByCategory(slug);
 
   return (
-    <main className="relative min-h-screen pt-24 pb-32 px-6 md:px-12 max-w-7xl mx-auto overflow-hidden">
+    <main className="relative min-h-screen pt-12 pb-32 px-6 md:px-12 max-w-7xl mx-auto overflow-hidden">
       {/* Breadcrumb */}
       <div className="font-mono text-[10px] tracking-[0.3em] text-on-surface-variant mb-6 flex items-center gap-2">
         <Link href="/writing" className="hover:text-primary transition-colors">WRITING</Link>

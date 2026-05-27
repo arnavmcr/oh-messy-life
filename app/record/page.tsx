@@ -79,7 +79,7 @@ export default function RecordPage() {
   }
 
   return (
-    <main className="min-h-screen pt-24 pb-32 px-6 md:px-12 max-w-4xl mx-auto">
+    <main className="min-h-screen pt-12 pb-32 px-6 md:px-12 max-w-4xl mx-auto">
 
       {/* Masthead */}
       <div className="flex justify-between items-end border-b-2 border-primary pb-6 mb-0">

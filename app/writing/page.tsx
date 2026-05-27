@@ -16,7 +16,7 @@ export default function WritingPage() {
   const posts = getAllPosts();
 
   return (
-    <main className="relative min-h-screen pt-24 pb-32 px-6 md:px-12 max-w-7xl mx-auto overflow-hidden">
+    <main className="relative min-h-screen pt-12 pb-32 px-6 md:px-12 max-w-7xl mx-auto overflow-hidden">
       {/* Background scribbles */}
       <div className="absolute top-40 right-10 text-secondary/10 pointer-events-none -rotate-12">
         <span className="material-symbols-outlined text-[200px]">draw</span>

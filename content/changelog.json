@@ -1,20 +1,26 @@
 [
   {
+    "date": "2026-05-27",
+    "type": "SITE",
+    "description": "rebranded the whole thingi — fog, waves, a new font",
+    "href": "/"
+  },
+  {
     "date": "2026-05-05",
     "type": "FIX",
-    "description": "Improved link readability — replaced unreadable dark blue with red accent on article and record entry pages",
+    "description": "made the links readable — coral instead of unreadable dark blue",
     "href": "/writing"
   },
   {
     "date": "2026-03-25",
-    "type": "SITE",
-    "description": "Album archive is now live — THE LIBRARY",
+    "type": "SIGNAL",
+    "description": "put up the music library — finally",
     "href": "/music/index.html"
   },
   {
     "date": "2026-03-23",
     "type": "SITE",
-    "description": "Redesigned article reading page (THE MANUSCRIPT)",
+    "description": "reading page is a bit nicer to read now",
     "href": "/writing"
   }
 ]

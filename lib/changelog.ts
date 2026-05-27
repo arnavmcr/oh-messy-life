@@ -4,7 +4,7 @@ import changelogJson from '../content/changelog.json';
 
 export type ChangelogEntry = {
   date: string;
-  type: 'WRITING' | 'RECORD' | 'SITE';
+  type: 'WRITING' | 'RECORD' | 'SITE' | 'SIGNAL' | 'LABS' | 'FIX';
   description: string;
   href: string;
 };

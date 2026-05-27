@@ -21,7 +21,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - **Use existing tokens.** Never hardcode colors — use `text-primary`, `bg-secondary`, `border-tertiary`, etc.
 - **Effect classes.** Use `.distressed-text`, `.tape-effect`, `.drip-mask`, `.scan-line`, `.stamp-red/blue/green`, `.ink-bleed`, `.scribble-circle` from `globals.css` for the aesthetic.
 - **No border radius** except `rounded-full` (`9999px`). Sharp corners everywhere else.
-- **Font classes:** `font-headline` (Space Grotesk), `font-body` (Inter), `font-mono` / `font-label` (JetBrains Mono).
+- **Font classes:** `font-headline` / `font-body` / `font-label` (all Geist sans-serif), `font-mono` (Geist Mono). Fonts loaded via Google Fonts in `app/layout.tsx`.
+- **Palette:** `--paper` (#d9d4cb) is the base background. Use `--coral`, `--violet`, `--kelp`, `--wine` for accents. CSS custom properties on `:root` — also mapped to Tailwind tokens `primary`=coral, `secondary`=violet, `tertiary`=kelp.
 
 ## Content — Writing (`content/writing/*.mdx`)
 

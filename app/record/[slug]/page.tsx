@@ -147,7 +147,7 @@ export default async function EntryPage({ params }: { params: Promise<{ slug: st
   const formattedDate = formatEntryDate(entry.date);
 
   return (
-    <main className="min-h-screen pt-24 pb-32 px-6 md:px-12 max-w-2xl mx-auto">
+    <main className="min-h-screen pt-12 pb-32 px-6 md:px-12 max-w-2xl mx-auto">
 
       {/* ── Entry Header ─────────────────────────────────────────────── */}
       <header className="mb-16 border-b-2 border-primary pb-8">
