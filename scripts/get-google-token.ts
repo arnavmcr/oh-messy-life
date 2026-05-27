@@ -9,7 +9,8 @@
 // This script prints an auth URL. Open it, approve access, then paste the
 // resulting ?code= param back when prompted. The refresh token is printed to stdout.
 
-import 'dotenv/config';
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
 import { google } from 'googleapis';
 import * as readline from 'readline';
 
@@ -27,7 +28,7 @@ const oauth2Client = new google.auth.OAuth2(
 
 const authUrl = oauth2Client.generateAuthUrl({
   access_type: 'offline',
-  scope: ['https://www.googleapis.com/auth/photoslibrary.readonly'],
+  scope: ['https://www.googleapis.com/auth/photoslibrary'],
   prompt: 'consent',
 });
 

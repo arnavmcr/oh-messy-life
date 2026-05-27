@@ -4,7 +4,8 @@
 // Idempotent — photos already in the manifest are skipped.
 // Google Photos baseUrls expire in ~60 min; upload happens immediately in the same run.
 
-import 'dotenv/config';
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
 import { google } from 'googleapis';
 import { v2 as cloudinary } from 'cloudinary';
 import * as fs from 'fs';
@@ -87,6 +88,12 @@ async function main() {
   const existingIds = new Set(manifest.map((p) => p.googlePhotoId));
 
   console.log(`[INFO] Loaded manifest: ${manifest.length} existing photos`);
+
+  // Debug: check what scopes the access token actually has
+  const tokenResult = await oauth2Client.getAccessToken();
+  const tokenInfoRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?access_token=${tokenResult.token}`);
+  const tokenInfo = await tokenInfoRes.json() as Record<string, string>;
+  console.log('[DEBUG] Token scopes:', tokenInfo.scope);
 
   const albumItems = await fetchAlbumItems(oauth2Client);
   console.log(`[INFO] Album contains ${albumItems.length} photos`);
