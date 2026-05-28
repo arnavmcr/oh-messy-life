@@ -24,6 +24,11 @@ export const COPY = {
     labsHeading:      'LABS_EXT',
     labsDescription:  'Projects, interactive experiments, and annotated case studies — in construction.',
     vaultHeading:     'VAULT_99',
+    graph: {
+      idle:       'hover to explore',
+      idleHint:   'nodes are articles and journal entries',
+      activeHint: 'click to open',
+    },
   },
 
   // ── Writing — THE VOID ────────────────────────────────────────────────────
