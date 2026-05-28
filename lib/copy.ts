@@ -30,6 +30,14 @@ export const COPY = {
   writing: {
     pageTitle:       'THE VOID // Oh Messy Life',
     pageDescription: 'Writing archive',
+    entriesLabel:    'entries',
+    emptyState:      'nothing here yet.',
+  },
+
+  // ── Article — THE MANUSCRIPT ──────────────────────────────────────────────
+  article: {
+    dateLabel:       'published',
+    taggedLabel:     'tagged',
   },
 
   // ── Record — THE RECORD ───────────────────────────────────────────────────
