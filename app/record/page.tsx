@@ -101,8 +101,8 @@ export default function RecordPage() {
 
       {/* Archive rows */}
       {entries.length === 0 ? (
-        <p className="font-mono text-[10px] text-on-surface-variant mt-8">
-          NO_ENTRIES_FOUND // CHECK CONTENT DIRECTORY
+        <p className="font-body italic text-stone-400 mt-8">
+          nothing here yet.
         </p>
       ) : (
         <div>

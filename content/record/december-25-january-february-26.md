@@ -1,9 +1,15 @@
 ---
-title: "December ‘25, January and February ‘26"
-date: "2025-12-01"
-slug: "december-25-january-february-26"
+title: 'December ‘25, January and February ‘26'
+date: '2025-12-01'
+slug: december-25-january-february-26
 issue: 21
-status: "published"
+status: published
+tags:
+  - personal
+  - journal
+  - india
+  - 2025
+  - 2026
 ---
 
 ### What is this and why am I doing this?

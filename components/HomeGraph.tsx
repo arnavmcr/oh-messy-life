@@ -25,13 +25,6 @@ const LABS_LEAVES = [
   { id: 'l3', label: 'Mosh pit anatomy', href: '/projects' },
 ];
 
-// Cross-edges reference only stable IDs (category hubs + fixed signal/labs leaves)
-const CROSS: [string, string][] = [
-  ['writing', 'record'], ['record', 'signal'], ['signal', 'labs'], ['labs', 'writing'],
-  ['l1', 'writing'], ['l2', 'signal'],
-  ['s1', 'labs'], ['s2', 'writing'],
-];
-
 const CAT_HREFS: Record<string, string> = {
   writing: '/writing',
   record: '/record',
@@ -66,7 +59,7 @@ interface GraphNode {
 
 interface GraphEdge {
   a: string; b: string;
-  kind: 'branch' | 'cross' | 'ring';
+  kind: 'branch' | 'tag';
   len: number;
 }
 
@@ -81,6 +74,7 @@ export interface HoverInfo {
 export interface LeafItem {
   slug: string;
   title: string;
+  tags?: string[];
 }
 
 interface Props {
@@ -89,6 +83,7 @@ interface Props {
   onHover?: (info: HoverInfo | null) => void;
   writingLeaves?: LeafItem[];
   recordLeaves?: LeafItem[];
+  tagEdges?: [string, string][];
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -173,11 +168,6 @@ function buildGraph(
   SIGNAL_LEAVES.forEach((l)    => edges.push({ a: 'signal',  b: l.id,    kind: 'branch', len: 150 }));
   LABS_LEAVES.forEach((l)      => edges.push({ a: 'labs',    b: l.id,    kind: 'branch', len: 150 }));
 
-  CROSS.forEach(([a, b]) => {
-    const isCatRing = CATS.some((c) => c.id === a) && CATS.some((c) => c.id === b);
-    edges.push({ a, b, kind: isCatRing ? 'ring' : 'cross', len: isCatRing ? 330 : 200 });
-  });
-
   return { nodes, edges };
 }
 
@@ -216,6 +206,7 @@ export default function HomeGraph({
   onHover,
   writingLeaves,
   recordLeaves,
+  tagEdges = [],
 }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const rafRef  = useRef(0);
@@ -234,10 +225,18 @@ export default function HomeGraph({
   // Stable refs so useMemo deps don't change on every hover re-render
   const writingRef = useRef(writingLeaves ?? []);
   const recordRef  = useRef(recordLeaves ?? []);
+  const tagEdgesRef = useRef(tagEdges);
 
-  const { nodes, edges, adj } = useMemo(() => {
+  const { nodes, edges, adj, tagAdj } = useMemo(() => {
     const g = buildGraph(writingRef.current, recordRef.current);
-    return { nodes: g.nodes, edges: g.edges, adj: buildAdj(g.edges) };
+    const te: GraphEdge[] = tagEdgesRef.current.map(([a, b]) => ({ a, b, kind: 'tag', len: 220 }));
+    const allEdges = [...g.edges, ...te];
+    return {
+      nodes: g.nodes,
+      edges: allEdges,
+      adj: buildAdj(g.edges),
+      tagAdj: buildAdj(te),
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -344,7 +343,8 @@ export default function HomeGraph({
           if (!a || !b) return;
           const dx = b.x - a.x, dy = b.y - a.y;
           const d = Math.sqrt(dx * dx + dy * dy) || 0.01;
-          const f = (d - e.len) * k_spring;
+          const ks = e.kind === 'tag' ? k_spring * 0.05 : k_spring;
+          const f = (d - e.len) * ks;
           const fx = (dx / d) * f, fy = (dy / d) * f;
           a.fx! += fx; a.fy! += fy;
           b.fx! -= fx; b.fy! -= fy;
@@ -402,8 +402,9 @@ export default function HomeGraph({
     if (!hoverId) return null;
     const s = new Set<string>([hoverId]);
     adj.get(hoverId)?.forEach((id) => s.add(id));
+    tagAdj.get(hoverId)?.forEach((id) => s.add(id));
     return s;
-  }, [hoverId, adj]);
+  }, [hoverId, adj, tagAdj]);
 
   const toggleCat = (id: string) =>
     setActiveCats((s) => ({ ...s, [id]: !s[id as keyof typeof s] }));
@@ -463,11 +464,12 @@ export default function HomeGraph({
             const visible = isVisible(a) && isVisible(b);
             const hl = highlightSet ? (highlightSet.has(a.id) && highlightSet.has(b.id)) : false;
             const dim = highlightSet ? !hl : !visible;
-            const opacity = !visible ? 0.06 : dim ? 0.10 : hl ? 0.95 : 0.5;
-            const stroke = e.kind === 'cross' ? '#ff5573' : '#0e1822';
-            const sw = (e.kind === 'ring' ? (hl ? 2.4 : 1.6) : e.kind === 'cross' ? (hl ? 2 : 1.1) : (hl ? 1.7 : 1.0)) / Math.max(0.6, view.scale);
-            const dash = e.kind === 'cross' ? '5 7' : e.kind === 'ring' ? '1 6' : 'none';
-            const amp = e.kind === 'ring' ? 14 : e.kind === 'cross' ? 14 : 11;
+            const isTag = e.kind === 'tag';
+            const opacity = !visible ? (isTag ? 0.04 : 0.06) : dim ? (isTag ? 0.05 : 0.10) : hl ? (isTag ? 0.75 : 0.95) : (isTag ? 0.28 : 0.5);
+            const stroke = isTag ? '#9b7fff' : '#0e1822';
+            const sw = (isTag ? (hl ? 1.2 : 0.8) : (hl ? 1.7 : 1.0)) / Math.max(0.6, view.scale);
+            const dash = isTag ? '3 6' : 'none';
+            const amp = isTag ? 10 : 11;
             const ax = a.x + (a.displayDX ?? 0);
             const ay = a.y + (a.displayDY ?? 0);
             const bx = b.x + (b.displayDX ?? 0);

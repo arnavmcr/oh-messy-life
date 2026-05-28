@@ -1,9 +1,14 @@
 ---
-title: "July & August ‘25"
-date: "2025-07-01"
-slug: "july-august-25"
+title: July & August ‘25
+date: '2025-07-01'
+slug: july-august-25
 issue: 18
-status: "published"
+status: published
+tags:
+  - personal
+  - journal
+  - india
+  - 2025
 ---
 
 ### What is this and why am I doing this?
@@ -58,6 +63,4 @@ Connecting to your FPL team
 
 Using it for messy calculations like splitting bills across large groups
 
-Working with people you can learn from is so nourishing
-
-I will get back to my regular monthly cadence with this from October
+Working with people you can learn from igular monthly cadence with this from October

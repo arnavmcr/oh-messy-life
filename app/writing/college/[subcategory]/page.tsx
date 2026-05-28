@@ -84,11 +84,8 @@ export default async function SubcategoryPage({ params }: Props) {
             </h1>
           </div>
           <div className="md:text-right">
-            <div className="font-mono text-[10px] tracking-widest text-on-surface-variant">
-              LOG_ACCESS: GRANTED
-            </div>
-            <div className={`scribble-circle px-4 py-1 inline-block mt-2 ${accentText[accent]} font-bold rotate-2 font-headline`}>
-              {posts.length} ENTRIES
+            <div className={`scribble-circle px-4 py-1 inline-block ${accentText[accent]} font-bold rotate-2 font-headline`}>
+              {posts.length} entries
             </div>
           </div>
         </div>
@@ -118,8 +115,8 @@ export default async function SubcategoryPage({ params }: Props) {
       {/* Article Grid */}
       <div className={`${config.tagline || config.postIts?.length ? 'mt-4' : 'mt-16'}`}>
         {posts.length === 0 ? (
-          <div className="font-mono text-[10px] text-on-surface-variant">
-            NO_ENTRIES_FOUND // CHECK CONTENT DIRECTORY
+          <div className="font-body italic text-stone-400">
+            nothing here yet.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 relative z-10">

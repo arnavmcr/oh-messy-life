@@ -1,9 +1,14 @@
 ---
-title: "October and November ‘25"
-date: "2025-10-01"
-slug: "october-november-25"
+title: October and November ‘25
+date: '2025-10-01'
+slug: october-november-25
 issue: 20
-status: "published"
+status: published
+tags:
+  - personal
+  - journal
+  - india
+  - 2025
 ---
 
 ### What is this and why am I doing this?

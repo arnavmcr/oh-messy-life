@@ -1,9 +1,14 @@
 ---
-title: "May & June ‘25"
-date: "2025-05-01"
-slug: "may-june-25"
+title: May & June ‘25
+date: '2025-05-01'
+slug: may-june-25
 issue: 17
-status: "published"
+status: published
+tags:
+  - personal
+  - journal
+  - india
+  - 2025
 ---
 
 ### What is this and why am I doing this?

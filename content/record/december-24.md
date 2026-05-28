@@ -1,9 +1,14 @@
 ---
-title: "December ‘24"
-date: "2024-12-01"
-slug: "december-24"
+title: December ‘24
+date: '2024-12-01'
+slug: december-24
 issue: 12
-status: "published"
+status: published
+tags:
+  - personal
+  - journal
+  - india
+  - 2024
 ---
 
 ### What is this and why am I doing this?

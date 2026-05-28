@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import WaveBackdrop from './WaveBackdrop';
 import HomeGraph, { type HoverInfo, type LeafItem } from './HomeGraph';
+import { COPY } from '@/lib/copy';
 
 const CAT_LABEL: Record<string, string> = {
   writing: 'WRITING',
@@ -14,9 +15,10 @@ const CAT_LABEL: Record<string, string> = {
 interface Props {
   writingLeaves: LeafItem[];
   recordLeaves: LeafItem[];
+  tagEdges: [string, string][];
 }
 
-export default function HomepageHero({ writingLeaves, recordLeaves }: Props) {
+export default function HomepageHero({ writingLeaves, recordLeaves, tagEdges }: Props) {
   const [hovered, setHovered] = useState<HoverInfo | null>(null);
   const handleHover = useCallback((n: HoverInfo | null) => setHovered(n), []);
 
@@ -31,13 +33,13 @@ export default function HomepageHero({ writingLeaves, recordLeaves }: Props) {
                 {CAT_LABEL[hovered.cat] ?? hovered.cat.toUpperCase()}
               </span>
               <span className="status-label">{hovered.label}</span>
-              <span className="status-hint">click to open · scroll to zoom</span>
+              <span className="status-hint">{COPY.home.graph.activeHint}</span>
             </>
           ) : (
             <>
               <span className="status-dot" />
-              <span className="status-idle">hover a node to inspect</span>
-              <span className="status-hint">scroll to zoom · drag to pan</span>
+              <span className="status-idle">{COPY.home.graph.idle}</span>
+              <span className="status-hint">{COPY.home.graph.idleHint}</span>
             </>
           )}
         </div>
@@ -51,6 +53,7 @@ export default function HomepageHero({ writingLeaves, recordLeaves }: Props) {
         <HomeGraph
           writingLeaves={writingLeaves}
           recordLeaves={recordLeaves}
+          tagEdges={tagEdges}
           onHover={handleHover}
         />
       </section>

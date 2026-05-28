@@ -17,6 +17,7 @@ export interface JournalEntryMeta {
   date: string;
   issue: number;
   status: 'draft' | 'published';
+  tags: string[];
   sections: Omit<JournalSection, 'body'>[];
   featured?: boolean;
   note?: string;
@@ -115,6 +116,7 @@ export function getAllJournalEntries(): JournalEntryMeta[] {
       date: String(data.date ?? '2024-01-01'),
       issue: Number(data.issue ?? 0),
       status: (data.status ?? 'published') as 'draft' | 'published',
+      tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
       sections,
       ...(data.featured ? { featured: true } : {}),
       ...(data.note ? { note: String(data.note) } : {}),
@@ -158,6 +160,7 @@ export function getJournalEntry(slug: string): JournalEntry | null {
     date: String(data.date ?? '2024-01-01'),
     issue,
     status,
+    tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     sections,
     ...(data.featured ? { featured: true } : {}),
     ...(data.note ? { note: String(data.note) } : {}),

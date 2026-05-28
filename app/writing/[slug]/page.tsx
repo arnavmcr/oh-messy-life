@@ -1,5 +1,6 @@
 import { getPost, getAllSlugs, getPostsByCategory } from '@/lib/content';
 import { CATEGORY_MAP } from '@/lib/categories';
+import { COPY } from '@/lib/copy';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
@@ -80,11 +81,8 @@ function CategoryPage({ slug }: { slug: string }) {
             </h1>
           </div>
           <div className="md:text-right">
-            <div className="font-mono text-[10px] tracking-widest text-on-surface-variant">
-              LOG_ACCESS: GRANTED
-            </div>
-            <div className={`scribble-circle px-4 py-1 inline-block mt-2 ${accentText[accent]} font-bold rotate-2 font-headline`}>
-              {posts.length} ENTRIES
+            <div className={`scribble-circle px-4 py-1 inline-block ${accentText[accent]} font-bold rotate-2 font-headline`}>
+              {posts.length} {COPY.writing.entriesLabel}
             </div>
           </div>
         </div>
@@ -113,8 +111,8 @@ function CategoryPage({ slug }: { slug: string }) {
 
       {/* Article grid */}
       {posts.length === 0 ? (
-        <div className="font-mono text-[10px] text-on-surface-variant mt-16">
-          NO_ENTRIES_FOUND // CHECK CONTENT DIRECTORY
+        <div className="font-body italic text-stone-400 mt-16">
+          {COPY.writing.emptyState}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 relative z-10 mt-16">
@@ -198,38 +196,31 @@ export default async function WritingSlugPage({ params }: { params: Promise<{ sl
 
   const dateObj = new Date(post.date);
   const formattedDate = isNaN(dateObj.getTime())
-    ? 'UNKNOWN'
+    ? 'unknown'
     : dateObj.toLocaleDateString('en-GB', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
-      }).toUpperCase().replace(/ /g, '_');
+      });
 
   return (
     <main className="pt-32 pb-32 min-h-screen">
       <article className="max-w-3xl mx-auto px-8">
 
         {/* Centralized Metadata */}
-        <div className="flex flex-col items-center text-center space-y-8 mb-20">
-          <div className="inline-block bg-primary text-on-primary px-3 py-1 font-label text-[10px] font-bold tracking-widest uppercase">
-            STATUS: DECLASSIFIED
-          </div>
+        <div className="flex flex-col items-center text-center mb-20">
           <div className="flex flex-wrap justify-center gap-8 border-y border-stone-200 dark:border-stone-800 py-6 w-full">
             <div className="space-y-1">
-              <p className="font-label text-[10px] text-stone-400 tracking-widest uppercase">CATALOG_ID</p>
-              <p className="font-headline font-bold text-xs tracking-tight text-on-surface uppercase">{post.slug.slice(0, 12).toUpperCase()}</p>
-            </div>
-            <div className="space-y-1">
-              <p className="font-label text-[10px] text-stone-400 tracking-widest uppercase">TIMESTAMP</p>
+              <p className="font-label text-[10px] text-stone-400 tracking-widest uppercase">{COPY.article.dateLabel}</p>
               <p className="font-headline font-bold text-xs tracking-tight text-on-surface">{formattedDate}</p>
             </div>
             {post.tags && post.tags.length > 0 && (
               <div className="space-y-1">
-                <p className="font-label text-[10px] text-stone-400 tracking-widest uppercase">KEYWORDS</p>
+                <p className="font-label text-[10px] text-stone-400 tracking-widest uppercase">{COPY.article.taggedLabel}</p>
                 <div className="flex flex-wrap justify-center gap-2 pt-1">
                   {post.tags.map((tag) => (
-                    <span key={tag} className="border border-outline-variant px-2 py-0.5 font-label text-[9px] text-stone-500 uppercase">
-                      {tag.replace(/ /g, '_')}
+                    <span key={tag} className="border border-outline-variant px-2 py-0.5 font-label text-[9px] text-stone-500">
+                      {tag}
                     </span>
                   ))}
                 </div>

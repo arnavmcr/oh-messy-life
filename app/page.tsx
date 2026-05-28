@@ -4,17 +4,55 @@ import { getAllJournalEntries } from '@/lib/journal';
 import { getChangelogEntries } from '@/lib/changelog';
 import HomepageHero from '@/components/HomepageHero';
 
+function buildTagEdges(
+  writingLeaves: { slug: string; tags: string[] }[],
+  recordLeaves:  { slug: string; tags: string[] }[],
+): [string, string][] {
+  // Index each leaf by node id → tag set
+  const nodes: { id: string; tags: Set<string> }[] = [
+    ...writingLeaves.map((p, i) => ({ id: `w${i}`, tags: new Set(p.tags) })),
+    ...recordLeaves.map((e, i)  => ({ id: `r${i}`, tags: new Set(e.tags) })),
+  ];
+
+  // Per-node cross-edge cap prevents noisy graphs at full density
+  const MAX_EDGES_PER_NODE = 6;
+  const edgeCounts = new Map<string, number>(nodes.map((n) => [n.id, 0]));
+  const edges: [string, string][] = [];
+  const seen = new Set<string>();
+
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i], b = nodes[j];
+      if ((edgeCounts.get(a.id) ?? 0) >= MAX_EDGES_PER_NODE) continue;
+      if ((edgeCounts.get(b.id) ?? 0) >= MAX_EDGES_PER_NODE) continue;
+      const key = `${a.id}|${b.id}`;
+      if (seen.has(key)) continue;
+      // Check for shared tag
+      const shared = [...a.tags].some((t) => b.tags.has(t));
+      if (!shared) continue;
+      seen.add(key);
+      edges.push([a.id, b.id]);
+      edgeCounts.set(a.id, (edgeCounts.get(a.id) ?? 0) + 1);
+      edgeCounts.set(b.id, (edgeCounts.get(b.id) ?? 0) + 1);
+    }
+  }
+
+  return edges;
+}
+
 export default function HomePage() {
   const posts = getAllPosts();
   const changelog = getChangelogEntries(10);
+  const journalEntries = getAllJournalEntries();
 
-  const writingLeaves = posts.map((p) => ({ slug: p.slug, title: p.title }));
-  const recordLeaves  = getAllJournalEntries().map((e) => ({ slug: e.slug, title: e.title }));
+  const writingLeaves = posts.map((p) => ({ slug: p.slug, title: p.title, tags: p.tags ?? [] }));
+  const recordLeaves  = journalEntries.map((e) => ({ slug: e.slug, title: e.title, tags: e.tags ?? [] }));
+  const tagEdges = buildTagEdges(writingLeaves, recordLeaves);
 
   return (
     <main>
       {/* Interactive graph hero + status banner */}
-      <HomepageHero writingLeaves={writingLeaves} recordLeaves={recordLeaves} />
+      <HomepageHero writingLeaves={writingLeaves} recordLeaves={recordLeaves} tagEdges={tagEdges} />
 
       {/* ── Intro ──────────────────────────────────────────────────────── */}
       <section className="intro">
