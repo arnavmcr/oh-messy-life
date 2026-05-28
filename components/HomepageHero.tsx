@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import WaveBackdrop from './WaveBackdrop';
-import HomeGraph, { type HoverInfo } from './HomeGraph';
+import HomeGraph, { type HoverInfo, type LeafItem } from './HomeGraph';
 
 const CAT_LABEL: Record<string, string> = {
   writing: 'WRITING',
@@ -11,7 +11,12 @@ const CAT_LABEL: Record<string, string> = {
   labs: 'LABS',
 };
 
-export default function HomepageHero() {
+interface Props {
+  writingLeaves: LeafItem[];
+  recordLeaves: LeafItem[];
+}
+
+export default function HomepageHero({ writingLeaves, recordLeaves }: Props) {
   const [hovered, setHovered] = useState<HoverInfo | null>(null);
   const handleHover = useCallback((n: HoverInfo | null) => setHovered(n), []);
 
@@ -43,7 +48,11 @@ export default function HomepageHero() {
         <div className="hero-waves">
           <WaveBackdrop />
         </div>
-        <HomeGraph onHover={handleHover} />
+        <HomeGraph
+          writingLeaves={writingLeaves}
+          recordLeaves={recordLeaves}
+          onHover={handleHover}
+        />
       </section>
     </>
   );

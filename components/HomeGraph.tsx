@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 
-// ── Data ─────────────────────────────────────────────────────────────────────
+// ── Static data ───────────────────────────────────────────────────────────────
 
 const CATS = [
   { id: 'writing', label: 'WRITING', cssColor: '#ff5573', orbit: 230, angle: -Math.PI / 2 },
@@ -11,42 +11,26 @@ const CATS = [
   { id: 'labs',    label: 'LABS',    cssColor: '#e87a3a', orbit: 230, angle: Math.PI },
 ] as const;
 
-const LEAVES = [
-  { id: 'w1', cat: 'writing', label: 'Vandalism as UI design' },
-  { id: 'w2', cat: 'writing', label: 'The architecture of noise' },
-  { id: 'w3', cat: 'writing', label: 'Bombay gatekeeping & Todi Mills' },
-  { id: 'w4', cat: 'writing', label: 'Roads, escapism & GeoGuessr' },
-  { id: 'w5', cat: 'writing', label: 'A moon shaped pool — review' },
-  { id: 'w6', cat: 'writing', label: 'Stress fractures: India’s concert boom' },
-  { id: 'r1', cat: 'record',  label: 'March & April ’26' },
-  { id: 'r2', cat: 'record',  label: 'Dec ’25 / Jan & Feb ’26' },
-  { id: 'r3', cat: 'record',  label: 'October / November ’25' },
-  { id: 'r4', cat: 'record',  label: 'September ’25' },
-  { id: 'r5', cat: 'record',  label: 'July / August ’25' },
-  { id: 's1', cat: 'signal',  label: 'The Library — 8 records' },
-  { id: 's2', cat: 'signal',  label: 'Gig archive' },
-  { id: 's3', cat: 'signal',  label: 'T-shirt archive' },
-  { id: 's4', cat: 'signal',  label: 'Boiler Room Bengaluru' },
-  { id: 's5', cat: 'signal',  label: 'Awestrung @ Bluefrog' },
-  { id: 'l1', cat: 'labs',    label: 'jhoola.world' },
-  { id: 'l2', cat: 'labs',    label: 'koi' },
-  { id: 'l3', cat: 'labs',    label: 'Mosh pit anatomy' },
+const SIGNAL_LEAVES = [
+  { id: 's1', label: 'The Library — 8 records', href: '/music/index.html' },
+  { id: 's2', label: 'Gig archive',             href: '/music/gig-archive' },
+  { id: 's3', label: 'T-shirt archive',         href: '/music' },
+  { id: 's4', label: 'Boiler Room Bengaluru',   href: '/music' },
+  { id: 's5', label: 'Awestrung @ Bluefrog',    href: '/music' },
 ];
 
+const LABS_LEAVES = [
+  { id: 'l1', label: 'jhoola.world',     href: '/projects' },
+  { id: 'l2', label: 'koi',              href: '/projects' },
+  { id: 'l3', label: 'Mosh pit anatomy', href: '/projects' },
+];
+
+// Cross-edges reference only stable IDs (category hubs + fixed signal/labs leaves)
 const CROSS: [string, string][] = [
-  ['w3', 'r1'], ['w6', 's2'], ['w2', 's1'], ['s4', 'w3'],
-  ['l1', 'w1'], ['l2', 's1'], ['l3', 's2'],
-  ['w4', 'r3'], ['r2', 'r1'], ['r3', 'r2'], ['r4', 'r3'],
   ['writing', 'record'], ['record', 'signal'], ['signal', 'labs'], ['labs', 'writing'],
+  ['l1', 'writing'], ['l2', 'signal'],
+  ['s1', 'labs'], ['s2', 'writing'],
 ];
-
-const LEAF_HREFS: Record<string, string> = {
-  w1: '/writing', w2: '/writing', w3: '/writing', w4: '/writing', w5: '/writing', w6: '/writing',
-  r1: '/record', r2: '/record', r3: '/record', r4: '/record', r5: '/record',
-  s1: '/music/index.html', s2: '/music/gig-archive', s3: '/music',
-  s4: '/music', s5: '/music',
-  l1: '/projects', l2: '/projects', l3: '/projects',
-};
 
 const CAT_HREFS: Record<string, string> = {
   writing: '/writing',
@@ -64,6 +48,7 @@ interface GraphNode {
   cat: string;
   r: number;
   color: string;
+  href: string;
   x: number; y: number;
   ax?: number; ay?: number;
   vx: number; vy: number;
@@ -71,6 +56,10 @@ interface GraphNode {
   phase: number;
   driftAmpX: number;
   driftAmpY: number;
+  wobbAmpX: number;
+  wobbAmpY: number;
+  wobbFreq: number;
+  wobbPhase: number;
   displayDX?: number;
   displayDY?: number;
 }
@@ -86,19 +75,55 @@ export interface HoverInfo {
   label: string;
   cat: string;
   kind: 'cat' | 'leaf';
+  href: string;
+}
+
+export interface LeafItem {
+  slug: string;
+  title: string;
 }
 
 interface Props {
   motion?: 'on' | 'off';
   density?: 'sparse' | 'normal' | 'dense';
   onHover?: (info: HoverInfo | null) => void;
+  writingLeaves?: LeafItem[];
+  recordLeaves?: LeafItem[];
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 const rand = (a: number, b: number) => a + Math.random() * (b - a);
 
-function buildGraph(): { nodes: GraphNode[]; edges: GraphEdge[] } {
+function makeLeafNode(
+  id: string, cat: typeof CATS[number], label: string, href: string,
+  rMin: number, rMax: number,
+): GraphNode {
+  const a = cat.angle + rand(-1.0, 1.0);
+  const dist = cat.orbit + rand(80, 260);
+  return {
+    id, kind: 'leaf', label, cat: cat.id,
+    r: rand(rMin, rMax),
+    color: cat.cssColor,
+    href,
+    x: Math.cos(a) * dist,
+    y: Math.sin(a) * dist,
+    vx: 0, vy: 0,
+    phase:     rand(0, Math.PI * 2),
+    driftAmpX: rand(0.2, 4.0),
+    driftAmpY: rand(0.3, 5.0),
+    wobbAmpX:  rand(0.2, 0.9),
+    wobbAmpY:  rand(0.2, 0.9),
+    wobbFreq:  rand(16, 30),
+    wobbPhase: rand(0, Math.PI * 2),
+    displayDX: 0, displayDY: 0,
+  };
+}
+
+function buildGraph(
+  writingLeaves: LeafItem[],
+  recordLeaves: LeafItem[],
+): { nodes: GraphNode[]; edges: GraphEdge[] } {
   const nodes: GraphNode[] = [];
 
   CATS.forEach((c) => {
@@ -108,32 +133,46 @@ function buildGraph(): { nodes: GraphNode[]; edges: GraphEdge[] } {
     nodes.push({
       id: c.id, kind: 'cat', label: c.label, cat: c.id,
       r: 30, color: c.cssColor,
+      href: CAT_HREFS[c.id],
       x: ax, y: ay, ax, ay,
       vx: 0, vy: 0,
-      phase: rand(0, Math.PI * 2),
-      driftAmpX: rand(1.6, 2.4),
-      driftAmpY: rand(2.0, 2.8),
+      phase:     rand(0, Math.PI * 2),
+      driftAmpX: rand(1.0, 2.0),
+      driftAmpY: rand(1.2, 2.2),
+      wobbAmpX:  rand(0.2, 0.5),
+      wobbAmpY:  rand(0.2, 0.5),
+      wobbFreq:  rand(16, 24),
+      wobbPhase: rand(0, Math.PI * 2),
+      displayDX: 0, displayDY: 0,
     });
   });
 
-  LEAVES.forEach((l) => {
-    const cat = CATS.find((c) => c.id === l.cat)!;
-    const a = cat.angle + rand(-0.9, 0.9);
-    const r = cat.orbit + rand(90, 220);
-    nodes.push({
-      id: l.id, kind: 'leaf', label: l.label, cat: l.cat,
-      r: rand(7, 13),
-      color: cat.cssColor,
-      x: Math.cos(a) * r, y: Math.sin(a) * r,
-      vx: 0, vy: 0,
-      phase: rand(0, Math.PI * 2),
-      driftAmpX: rand(1.2, 2.4),
-      driftAmpY: rand(1.6, 3.0),
-    });
+  const writingCat = CATS[0];
+  writingLeaves.forEach((item, i) => {
+    nodes.push(makeLeafNode(`w${i}`, writingCat, item.title, `/writing/${item.slug}`, 4, 8));
+  });
+
+  const recordCat = CATS[1];
+  recordLeaves.forEach((item, i) => {
+    nodes.push(makeLeafNode(`r${i}`, recordCat, item.title, `/record/${item.slug}`, 4, 8));
+  });
+
+  const signalCat = CATS[2];
+  SIGNAL_LEAVES.forEach((item) => {
+    nodes.push(makeLeafNode(item.id, signalCat, item.label, item.href, 5, 11));
+  });
+
+  const labsCat = CATS[3];
+  LABS_LEAVES.forEach((item) => {
+    nodes.push(makeLeafNode(item.id, labsCat, item.label, item.href, 5, 11));
   });
 
   const edges: GraphEdge[] = [];
-  LEAVES.forEach((l) => edges.push({ a: l.cat, b: l.id, kind: 'branch', len: 150 }));
+  writingLeaves.forEach((_, i) => edges.push({ a: 'writing', b: `w${i}`, kind: 'branch', len: 150 }));
+  recordLeaves.forEach((_, i)  => edges.push({ a: 'record',  b: `r${i}`, kind: 'branch', len: 150 }));
+  SIGNAL_LEAVES.forEach((l)    => edges.push({ a: 'signal',  b: l.id,    kind: 'branch', len: 150 }));
+  LABS_LEAVES.forEach((l)      => edges.push({ a: 'labs',    b: l.id,    kind: 'branch', len: 150 }));
+
   CROSS.forEach(([a, b]) => {
     const isCatRing = CATS.some((c) => c.id === a) && CATS.some((c) => c.id === b);
     edges.push({ a, b, kind: isCatRing ? 'ring' : 'cross', len: isCatRing ? 330 : 200 });
@@ -171,13 +210,20 @@ function wavyEdgePath(
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function HomeGraph({ motion = 'on', density = 'normal', onHover }: Props) {
+export default function HomeGraph({
+  motion = 'on',
+  density = 'normal',
+  onHover,
+  writingLeaves,
+  recordLeaves,
+}: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const rafRef  = useRef(0);
 
-  const [size, setSize] = useState({ w: 800, h: 700 });
-  const [, setTick] = useState(0);
-  const [hoverId, setHoverId] = useState<string | null>(null);
+  const [size, setSize]     = useState({ w: 800, h: 700 });
+  const [, setTick]         = useState(0);
+  const [hoverId, setHoverId]       = useState<string | null>(null);
+  const [clickedId, setClickedId]   = useState<string | null>(null);
   const [activeCats, setActiveCats] = useState({
     writing: true, record: true, signal: true, labs: true,
   });
@@ -185,9 +231,14 @@ export default function HomeGraph({ motion = 'on', density = 'normal', onHover }
   const dragRef = useRef({ down: false, moved: false, x: 0, y: 0, tx: 0, ty: 0 });
   const [panning, setPanning] = useState(false);
 
+  // Stable refs so useMemo deps don't change on every hover re-render
+  const writingRef = useRef(writingLeaves ?? []);
+  const recordRef  = useRef(recordLeaves ?? []);
+
   const { nodes, edges, adj } = useMemo(() => {
-    const g = buildGraph();
+    const g = buildGraph(writingRef.current, recordRef.current);
     return { nodes: g.nodes, edges: g.edges, adj: buildAdj(g.edges) };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -245,16 +296,21 @@ export default function HomeGraph({ motion = 'on', density = 'normal', onHover }
     if (!hoverId) { onHover(null); return; }
     const n = nodes.find((x) => x.id === hoverId);
     if (!n) { onHover(null); return; }
-    onHover({ id: n.id, label: n.label, cat: n.cat, kind: n.kind });
+    onHover({ id: n.id, label: n.label, cat: n.cat, kind: n.kind, href: n.href });
   }, [hoverId, nodes, onHover]);
 
-  const tRef = useRef(0);
-  const settleRef = useRef(0);
+  const tRef       = useRef(0);
+  const settleRef  = useRef(0);
+  const entryMsRef = useRef(0); // real ms elapsed since mount — drives entry fade
+
   useEffect(() => {
     let last = performance.now();
     const SETTLE_MS = 2800;
+
     const step = (now: number) => {
-      const dt = Math.min(40, now - last) / 16.6;
+      const frameDelta = now - last;
+      const dt = Math.min(40, frameDelta) / 16.6;
+      entryMsRef.current = Math.min(entryMsRef.current + frameDelta, 2000);
       last = now;
       tRef.current += dt;
       settleRef.current += dt * 16.6;
@@ -319,8 +375,14 @@ export default function HomeGraph({ motion = 'on', density = 'normal', onHover }
       if (motion !== 'off') {
         const tt = tRef.current * 0.014;
         nodes.forEach((n) => {
-          n.displayDX = Math.sin(tt + n.phase) * n.driftAmpX;
-          n.displayDY = Math.cos(tt * 0.65 + n.phase * 1.3) * n.driftAmpY;
+          // Primary slow drift (varied amplitude)
+          const dx = Math.sin(tt + n.phase) * n.driftAmpX;
+          const dy = Math.cos(tt * 0.65 + n.phase * 1.3) * n.driftAmpY;
+          // Secondary micro-wobble (high-freq, low-amp)
+          const wx = Math.sin(tt * n.wobbFreq + n.wobbPhase) * n.wobbAmpX;
+          const wy = Math.cos(tt * n.wobbFreq * 1.1 + n.wobbPhase * 0.9) * n.wobbAmpY;
+          n.displayDX = dx + wx;
+          n.displayDY = dy + wy;
         });
       } else {
         nodes.forEach((n) => { n.displayDX = 0; n.displayDY = 0; });
@@ -358,6 +420,10 @@ export default function HomeGraph({ motion = 'on', density = 'normal', onHover }
   const resetView = useCallback(() => setView({ scale: 1, tx: 0, ty: 0 }), []);
 
   const groupTransform = `translate(${cx + view.tx} ${cy + view.ty}) scale(${view.scale})`;
+
+  // Entry fade: hubs appear first, leaves materialise over ~1.5s starting at 300ms
+  const catEntryOpacity  = Math.min(1, entryMsRef.current / 400);
+  const leafEntryOpacity = Math.max(0, Math.min(1, (entryMsRef.current - 300) / 1500));
 
   return (
     <div
@@ -397,7 +463,7 @@ export default function HomeGraph({ motion = 'on', density = 'normal', onHover }
             const visible = isVisible(a) && isVisible(b);
             const hl = highlightSet ? (highlightSet.has(a.id) && highlightSet.has(b.id)) : false;
             const dim = highlightSet ? !hl : !visible;
-            const opacity = !visible ? 0.06 : dim ? 0.14 : hl ? 0.95 : 0.5;
+            const opacity = !visible ? 0.06 : dim ? 0.10 : hl ? 0.95 : 0.5;
             const stroke = e.kind === 'cross' ? '#ff5573' : '#0e1822';
             const sw = (e.kind === 'ring' ? (hl ? 2.4 : 1.6) : e.kind === 'cross' ? (hl ? 2 : 1.1) : (hl ? 1.7 : 1.0)) / Math.max(0.6, view.scale);
             const dash = e.kind === 'cross' ? '5 7' : e.kind === 'ring' ? '1 6' : 'none';
@@ -424,12 +490,18 @@ export default function HomeGraph({ motion = 'on', density = 'normal', onHover }
         <g transform={groupTransform}>
           {nodes.map((n) => {
             const visible = isVisible(n);
-            const isHover = hoverId === n.id;
+            const isHover   = hoverId  === n.id;
+            const isClicked = clickedId === n.id;
             const hl = highlightSet ? highlightSet.has(n.id) : false;
             const dim = highlightSet ? !hl : !visible;
             const x = n.x + (n.displayDX ?? 0);
             const y = n.y + (n.displayDY ?? 0);
-            const op = dim ? (n.kind === 'cat' ? 0.20 : 0.22) : 1;
+
+            // More pronounced dim contrast (was 0.22 / 0.20)
+            const dimOpacity = n.kind === 'cat' ? 0.15 : 0.07;
+            const baseOp = dim ? dimOpacity : 1;
+            const entryOp = n.kind === 'cat' ? catEntryOpacity : leafEntryOpacity;
+            const op = baseOp * entryOp;
 
             const onEnter = () => setHoverId(n.id);
             const onLeave = () => setHoverId(null);
@@ -439,8 +511,12 @@ export default function HomeGraph({ motion = 'on', density = 'normal', onHover }
               if (n.kind === 'cat') {
                 toggleCat(n.id);
               } else {
-                const href = LEAF_HREFS[n.id] ?? CAT_HREFS[n.cat] ?? '/';
-                window.location.href = href;
+                setClickedId(n.id);
+                const href = n.href;
+                setTimeout(() => {
+                  setClickedId(null);
+                  window.location.href = href;
+                }, 180);
               }
             };
 
@@ -477,7 +553,9 @@ export default function HomeGraph({ motion = 'on', density = 'normal', onHover }
               );
             }
 
-            const r = isHover ? n.r * 1.55 : n.r;
+            const r = isHover ? n.r * 1.6 : n.r;
+            const springScale = isClicked ? 1.5 : 1;
+
             return (
               <g
                 key={n.id}
@@ -487,14 +565,27 @@ export default function HomeGraph({ motion = 'on', density = 'normal', onHover }
                 onClick={onClick}
                 style={{ cursor: 'pointer', opacity: op, transition: 'opacity 0.3s ease' }}
               >
-                <circle r={r + 3} fill={n.color} opacity="0.24" filter="url(#drip)" />
-                <circle r={r}     fill={n.color} filter="url(#drip)" />
-                {isHover && (
-                  <circle r={r + 9} fill="none" stroke={n.color} strokeWidth={1.2 / view.scale} opacity="0.55">
-                    <animate attributeName="r" from={r + 3} to={r + 22} dur="1.8s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" from="0.65" to="0" dur="1.8s" repeatCount="indefinite" />
-                  </circle>
-                )}
+                {/* Inner group for click spring scale */}
+                <g style={{
+                  transform: `scale(${springScale})`,
+                  transformBox: 'fill-box',
+                  transformOrigin: 'center',
+                  transition: 'transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                }}>
+                  {/* Hover glow — larger ambient fill behind the node */}
+                  {isHover && (
+                    <circle r={r * 3.5} fill={n.color} opacity="0.14" />
+                  )}
+                  <circle r={r + 3} fill={n.color} opacity="0.28" filter="url(#drip)" />
+                  <circle r={r}     fill={n.color} filter="url(#drip)" />
+                  {/* Pulsing ring on hover */}
+                  {isHover && (
+                    <circle r={r + 9} fill="none" stroke={n.color} strokeWidth={1.4 / view.scale} opacity="0.6">
+                      <animate attributeName="r" from={r + 4} to={r + 26} dur="1.6s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" from="0.7" to="0" dur="1.6s" repeatCount="indefinite" />
+                    </circle>
+                  )}
+                </g>
               </g>
             );
           })}

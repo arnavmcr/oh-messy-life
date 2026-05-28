@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/content';
+import { getAllJournalEntries } from '@/lib/journal';
 import { getChangelogEntries } from '@/lib/changelog';
 import HomepageHero from '@/components/HomepageHero';
 
@@ -7,10 +8,13 @@ export default function HomePage() {
   const posts = getAllPosts();
   const changelog = getChangelogEntries(10);
 
+  const writingLeaves = posts.map((p) => ({ slug: p.slug, title: p.title }));
+  const recordLeaves  = getAllJournalEntries().map((e) => ({ slug: e.slug, title: e.title }));
+
   return (
     <main>
       {/* Interactive graph hero + status banner */}
-      <HomepageHero />
+      <HomepageHero writingLeaves={writingLeaves} recordLeaves={recordLeaves} />
 
       {/* ── Intro ──────────────────────────────────────────────────────── */}
       <section className="intro">
