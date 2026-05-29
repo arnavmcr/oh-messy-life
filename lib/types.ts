@@ -1,6 +1,6 @@
 export interface GigPhoto {
   id: string;             // Cloudinary public ID
-  googlePhotoId: string;  // Google Photos mediaItem.id — sync only, not exposed in UI
+  sourceFile: string;     // original filename — dedup key during sync, not exposed in UI
   thumbnailUrl: string;
   fullUrl: string;
   band: string | null;
