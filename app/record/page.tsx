@@ -11,7 +11,7 @@ function getAgeClass(year: number, newestYear: number): string {
   const delta = newestYear - year;
   if (delta === 0) return 'text-on-surface';
   if (delta === 1) return 'text-on-surface/70';
-  return 'text-on-surface/40';
+  return 'text-on-surface/60';
 }
 
 function formatIssue(n: number): string {
@@ -116,7 +116,7 @@ export default function RecordPage() {
                   className="record-row grid grid-cols-[48px_1fr] gap-4 pt-10 pb-2"
                   style={{ animationDelay: delay }}
                 >
-                  <span className="font-mono text-[9px] tracking-[3px] text-on-surface-variant/30 uppercase pt-0.5">
+                  <span className="font-mono text-[9px] tracking-[3px] text-on-surface-variant/50 uppercase pt-0.5">
                     {row.year}
                   </span>
                   <div
@@ -140,7 +140,7 @@ export default function RecordPage() {
                 style={{ animationDelay: delay }}
               >
                 {/* Issue number */}
-                <span className="record-entry-num font-mono text-[10px] text-on-surface-variant/20 transition-colors duration-200 pt-0.5">
+                <span className="record-entry-num font-mono text-[10px] text-on-surface-variant/40 transition-colors duration-200 pt-0.5">
                   {formatIssue(entry.issue)}
                 </span>
 
@@ -150,7 +150,7 @@ export default function RecordPage() {
                     {entry.title}
                   </div>
                   {sectionNames && (
-                    <div className="font-mono text-[10px] text-on-surface-variant/30 mt-1 leading-relaxed tracking-wide">
+                    <div className="font-mono text-[10px] text-on-surface-variant/50 mt-1 leading-relaxed tracking-wide">
                       {sectionNames}
                     </div>
                   )}
