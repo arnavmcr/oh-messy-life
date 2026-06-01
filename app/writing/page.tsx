@@ -1,33 +1,14 @@
 import Link from 'next/link';
-import { getPostsByCategory } from '@/lib/content';
+import { getAllPosts } from '@/lib/content';
 import { CATEGORY_MAP } from '@/lib/categories';
+import { accentText, accentBg } from '@/lib/listing-constants';
 
 export const metadata = {
   title: 'WRITING // Oh Messy Life',
   description: 'Everything written.',
 };
 
-const accentText: Record<string, string> = {
-  primary: 'text-primary',
-  secondary: 'text-secondary',
-  tertiary: 'text-tertiary',
-};
-
-const accentBg: Record<string, string> = {
-  primary: 'bg-primary',
-  secondary: 'bg-secondary',
-  tertiary: 'bg-tertiary',
-};
-
 const DISPLAY_ORDER = ['college', 'music', 'essays', 'mba', 'projects'] as const;
-
-const CATEGORY_HREFS: Record<string, string> = {
-  college: '/writing/college',
-  music: '/writing/music',
-  essays: '/writing/essays',
-  mba: '/writing/mba',
-  projects: '/writing/projects',
-};
 
 const CATEGORY_ICONS: Record<string, string> = {
   college: 'history_edu',
@@ -38,11 +19,12 @@ const CATEGORY_ICONS: Record<string, string> = {
 };
 
 export default function WritingIndexPage() {
+  const allPosts = getAllPosts();
   const categories = DISPLAY_ORDER.map((key) => ({
     key,
     config: CATEGORY_MAP[key],
-    postCount: getPostsByCategory(key).length,
-    href: CATEGORY_HREFS[key],
+    postCount: allPosts.filter((p) => p.category === key).length,
+    href: `/writing/${key}`,
     icon: CATEGORY_ICONS[key],
   }));
 

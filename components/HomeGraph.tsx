@@ -220,8 +220,7 @@ export default function HomeGraph({
   const [activeCats, setActiveCats] = useState({
     writing: true, record: true, signal: true, labs: true,
   });
-  const defaultScale = typeof window !== 'undefined' && window.innerWidth <= 640 ? 0.55 : 1;
-  const [view, setView] = useState({ scale: defaultScale, tx: 0, ty: 0 });
+  const [view, setView] = useState({ scale: 1, tx: 0, ty: 0 });
   const dragRef  = useRef({ down: false, moved: false, x: 0, y: 0, tx: 0, ty: 0 });
   const pinchRef = useRef({ active: false, dist: 0, scale: 1 });
   const [panning, setPanning] = useState(false);
@@ -255,9 +254,11 @@ export default function HomeGraph({
     ro.observe(el);
     const rect = el.getBoundingClientRect();
     setSize({ w: rect.width, h: rect.height });
+    if (rect.width <= 640) {
+      setView((v) => (v.scale === 1 ? { ...v, scale: 0.55 } : v));
+    }
     return () => ro.disconnect();
   }, []);
-
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -313,7 +314,6 @@ export default function HomeGraph({
 
   const onTouchMove = (e: React.TouchEvent) => {
     if (e.touches.length === 2) {
-      pinchRef.current.active = true;
       dragRef.current.down = false;
       const newDist = Math.hypot(
         e.touches[1].clientX - e.touches[0].clientX,
@@ -445,7 +445,10 @@ export default function HomeGraph({
     };
     stepRef.current = step;
     rafRef.current = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [nodes, edges, motion, density]);
 
+  useEffect(() => {
     const onVisibility = () => {
       if (document.hidden) {
         cancelAnimationFrame(rafRef.current);
@@ -454,12 +457,8 @@ export default function HomeGraph({
       }
     };
     document.addEventListener('visibilitychange', onVisibility);
-
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      document.removeEventListener('visibilitychange', onVisibility);
-    };
-  }, [nodes, edges, nodeMap, motion, density]);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, []);
 
   const cx = size.w / 2;
   const cy = size.h / 2;
