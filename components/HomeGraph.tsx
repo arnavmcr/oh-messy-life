@@ -212,6 +212,7 @@ export default function HomeGraph({
   const wrapRef  = useRef<HTMLDivElement>(null);
   const rafRef   = useRef(0);
   const stepRef  = useRef<FrameRequestCallback>(() => {});
+  const viewRef  = useRef({ scale: 1, tx: 0, ty: 0 });
 
   const [size, setSize]     = useState({ w: 800, h: 700 });
   const [, setTick]         = useState(0);
@@ -221,6 +222,7 @@ export default function HomeGraph({
     writing: true, record: true, signal: true, labs: true,
   });
   const [view, setView] = useState({ scale: 1, tx: 0, ty: 0 });
+  viewRef.current = view;
   const dragRef  = useRef({ down: false, moved: false, x: 0, y: 0, tx: 0, ty: 0 });
   const pinchRef = useRef({ active: false, dist: 0, scale: 1 });
   const [panning, setPanning] = useState(false);
@@ -300,20 +302,22 @@ export default function HomeGraph({
   const onTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 1) {
       const t = e.touches[0];
-      dragRef.current = { down: true, moved: false, x: t.clientX, y: t.clientY, tx: view.tx, ty: view.ty };
+      const v = viewRef.current;
+      dragRef.current = { down: true, moved: false, x: t.clientX, y: t.clientY, tx: v.tx, ty: v.ty };
       pinchRef.current.active = false;
     } else if (e.touches.length === 2) {
       const dist = Math.hypot(
         e.touches[1].clientX - e.touches[0].clientX,
         e.touches[1].clientY - e.touches[0].clientY,
       );
-      pinchRef.current = { active: true, dist, scale: view.scale };
+      pinchRef.current = { active: true, dist, scale: viewRef.current.scale };
       dragRef.current.down = false;
     }
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
     if (e.touches.length === 2) {
+      if (!pinchRef.current.active || pinchRef.current.dist === 0) return;
       dragRef.current.down = false;
       const newDist = Math.hypot(
         e.touches[1].clientX - e.touches[0].clientX,
@@ -336,10 +340,17 @@ export default function HomeGraph({
     }
   };
 
-  const onTouchEnd = () => {
-    dragRef.current.down = false;
+  const onTouchEnd = (e: React.TouchEvent) => {
     pinchRef.current.active = false;
-    setPanning(false);
+    if (e.touches.length === 1) {
+      // One finger still down — re-arm for pan from its current position
+      const t = e.touches[0];
+      const v = viewRef.current;
+      dragRef.current = { down: true, moved: false, x: t.clientX, y: t.clientY, tx: v.tx, ty: v.ty };
+    } else {
+      dragRef.current.down = false;
+      setPanning(false);
+    }
   };
 
   useEffect(() => {
@@ -502,7 +513,7 @@ export default function HomeGraph({
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
-      onTouchCancel={onTouchEnd}
+      onTouchCancel={() => { pinchRef.current.active = false; dragRef.current.down = false; setPanning(false); }}
     >
       <svg
         className="graph"
