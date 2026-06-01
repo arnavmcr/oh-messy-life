@@ -169,17 +169,17 @@ status: published
 - [x] `app/music/page.tsx` — THE SIGNAL landing page with links to sub-sections
 - [x] Library rewrite — not needed. External app has `base href="/music/"`, page file handles `/music`, rewrite handles `/music/:path*` sub-routes. No config change required.
 
-### 3a — Gig Archive `[ COMPLETE ✓ ]`
-- [x] `lib/types.ts` — `GigPhoto` interface
-- [x] `lib/gig-utils.ts` — title parser
-- [x] `scripts/sync-gig-photos.ts` — Google Photos → Cloudinary sync
-- [x] `scripts/get-google-token.ts` — one-time OAuth helper
-- [x] `app/music/gig-archive/page.tsx` — Server Component page
-- [x] `components/GigArchive.tsx` — filters + photo grid
-- [x] `components/GigLightbox.tsx` — lightbox with keyboard nav
+### 3a — Gig Archive `[ V1 LIVE ✓ ]`
+
+**V1 (shipped 2026-06-01):** Polaroid wall from Google Photos CDN URLs. Bypassed Cloudinary sync entirely — 238 base URLs in `lib/gig-photos.ts`, plain `<img>` with `=w600-h600-c` / `=w1920-h1080` transforms. No new dependencies, `next.config.ts` untouched.
+- [x] `lib/gig-photos.ts` — 238 Google Photos CDN base URLs + `thumbUrl` / `fullUrl` helpers
+- [x] `components/GigPolaroidWall.tsx` — polaroid card grid, deterministic rotation, tape/scan effects, group-hover grayscale-to-colour
+- [x] `app/music/gig-archive/page.tsx` — Server Component page (replaced empty grid)
+- [x] `lib/copy.ts` — added `COPY.signal.gigArchive.tagline`
 - [x] `components/Nav.tsx` — Gig Archive link enabled
 - [x] `app/music/page.tsx` — Gig Archive card active
-- [ ] Run sync script with real credentials to populate manifest
+
+**Cloudinary pipeline (preserved, deferred):** `GigArchive.tsx`, `GigLightbox.tsx`, `scripts/sync-gig-photos.ts`, and `content/gig-archive.json` are untouched and ready for a V2 upgrade with filters + lightbox when the sync script is run with real credentials.
 
 ### 3b — T-shirt Archive `[ PLANNED ]`
 - `app/music/tshirt-archive/page.tsx`

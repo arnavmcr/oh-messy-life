@@ -1,5 +1,11 @@
 [
   {
+    "date": "2026-06-01",
+    "type": "SIGNAL",
+    "description": "gig archive is live — 238 photos, 20 years of live music",
+    "href": "/music/gig-archive"
+  },
+  {
     "date": "2026-05-27",
     "type": "SITE",
     "description": "rebranded the whole thingi — fog, waves, a new font",
