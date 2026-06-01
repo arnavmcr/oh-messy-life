@@ -30,3 +30,10 @@ next-env.d.ts
 # Logs
 *.log
 .worktrees
+
+# Local archives
+_archives/
+
+# Gig photo sync — local working dirs, never committed
+gig-photos-incoming/
+gig-photos-processed/

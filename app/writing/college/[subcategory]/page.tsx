@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getPostsBySubcategory } from '@/lib/content';
 import { CATEGORY_MAP } from '@/lib/categories';
 import ArticleCard from '@/components/ArticleCard';
+import { rotations, variants, accentBorder, accentText, accentBg } from '@/lib/listing-constants';
 
 interface Props {
   params: Promise<{ subcategory: string }>;
@@ -23,29 +24,6 @@ export async function generateMetadata({ params }: Props) {
     description: config.tagline || `College writing — ${config.label}`,
   };
 }
-
-const rotations = ['-1deg', '2deg', '-0.5deg', '1.5deg', '0deg'];
-const variants: ('featured' | 'compact' | 'default')[] = [
-  'featured', 'compact', 'default', 'compact', 'featured',
-];
-
-const accentBorder: Record<string, string> = {
-  primary: 'border-primary',
-  secondary: 'border-secondary',
-  tertiary: 'border-tertiary',
-};
-
-const accentText: Record<string, string> = {
-  primary: 'text-primary',
-  secondary: 'text-secondary',
-  tertiary: 'text-tertiary',
-};
-
-const accentBg: Record<string, string> = {
-  primary: 'bg-primary',
-  secondary: 'bg-secondary',
-  tertiary: 'bg-tertiary',
-};
 
 export default async function SubcategoryPage({ params }: Props) {
   const { subcategory } = await params;

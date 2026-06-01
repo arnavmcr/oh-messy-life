@@ -118,7 +118,7 @@ function makeLeafNode(
 function buildGraph(
   writingLeaves: LeafItem[],
   recordLeaves: LeafItem[],
-): { nodes: GraphNode[]; edges: GraphEdge[] } {
+): { nodes: GraphNode[]; edges: GraphEdge[]; nodeMap: Map<string, GraphNode> } {
   const nodes: GraphNode[] = [];
 
   CATS.forEach((c) => {
@@ -168,7 +168,8 @@ function buildGraph(
   SIGNAL_LEAVES.forEach((l)    => edges.push({ a: 'signal',  b: l.id,    kind: 'branch', len: 150 }));
   LABS_LEAVES.forEach((l)      => edges.push({ a: 'labs',    b: l.id,    kind: 'branch', len: 150 }));
 
-  return { nodes, edges };
+  const nodeMap = new Map<string, GraphNode>(nodes.map((n) => [n.id, n]));
+  return { nodes, edges, nodeMap };
 }
 
 function buildAdj(edges: GraphEdge[]): Map<string, Set<string>> {
@@ -208,8 +209,10 @@ export default function HomeGraph({
   recordLeaves,
   tagEdges = [],
 }: Props) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const rafRef  = useRef(0);
+  const wrapRef  = useRef<HTMLDivElement>(null);
+  const rafRef   = useRef(0);
+  const stepRef  = useRef<FrameRequestCallback>(() => {});
+  const viewRef  = useRef({ scale: 1, tx: 0, ty: 0 });
 
   const [size, setSize]     = useState({ w: 800, h: 700 });
   const [, setTick]         = useState(0);
@@ -219,7 +222,9 @@ export default function HomeGraph({
     writing: true, record: true, signal: true, labs: true,
   });
   const [view, setView] = useState({ scale: 1, tx: 0, ty: 0 });
-  const dragRef = useRef({ down: false, moved: false, x: 0, y: 0, tx: 0, ty: 0 });
+  viewRef.current = view;
+  const dragRef  = useRef({ down: false, moved: false, x: 0, y: 0, tx: 0, ty: 0 });
+  const pinchRef = useRef({ active: false, dist: 0, scale: 1 });
   const [panning, setPanning] = useState(false);
 
   // Stable refs so useMemo deps don't change on every hover re-render
@@ -227,7 +232,7 @@ export default function HomeGraph({
   const recordRef  = useRef(recordLeaves ?? []);
   const tagEdgesRef = useRef(tagEdges);
 
-  const { nodes, edges, adj, tagAdj } = useMemo(() => {
+  const { nodes, edges, adj, tagAdj, nodeMap } = useMemo(() => {
     const g = buildGraph(writingRef.current, recordRef.current);
     const te: GraphEdge[] = tagEdgesRef.current.map(([a, b]) => ({ a, b, kind: 'tag', len: 220 }));
     const allEdges = [...g.edges, ...te];
@@ -236,6 +241,7 @@ export default function HomeGraph({
       edges: allEdges,
       adj: buildAdj(g.edges),
       tagAdj: buildAdj(te),
+      nodeMap: g.nodeMap,
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -250,6 +256,9 @@ export default function HomeGraph({
     ro.observe(el);
     const rect = el.getBoundingClientRect();
     setSize({ w: rect.width, h: rect.height });
+    if (rect.width <= 640) {
+      setView((v) => (v.scale === 1 ? { ...v, scale: 0.55 } : v));
+    }
     return () => ro.disconnect();
   }, []);
 
@@ -290,13 +299,67 @@ export default function HomeGraph({
   };
   const onPointerUp = () => { dragRef.current.down = false; setPanning(false); };
 
+  const onTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      const t = e.touches[0];
+      const v = viewRef.current;
+      dragRef.current = { down: true, moved: false, x: t.clientX, y: t.clientY, tx: v.tx, ty: v.ty };
+      pinchRef.current.active = false;
+    } else if (e.touches.length === 2) {
+      const dist = Math.hypot(
+        e.touches[1].clientX - e.touches[0].clientX,
+        e.touches[1].clientY - e.touches[0].clientY,
+      );
+      pinchRef.current = { active: true, dist, scale: viewRef.current.scale };
+      dragRef.current.down = false;
+    }
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      if (!pinchRef.current.active || pinchRef.current.dist === 0) return;
+      dragRef.current.down = false;
+      const newDist = Math.hypot(
+        e.touches[1].clientX - e.touches[0].clientX,
+        e.touches[1].clientY - e.touches[0].clientY,
+      );
+      const ratio = newDist / pinchRef.current.dist;
+      const newScale = Math.max(0.4, Math.min(3, pinchRef.current.scale * ratio));
+      setView((v) => ({ ...v, scale: newScale }));
+    } else if (e.touches.length === 1 && !pinchRef.current.active && dragRef.current.down) {
+      const t = e.touches[0];
+      const dx = t.clientX - dragRef.current.x;
+      const dy = t.clientY - dragRef.current.y;
+      if (!dragRef.current.moved && Math.hypot(dx, dy) > 4) {
+        dragRef.current.moved = true;
+        setPanning(true);
+      }
+      if (dragRef.current.moved) {
+        setView((v) => ({ ...v, tx: dragRef.current.tx + dx, ty: dragRef.current.ty + dy }));
+      }
+    }
+  };
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    pinchRef.current.active = false;
+    if (e.touches.length === 1) {
+      // One finger still down — re-arm for pan from its current position
+      const t = e.touches[0];
+      const v = viewRef.current;
+      dragRef.current = { down: true, moved: false, x: t.clientX, y: t.clientY, tx: v.tx, ty: v.ty };
+    } else {
+      dragRef.current.down = false;
+      setPanning(false);
+    }
+  };
+
   useEffect(() => {
     if (!onHover) return;
     if (!hoverId) { onHover(null); return; }
-    const n = nodes.find((x) => x.id === hoverId);
+    const n = nodeMap.get(hoverId);
     if (!n) { onHover(null); return; }
     onHover({ id: n.id, label: n.label, cat: n.cat, kind: n.kind, href: n.href });
-  }, [hoverId, nodes, onHover]);
+  }, [hoverId, nodeMap, onHover]);
 
   const tRef       = useRef(0);
   const settleRef  = useRef(0);
@@ -338,8 +401,8 @@ export default function HomeGraph({
           }
         }
         edges.forEach((e) => {
-          const a = nodes.find((n) => n.id === e.a);
-          const b = nodes.find((n) => n.id === e.b);
+          const a = nodeMap.get(e.a);
+          const b = nodeMap.get(e.b);
           if (!a || !b) return;
           const dx = b.x - a.x, dy = b.y - a.y;
           const d = Math.sqrt(dx * dx + dy * dy) || 0.01;
@@ -391,9 +454,22 @@ export default function HomeGraph({
       setTick((k) => (k + 1) % 1e9);
       rafRef.current = requestAnimationFrame(step);
     };
+    stepRef.current = step;
     rafRef.current = requestAnimationFrame(step);
     return () => cancelAnimationFrame(rafRef.current);
   }, [nodes, edges, motion, density]);
+
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafRef.current);
+      } else {
+        rafRef.current = requestAnimationFrame(stepRef.current);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, []);
 
   const cx = size.w / 2;
   const cy = size.h / 2;
@@ -434,6 +510,10 @@ export default function HomeGraph({
       onMouseMove={onPointerMove}
       onMouseUp={onPointerUp}
       onMouseLeave={onPointerUp}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+      onTouchCancel={() => { pinchRef.current.active = false; dragRef.current.down = false; setPanning(false); }}
     >
       <svg
         className="graph"
@@ -458,8 +538,8 @@ export default function HomeGraph({
         {/* edges */}
         <g transform={groupTransform} fill="none" filter="url(#wave-edge)">
           {edges.map((e, i) => {
-            const a = nodes.find((n) => n.id === e.a);
-            const b = nodes.find((n) => n.id === e.b);
+            const a = nodeMap.get(e.a);
+            const b = nodeMap.get(e.b);
             if (!a || !b) return null;
             const visible = isVisible(a) && isVisible(b);
             const hl = highlightSet ? (highlightSet.has(a.id) && highlightSet.has(b.id)) : false;

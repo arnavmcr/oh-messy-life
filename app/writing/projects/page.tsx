@@ -5,30 +5,30 @@ import ArticleCard from '@/components/ArticleCard';
 import { rotations, variants, accentBorder, accentText, accentBg } from '@/lib/listing-constants';
 
 export const metadata = {
-  title: 'COLLEGE // Oh Messy Life',
-  description: 'Writing from undergrad. Unpolished. Kept anyway.',
+  title: 'PROJECTS // Oh Messy Life',
+  description: 'Writing about things I built.',
 };
 
-export default function CollegePage() {
-  const posts = getPostsByCategory('college');
-  const config = CATEGORY_MAP.college;
+export default function ProjectsPage() {
+  const posts = getPostsByCategory('projects');
+  const config = CATEGORY_MAP.projects;
   const accent = config.accentColor ?? 'primary';
 
   return (
     <main className="relative min-h-screen pt-24 pb-32 px-6 md:px-12 max-w-7xl mx-auto overflow-hidden">
       {/* Background scribbles */}
-      <div className="absolute top-40 right-10 text-secondary/10 pointer-events-none -rotate-12">
-        <span className="material-symbols-outlined text-[200px]">history_edu</span>
+      <div className="absolute top-40 right-10 text-primary/10 pointer-events-none -rotate-12">
+        <span className="material-symbols-outlined text-[200px]">code</span>
       </div>
-      <div className="absolute bottom-20 left-0 text-primary/5 pointer-events-none rotate-45 scale-150">
-        <span className="material-symbols-outlined text-[300px]">school</span>
+      <div className="absolute bottom-20 left-0 text-secondary/5 pointer-events-none rotate-45 scale-150">
+        <span className="material-symbols-outlined text-[300px]">terminal</span>
       </div>
 
       {/* Breadcrumb */}
       <div className="font-mono text-[10px] tracking-[0.3em] text-on-surface-variant mb-6 flex items-center gap-2">
         <Link href="/writing" className="hover:text-primary transition-colors">WRITING</Link>
         <span>/</span>
-        <span className={accentText[accent]}>COLLEGE</span>
+        <span className={accentText[accent]}>PROJECTS</span>
       </div>
 
       {/* Page Header */}
@@ -36,11 +36,11 @@ export default function CollegePage() {
         <div className={`flex flex-col md:flex-row md:items-end justify-between gap-4 border-l-8 ${accentBorder[accent]} pl-6 py-2`}>
           <div>
             <div className="font-mono text-[10px] tracking-[0.3em] text-on-surface-variant mb-2">
-              CATEGORY: COLLEGE // ERA: 2014–2019
+              CATEGORY: PROJECTS
             </div>
             <h1 className="font-headline font-black text-6xl md:text-8xl tracking-tighter uppercase leading-none italic">
               THE{' '}
-              <span className={`${accentText[accent]} ink-bleed`}>COLLEGE</span>
+              <span className={`${accentText[accent]} ink-bleed`}>PROJECTS</span>
               _<br />
               ARCHIVE
             </h1>
@@ -54,46 +54,13 @@ export default function CollegePage() {
         <div className={`absolute -bottom-10 left-0 w-full h-8 ${accentBg[accent]} clip-path-drip opacity-20`} />
       </div>
 
-      {/* Personality zone */}
-      {(config.tagline || (config.postIts && config.postIts.length > 0)) && (
-        <div className="relative mt-16 mb-8 flex flex-wrap items-start gap-6">
-          {config.tagline && (
-            <p className="font-headline italic text-2xl md:text-3xl text-on-surface-variant max-w-lg">
-              {config.tagline}
-            </p>
-          )}
-          {config.postIts?.map((note, i) => (
-            <div
-              key={i}
-              className={`scribble-circle px-4 py-2 font-mono text-xs font-bold ${accentText[accent]} whitespace-nowrap`}
-              style={{ transform: `rotate(${note.rotation})` }}
-            >
-              {note.text}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Subcategory pills */}
-      <div className="flex flex-wrap gap-3 mb-16 mt-4">
-        {Object.entries(config.subcategories).map(([key, sub]) => (
-          <Link
-            key={key}
-            href={`/writing/college/${key}`}
-            className={`font-mono text-[10px] tracking-widest uppercase px-4 py-2 border border-current ${accentText[sub.accentColor ?? accent]} hover:${accentBg[sub.accentColor ?? accent]} hover:text-white transition-colors`}
-          >
-            {sub.label}
-          </Link>
-        ))}
-      </div>
-
       {/* Article Grid */}
       {posts.length === 0 ? (
         <div className="font-body italic text-stone-400">
           nothing here yet.
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 relative z-10 mt-16">
           {posts.map((post, i) => (
             <ArticleCard
               key={post.slug}

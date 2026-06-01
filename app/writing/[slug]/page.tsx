@@ -8,8 +8,11 @@ import Link from 'next/link';
 import ArticleCard from '@/components/ArticleCard';
 import ReadingPill from '@/components/ReadingPill';
 
+// Categories with dedicated static pages — exclude from dynamic [slug] params
+const DEDICATED_CATEGORY_ROUTES = new Set(['college', 'music', 'mba', 'essays', 'projects']);
+
 export async function generateStaticParams() {
-  const categorySlugs = Object.keys(CATEGORY_MAP).filter(k => k !== 'college');
+  const categorySlugs = Object.keys(CATEGORY_MAP).filter(k => !DEDICATED_CATEGORY_ROUTES.has(k));
   const articleSlugs = getAllSlugs();
   return [...new Set([...categorySlugs, ...articleSlugs])].map(slug => ({ slug }));
 }

@@ -19,12 +19,12 @@ const mdxComponents = {
     </h3>
   ),
   h4: ({ children }: { children?: React.ReactNode }) => (
-    <h4 className="font-headline text-sm font-semibold uppercase tracking-widest mb-2 mt-4 text-on-surface-variant">
+    <h4 className="font-headline text-base font-semibold uppercase tracking-widest mb-2 mt-4 text-on-surface-variant">
       {children}
     </h4>
   ),
   p: ({ children }: { children?: React.ReactNode }) => (
-    <p className="font-body text-on-surface leading-relaxed mb-4">{children}</p>
+    <p className="font-body text-base text-on-surface leading-relaxed mb-4">{children}</p>
   ),
   blockquote: ({ children }: { children?: React.ReactNode }) => (
     <blockquote className="border-l-4 border-primary pl-4 my-6 font-headline text-lg font-medium leading-snug text-on-surface">
@@ -147,7 +147,7 @@ export default async function EntryPage({ params }: { params: Promise<{ slug: st
   const formattedDate = formatEntryDate(entry.date);
 
   return (
-    <main className="min-h-screen pt-12 pb-32 px-6 md:px-12 max-w-2xl mx-auto">
+    <main className="min-h-screen pt-12 pb-32 px-6 md:px-12 max-w-3xl mx-auto">
 
       {/* ── Entry Header ─────────────────────────────────────────────── */}
       <header className="mb-16 border-b-2 border-primary pb-8">
