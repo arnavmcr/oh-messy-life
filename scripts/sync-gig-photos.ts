@@ -21,6 +21,7 @@ import type { GigPhoto } from '../lib/types';
 const MANIFEST_PATH = path.join(process.cwd(), 'content', 'gig-archive.json');
 const INCOMING_DIR = path.join(process.cwd(), 'gig-photos-incoming');
 const PROCESSED_DIR = path.join(process.cwd(), 'gig-photos-processed');
+const SKIPPED_DIR = path.join(process.cwd(), 'gig-videos-skipped');
 const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.heic', '.webp']);
 
 const missing = ['CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET']
@@ -53,16 +54,24 @@ async function main() {
   }
 
   ensureDir(PROCESSED_DIR);
+  ensureDir(SKIPPED_DIR);
 
   const manifest = loadManifest();
   const existingFiles = new Set(manifest.map((p) => p.sourceFile));
 
   console.log(`[INFO] Loaded manifest: ${manifest.length} existing photos`);
 
-  const allFiles = fs.readdirSync(INCOMING_DIR).filter((f) => {
-    const ext = path.extname(f).toLowerCase();
-    return IMAGE_EXTENSIONS.has(ext) && !f.startsWith('.');
-  });
+  // Move non-image files (videos, Live Photo motion files) out of incoming immediately
+  const allIncoming = fs.readdirSync(INCOMING_DIR).filter((f) => !f.startsWith('.'));
+  const skipped = allIncoming.filter((f) => !IMAGE_EXTENSIONS.has(path.extname(f).toLowerCase()));
+  for (const f of skipped) {
+    fs.renameSync(path.join(INCOMING_DIR, f), path.join(SKIPPED_DIR, f));
+  }
+  if (skipped.length > 0) {
+    console.log(`[SKIP] ${skipped.length} non-image files moved to gig-videos-skipped/`);
+  }
+
+  const allFiles = allIncoming.filter((f) => IMAGE_EXTENSIONS.has(path.extname(f).toLowerCase()));
 
   const limitArg = process.argv.find((a) => a.startsWith('--limit='));
   const limit = limitArg ? parseInt(limitArg.split('=')[1], 10) : Infinity;
@@ -76,11 +85,19 @@ async function main() {
     return;
   }
 
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // Cloudinary free plan hard limit
+
   for (const filename of newFiles) {
     const filePath = path.join(INCOMING_DIR, filename);
     const title = path.basename(filename, path.extname(filename));
     const parsed = parseGigTitle(title);
     const folder = `gig-archive/${parsed.year ?? 'unknown'}`;
+
+    const fileSizeMB = (fs.statSync(filePath).size / 1024 / 1024).toFixed(1);
+    if (fs.statSync(filePath).size > MAX_FILE_SIZE) {
+      console.log(`[SKIP] "${filename}" — too large (${fileSizeMB}MB, Cloudinary free plan max is 10MB)`);
+      continue;
+    }
 
     let cloudinaryId: string;
     try {
@@ -88,6 +105,7 @@ async function main() {
         folder,
         resource_type: 'image',
         use_filename: false,
+        timeout: 120000,
       });
       cloudinaryId = result.public_id;
     } catch (err) {
@@ -110,8 +128,10 @@ async function main() {
 
     manifest.push(photo);
 
-    // Move to processed — keeps incoming clean and makes idempotency robust even if the
-    // manifest write fails partway through a large batch (re-running picks up only the remainder)
+    // Write manifest after each upload so a crash/kill doesn't orphan successful uploads
+    fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2));
+
+    // Move to processed — keeps incoming clean and makes idempotency robust
     fs.renameSync(filePath, path.join(PROCESSED_DIR, filename));
 
     if (parsed.band) {
@@ -121,7 +141,6 @@ async function main() {
     }
   }
 
-  fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2));
   console.log(`[OK] Manifest updated — total: ${manifest.length} photos`);
 }
 
