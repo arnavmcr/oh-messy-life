@@ -9,14 +9,10 @@ interface Props {
 }
 
 export default function GigPolaroidWall({ photos }: Props) {
-  if (photos.length === 0) {
-    return <div className="columns-2 md:columns-3 lg:columns-4 gap-6" />;
-  }
-
   return (
     <div className="columns-2 md:columns-3 lg:columns-4 gap-6">
       {photos.map((base, index) => {
-        const rotation = ROTATIONS[index % 7];
+        const rotation = ROTATIONS[index % ROTATIONS.length];
         const hasTape = index % 4 === 0;
         const hasScanLine = index % 7 === 3;
 
@@ -25,19 +21,24 @@ export default function GigPolaroidWall({ photos }: Props) {
             key={base}
             href={fullUrl(base)}
             target="_blank"
-            rel="noopener"
-            className={`block break-inside-avoid mb-6 cursor-pointer hover:z-10 transition-all duration-300 hover:scale-105 ${hasTape ? 'tape-effect' : ''}`}
-            style={{ transform: `rotate(${rotation}deg)` }}
+            rel="noopener noreferrer"
+            className="group block break-inside-avoid mb-6 hover:z-10 hover:scale-105 transition-all duration-300"
           >
-            <div className="bg-white dark:bg-[#f0ece4] shadow-md p-2 pb-8 relative">
-              <img
-                src={thumbUrl(base)}
-                alt=""
-                width={600}
-                height={600}
-                className={`w-full object-cover grayscale hover:grayscale-0 transition-all duration-500 ${hasScanLine ? 'scan-line' : ''}`}
-                loading="lazy"
-              />
+            <div
+              className={`relative ${hasTape ? 'tape-effect' : ''}`}
+              style={{ transform: `rotate(${rotation}deg)` }}
+            >
+              <div className="bg-white dark:bg-paper shadow-md p-2 pb-8">
+                <img
+                  src={thumbUrl(base)}
+                  alt=""
+                  width={600}
+                  height={600}
+                  className={`w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 ${hasScanLine ? 'scan-line' : ''}`}
+                  loading="lazy"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+              </div>
             </div>
           </a>
         );

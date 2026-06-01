@@ -37,18 +37,15 @@ export default function GigArchivePage() {
 
       {/* Stats strip */}
       <div className="mt-12 font-mono text-xs uppercase tracking-widest opacity-50 text-center">
-        2006 – 2026 · ARNAV&apos;S LIVE MUSIC · {GIG_PHOTOS.length} PHOTOS
+        2006 – PRESENT · ARNAV&apos;S LIVE MUSIC · {GIG_PHOTOS.length} PHOTOS
       </div>
 
-      {/* Back link */}
-      <div className="mt-8 text-center">
-        <Link
-          href="/music"
-          className="font-mono text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
-        >
-          ← Back to The Signal
-        </Link>
-      </div>
+      <Link
+        href="/music"
+        className="block mt-8 text-center font-mono text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
+      >
+        ← Back to The Signal
+      </Link>
 
     </main>
   );
