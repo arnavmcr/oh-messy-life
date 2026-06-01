@@ -261,6 +261,7 @@ body::before {
   background: transparent;
   cursor: grab;
   user-select: none;
+  touch-action: none;
 }
 .graph-stage.panning { cursor: grabbing; }
 .graph-stage svg.graph {
@@ -345,6 +346,15 @@ body::before {
 }
 .legend-item.dim { opacity: 0.4; }
 .legend-item .sw { width: 8px; height: 8px; border-radius: 50%; }
+
+@media (max-width: 640px) {
+  .graph-legend {
+    right: auto;
+    bottom: auto;
+    left: 16px;
+    top: 16px;
+  }
+}
 
 /* ─── Intro section ──────────────────────────────────────────────────────── */
 .intro {
