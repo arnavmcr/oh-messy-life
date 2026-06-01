@@ -69,6 +69,7 @@ export const COPY = {
       label:       'THE GIG ARCHIVE',
       heading:     'GIG ARCHIVE',
       description: 'Live shows, documented.',
+      tagline:     '20 years of live music, photographed.',
     },
     tshirtArchive: {
       label:       'THE T-SHIRT ARCHIVE',

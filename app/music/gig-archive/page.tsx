@@ -1,51 +1,55 @@
 import type { Metadata } from 'next';
-import * as fs from 'fs';
-import * as path from 'path';
-import type { GigPhoto } from '@/lib/types';
-import GigArchive from '@/components/GigArchive';
+import Link from 'next/link';
+import { COPY } from '@/lib/copy';
+import { GIG_PHOTOS } from '@/lib/gig-photos';
+import GigPolaroidWall from '@/components/GigPolaroidWall';
 
 export const metadata: Metadata = {
   title: 'Gig Archive — THE SIGNAL',
-  description: 'Photos from gigs, festivals, and shows.',
+  description: COPY.signal.gigArchive.tagline,
 };
 
-const MANIFEST_PATH = path.join(process.cwd(), 'content', 'gig-archive.json');
-
-function loadManifest(): GigPhoto[] {
-  if (!fs.existsSync(MANIFEST_PATH)) return [];
-  try {
-    return JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf-8')) as GigPhoto[];
-  } catch {
-    return [];
-  }
-}
-
 export default function GigArchivePage() {
-  const photos = loadManifest();
-
-  const nonNullYears = photos.map((p) => p.year).filter((y): y is number => y !== null);
-  const yearRange = nonNullYears.length > 0
-    ? `${Math.min(...nonNullYears)}–${Math.max(...nonNullYears)}`
-    : '—';
-
-  const stats = {
-    totalPhotos: photos.length,
-    yearRange,
-    uniqueArtists: new Set(photos.map((p) => p.band).filter(Boolean)).size,
-    uniqueEvents: new Set(photos.map((p) => p.event).filter(Boolean)).size,
-    uniqueCities: new Set(photos.map((p) => p.city).filter(Boolean)).size,
-  };
-
-  const filterOptions = {
-    years: [...new Set(nonNullYears)].sort((a, b) => b - a),
-    bands: [...new Set(photos.map((p) => p.band).filter((b): b is string => b !== null))].sort(),
-    events: [...new Set(photos.map((p) => p.event).filter((e): e is string => e !== null))].sort(),
-    cities: [...new Set(photos.map((p) => p.city).filter((c): c is string => c !== null))].sort(),
-  };
-
   return (
     <main className="max-w-7xl mx-auto px-4 py-16">
-      <GigArchive photos={photos} stats={stats} filterOptions={filterOptions} />
+
+      {/* Metadata strip */}
+      <div className="flex items-center gap-3 mb-6">
+        <span className="font-mono text-[10px] uppercase tracking-widest opacity-50">
+          {COPY.signal.eyebrow} / GIG ARCHIVE
+        </span>
+        <span className="stamp-green font-mono text-[9px] uppercase tracking-widest font-bold">
+          ACTIVE
+        </span>
+      </div>
+
+      {/* Header */}
+      <h1 className="font-headline text-5xl font-black uppercase">
+        {COPY.signal.gigArchive.heading}
+      </h1>
+      <div className="h-1 w-24 bg-primary my-4" />
+      <p className="font-body italic opacity-70 mb-12">
+        {COPY.signal.gigArchive.tagline}
+      </p>
+
+      {/* Polaroid wall */}
+      <GigPolaroidWall photos={GIG_PHOTOS} />
+
+      {/* Stats strip */}
+      <div className="mt-12 font-mono text-xs uppercase tracking-widest opacity-50 text-center">
+        2006 – 2026 · ARNAV&apos;S LIVE MUSIC · {GIG_PHOTOS.length} PHOTOS
+      </div>
+
+      {/* Back link */}
+      <div className="mt-8 text-center">
+        <Link
+          href="/music"
+          className="font-mono text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
+        >
+          ← Back to The Signal
+        </Link>
+      </div>
+
     </main>
   );
 }
