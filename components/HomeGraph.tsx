@@ -562,14 +562,14 @@ export default function HomeGraph({
                   {/* Pulsing ring on hover */}
                   {isHover && (
                     <circle r={r + 9} fill="none" stroke={n.color} strokeWidth={1.4 / view.scale} opacity="0.6">
-                      <animate attributeName="r" from={r + 4} to={r + 26} dur="1.6s" repeatCount="indefinite" />
+                      <animate attributeName="r" from={r + 9} to={r + 26} dur="1.6s" repeatCount="indefinite" />
                       <animate attributeName="opacity" from="0.7" to="0" dur="1.6s" repeatCount="indefinite" />
                     </circle>
                   )}
                   {/* Label at zoom threshold */}
                   {view.scale >= LABEL_THRESHOLD && (
                     <text
-                      y={n.r + 14}
+                      y={r + 14}
                       textAnchor="middle"
                       fontFamily="var(--font-mono-stack)"
                       fontSize={10 / view.scale}
