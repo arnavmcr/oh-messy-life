@@ -94,6 +94,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 | `components/Nav.tsx` | Site navigation (update when adding new routes) |
 | `scripts/import-wp.ts` | Reference implementation for migration scripts |
 | `ROADMAP.md` | Canonical product roadmap — update when milestones complete |
+| `docs/solutions/` | Documented solutions to past problems (bugs, best practices, patterns), organised by category with YAML frontmatter (`module`, `tags`, `problem_type`) |
 
 ## Do not
 

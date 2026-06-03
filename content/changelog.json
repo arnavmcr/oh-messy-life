@@ -1,5 +1,11 @@
 [
   {
+    "date": "2026-06-03",
+    "type": "SITE",
+    "description": "the graph is a constellation now — flat nodes, labels on zoom, smoother on mobile",
+    "href": "/"
+  },
+  {
     "date": "2026-06-01",
     "type": "SIGNAL",
     "description": "gig archive is live — 238 photos, 20 years of live music",

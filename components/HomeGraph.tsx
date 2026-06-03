@@ -5,45 +5,34 @@ import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 // ── Static data ───────────────────────────────────────────────────────────────
 
 const CATS = [
-  { id: 'writing', label: 'WRITING', cssColor: '#ff5573', orbit: 230, angle: -Math.PI / 2 },
-  { id: 'record',  label: 'RECORD',  cssColor: '#9b7fff', orbit: 230, angle: 0 },
-  { id: 'signal',  label: 'SIGNAL',  cssColor: '#5fc1a2', orbit: 230, angle: Math.PI / 2 },
-  { id: 'labs',    label: 'LABS',    cssColor: '#e87a3a', orbit: 230, angle: Math.PI },
+  { id: 'writing', label: 'WRITING', cssColor: '#ff5573' },
+  { id: 'record',  label: 'RECORD',  cssColor: '#9b7fff' },
+  { id: 'signal',  label: 'SIGNAL',  cssColor: '#5fc1a2' },
 ] as const;
 
-const SIGNAL_LEAVES = [
-  { id: 's1', label: 'The Library — 8 records', href: '/music/index.html' },
-  { id: 's2', label: 'Gig archive',             href: '/music/gig-archive' },
-  { id: 's3', label: 'T-shirt archive',         href: '/music' },
-  { id: 's4', label: 'Boiler Room Bengaluru',   href: '/music' },
-  { id: 's5', label: 'Awestrung @ Bluefrog',    href: '/music' },
-];
-
-const LABS_LEAVES = [
-  { id: 'l1', label: 'jhoola.world',     href: '/projects' },
-  { id: 'l2', label: 'koi',              href: '/projects' },
-  { id: 'l3', label: 'Mosh pit anatomy', href: '/projects' },
-];
-
-const CAT_HREFS: Record<string, string> = {
-  writing: '/writing',
-  record: '/record',
-  signal: '/music',
-  labs: '/projects',
+const CAT_ANGLES: Record<string, number> = {
+  writing: -Math.PI / 2,
+  record: 0,
+  signal: Math.PI / 2,
 };
+
+const SIGNAL_LEAVES = [
+  { id: 's1', label: 'The Library', href: '/music/index.html' },
+  { id: 's2', label: 'Gig Archive', href: '/music/gig-archive' },
+];
+
+const LABEL_THRESHOLD = 1.5;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 interface GraphNode {
   id: string;
-  kind: 'cat' | 'leaf';
   label: string;
   cat: string;
   r: number;
   color: string;
   href: string;
   x: number; y: number;
-  ax?: number; ay?: number;
   vx: number; vy: number;
   fx?: number; fy?: number;
   phase: number;
@@ -67,7 +56,6 @@ export interface HoverInfo {
   id: string;
   label: string;
   cat: string;
-  kind: 'cat' | 'leaf';
   href: string;
 }
 
@@ -94,10 +82,10 @@ function makeLeafNode(
   id: string, cat: typeof CATS[number], label: string, href: string,
   rMin: number, rMax: number,
 ): GraphNode {
-  const a = cat.angle + rand(-1.0, 1.0);
-  const dist = cat.orbit + rand(80, 260);
+  const a = CAT_ANGLES[cat.id] + rand(-1.6, 1.6);
+  const dist = rand(40, 300);
   return {
-    id, kind: 'leaf', label, cat: cat.id,
+    id, label, cat: cat.id,
     r: rand(rMin, rMax),
     color: cat.cssColor,
     href,
@@ -121,27 +109,6 @@ function buildGraph(
 ): { nodes: GraphNode[]; edges: GraphEdge[]; nodeMap: Map<string, GraphNode> } {
   const nodes: GraphNode[] = [];
 
-  CATS.forEach((c) => {
-    const a = c.angle + rand(-0.03, 0.03);
-    const ax = Math.cos(a) * c.orbit;
-    const ay = Math.sin(a) * c.orbit;
-    nodes.push({
-      id: c.id, kind: 'cat', label: c.label, cat: c.id,
-      r: 30, color: c.cssColor,
-      href: CAT_HREFS[c.id],
-      x: ax, y: ay, ax, ay,
-      vx: 0, vy: 0,
-      phase:     rand(0, Math.PI * 2),
-      driftAmpX: rand(1.0, 2.0),
-      driftAmpY: rand(1.2, 2.2),
-      wobbAmpX:  rand(0.2, 0.5),
-      wobbAmpY:  rand(0.2, 0.5),
-      wobbFreq:  rand(16, 24),
-      wobbPhase: rand(0, Math.PI * 2),
-      displayDX: 0, displayDY: 0,
-    });
-  });
-
   const writingCat = CATS[0];
   writingLeaves.forEach((item, i) => {
     nodes.push(makeLeafNode(`w${i}`, writingCat, item.title, `/writing/${item.slug}`, 4, 8));
@@ -157,16 +124,7 @@ function buildGraph(
     nodes.push(makeLeafNode(item.id, signalCat, item.label, item.href, 5, 11));
   });
 
-  const labsCat = CATS[3];
-  LABS_LEAVES.forEach((item) => {
-    nodes.push(makeLeafNode(item.id, labsCat, item.label, item.href, 5, 11));
-  });
-
   const edges: GraphEdge[] = [];
-  writingLeaves.forEach((_, i) => edges.push({ a: 'writing', b: `w${i}`, kind: 'branch', len: 150 }));
-  recordLeaves.forEach((_, i)  => edges.push({ a: 'record',  b: `r${i}`, kind: 'branch', len: 150 }));
-  SIGNAL_LEAVES.forEach((l)    => edges.push({ a: 'signal',  b: l.id,    kind: 'branch', len: 150 }));
-  LABS_LEAVES.forEach((l)      => edges.push({ a: 'labs',    b: l.id,    kind: 'branch', len: 150 }));
 
   const nodeMap = new Map<string, GraphNode>(nodes.map((n) => [n.id, n]));
   return { nodes, edges, nodeMap };
@@ -209,32 +167,34 @@ export default function HomeGraph({
   recordLeaves,
   tagEdges = [],
 }: Props) {
-  const wrapRef  = useRef<HTMLDivElement>(null);
-  const rafRef   = useRef(0);
-  const stepRef  = useRef<FrameRequestCallback>(() => {});
-  const viewRef  = useRef({ scale: 1, tx: 0, ty: 0 });
+  const wrapRef      = useRef<HTMLDivElement>(null);
+  const rafRef       = useRef(0);
+  const stepRef      = useRef<FrameRequestCallback>(() => {});
+  const viewRef      = useRef({ scale: 1, tx: 0, ty: 0 });
+  const sizeRef      = useRef({ w: 800, h: 700 });
+  const frameSkipRef = useRef(0);
 
-  const [size, setSize]     = useState({ w: 800, h: 700 });
-  const [, setTick]         = useState(0);
-  const [hoverId, setHoverId]       = useState<string | null>(null);
-  const [clickedId, setClickedId]   = useState<string | null>(null);
-  const [activeCats, setActiveCats] = useState({
-    writing: true, record: true, signal: true, labs: true,
-  });
-  const [view, setView] = useState({ scale: 1, tx: 0, ty: 0 });
-  viewRef.current = view;
+  const [size, setSize]               = useState({ w: 800, h: 700 });
+  const [, setTick]                   = useState(0);
+  const [hoverId, setHoverId]         = useState<string | null>(null);
+  const [clickedId, setClickedId]     = useState<string | null>(null);
+  const [activeCats, setActiveCats]   = useState({ writing: true, record: true, signal: true });
+  const [view, setView]               = useState({ scale: 1, tx: 0, ty: 0 });
+  viewRef.current  = view;
+  sizeRef.current  = size;
+
   const dragRef  = useRef({ down: false, moved: false, x: 0, y: 0, tx: 0, ty: 0 });
   const pinchRef = useRef({ active: false, dist: 0, scale: 1 });
   const [panning, setPanning] = useState(false);
 
   // Stable refs so useMemo deps don't change on every hover re-render
-  const writingRef = useRef(writingLeaves ?? []);
-  const recordRef  = useRef(recordLeaves ?? []);
+  const writingRef  = useRef(writingLeaves ?? []);
+  const recordRef   = useRef(recordLeaves ?? []);
   const tagEdgesRef = useRef(tagEdges);
 
   const { nodes, edges, adj, tagAdj, nodeMap } = useMemo(() => {
     const g = buildGraph(writingRef.current, recordRef.current);
-    const te: GraphEdge[] = tagEdgesRef.current.map(([a, b]) => ({ a, b, kind: 'tag', len: 220 }));
+    const te: GraphEdge[] = tagEdgesRef.current.map(([a, b]) => ({ a, b, kind: 'tag' as const, len: 220 }));
     const allEdges = [...g.edges, ...te];
     return {
       nodes: g.nodes,
@@ -343,7 +303,6 @@ export default function HomeGraph({
   const onTouchEnd = (e: React.TouchEvent) => {
     pinchRef.current.active = false;
     if (e.touches.length === 1) {
-      // One finger still down — re-arm for pan from its current position
       const t = e.touches[0];
       const v = viewRef.current;
       dragRef.current = { down: true, moved: false, x: t.clientX, y: t.clientY, tx: v.tx, ty: v.ty };
@@ -358,7 +317,7 @@ export default function HomeGraph({
     if (!hoverId) { onHover(null); return; }
     const n = nodeMap.get(hoverId);
     if (!n) { onHover(null); return; }
-    onHover({ id: n.id, label: n.label, cat: n.cat, kind: n.kind, href: n.href });
+    onHover({ id: n.id, label: n.label, cat: n.cat, href: n.href });
   }, [hoverId, nodeMap, onHover]);
 
   const tRef       = useRef(0);
@@ -367,91 +326,95 @@ export default function HomeGraph({
 
   useEffect(() => {
     let last = performance.now();
-    const SETTLE_MS = 2800;
 
     const step = (now: number) => {
+      const isMobile  = sizeRef.current.w < 640;
+      const SETTLE_MS = isMobile ? 1400 : 2800;
+
+      frameSkipRef.current++;
+      const shouldUpdate = !isMobile || frameSkipRef.current % 2 === 0;
+
       const frameDelta = now - last;
       const dt = Math.min(40, frameDelta) / 16.6;
-      entryMsRef.current = Math.min(entryMsRef.current + frameDelta, 2000);
+      entryMsRef.current  = Math.min(entryMsRef.current + frameDelta, 2000);
+      settleRef.current  += dt * 16.6; // advance in wall ms regardless of frame skip
       last = now;
-      tRef.current += dt;
-      settleRef.current += dt * 16.6;
+
       const settling = settleRef.current < SETTLE_MS;
 
-      if (settling) {
-        const k_rep    = density === 'sparse' ? 1900 : density === 'dense' ? 950 : 1350;
-        const k_spring = 0.020;
-        const k_anchor = 0.04;
-        const k_center = 0.0010;
-        const damping  = 0.82;
-        const maxSpeed = 4.0;
+      if (shouldUpdate) {
+        tRef.current += dt;
 
-        for (let i = 0; i < nodes.length; i++) { nodes[i].fx = 0; nodes[i].fy = 0; }
-        for (let i = 0; i < nodes.length; i++) {
-          for (let j = i + 1; j < nodes.length; j++) {
-            const a = nodes[i], b = nodes[j];
-            const dx = b.x - a.x, dy = b.y - a.y;
-            const d2 = dx * dx + dy * dy + 0.01;
-            const d  = Math.sqrt(d2);
-            if (d > 380) continue;
-            const f = k_rep / d2;
-            const fx = (dx / d) * f, fy = (dy / d) * f;
-            a.fx! -= fx; a.fy! -= fy;
-            b.fx! += fx; b.fy! += fy;
+        if (settling) {
+          const k_rep    = density === 'sparse' ? 1900 : density === 'dense' ? 950 : 1350;
+          const k_spring = 0.020;
+          const k_center = 0.0010;
+          const damping  = 0.82;
+          const maxSpeed = 4.0;
+
+          for (let i = 0; i < nodes.length; i++) { nodes[i].fx = 0; nodes[i].fy = 0; }
+          for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+              const a = nodes[i], b = nodes[j];
+              const dx = b.x - a.x, dy = b.y - a.y;
+              const d2 = dx * dx + dy * dy + 0.01;
+              const d  = Math.sqrt(d2);
+              if (d > 380) continue;
+              const f = k_rep / d2;
+              const fx = (dx / d) * f, fy = (dy / d) * f;
+              a.fx! -= fx; a.fy! -= fy;
+              b.fx! += fx; b.fy! += fy;
+            }
           }
-        }
-        edges.forEach((e) => {
-          const a = nodeMap.get(e.a);
-          const b = nodeMap.get(e.b);
-          if (!a || !b) return;
-          const dx = b.x - a.x, dy = b.y - a.y;
-          const d = Math.sqrt(dx * dx + dy * dy) || 0.01;
-          const ks = e.kind === 'tag' ? k_spring * 0.05 : k_spring;
-          const f = (d - e.len) * ks;
-          const fx = (dx / d) * f, fy = (dy / d) * f;
-          a.fx! += fx; a.fy! += fy;
-          b.fx! -= fx; b.fy! -= fy;
-        });
-        for (let i = 0; i < nodes.length; i++) {
-          const n = nodes[i];
-          if (n.kind === 'cat') {
-            n.fx! += (n.ax! - n.x) * k_anchor;
-            n.fy! += (n.ay! - n.y) * k_anchor;
-          } else {
+          edges.forEach((e) => {
+            const a = nodeMap.get(e.a);
+            const b = nodeMap.get(e.b);
+            if (!a || !b) return;
+            const dx = b.x - a.x, dy = b.y - a.y;
+            const d = Math.sqrt(dx * dx + dy * dy) || 0.01;
+            const ks = e.kind === 'tag' ? k_spring * 0.05 : k_spring;
+            const f = (d - e.len) * ks;
+            const fx = (dx / d) * f, fy = (dy / d) * f;
+            a.fx! += fx; a.fy! += fy;
+            b.fx! -= fx; b.fy! -= fy;
+          });
+          for (let i = 0; i < nodes.length; i++) {
+            const n = nodes[i];
             n.fx! += -n.x * k_center;
             n.fy! += -n.y * k_center;
           }
+          for (let i = 0; i < nodes.length; i++) {
+            const n = nodes[i];
+            n.vx = (n.vx + n.fx! * dt) * damping;
+            n.vy = (n.vy + n.fy! * dt) * damping;
+            const sp = Math.sqrt(n.vx * n.vx + n.vy * n.vy);
+            if (sp > maxSpeed) { n.vx = n.vx / sp * maxSpeed; n.vy = n.vy / sp * maxSpeed; }
+            n.x += n.vx * dt;
+            n.y += n.vy * dt;
+          }
+        } else {
+          for (let i = 0; i < nodes.length; i++) { nodes[i].vx = 0; nodes[i].vy = 0; }
         }
-        for (let i = 0; i < nodes.length; i++) {
-          const n = nodes[i];
-          n.vx = (n.vx + n.fx! * dt) * damping;
-          n.vy = (n.vy + n.fy! * dt) * damping;
-          const sp = Math.sqrt(n.vx * n.vx + n.vy * n.vy);
-          if (sp > maxSpeed) { n.vx = n.vx / sp * maxSpeed; n.vy = n.vy / sp * maxSpeed; }
-          n.x += n.vx * dt;
-          n.y += n.vy * dt;
+
+        if (motion !== 'off') {
+          const tt = tRef.current * 0.014;
+          nodes.forEach((n) => {
+            // Primary slow drift (varied amplitude)
+            const dx = Math.sin(tt + n.phase) * n.driftAmpX;
+            const dy = Math.cos(tt * 0.65 + n.phase * 1.3) * n.driftAmpY;
+            // Secondary micro-wobble (high-freq, low-amp)
+            const wx = Math.sin(tt * n.wobbFreq + n.wobbPhase) * n.wobbAmpX;
+            const wy = Math.cos(tt * n.wobbFreq * 1.1 + n.wobbPhase * 0.9) * n.wobbAmpY;
+            n.displayDX = dx + wx;
+            n.displayDY = dy + wy;
+          });
+        } else {
+          nodes.forEach((n) => { n.displayDX = 0; n.displayDY = 0; });
         }
-      } else {
-        for (let i = 0; i < nodes.length; i++) { nodes[i].vx = 0; nodes[i].vy = 0; }
+
+        setTick((k) => (k + 1) % 1e9);
       }
 
-      if (motion !== 'off') {
-        const tt = tRef.current * 0.014;
-        nodes.forEach((n) => {
-          // Primary slow drift (varied amplitude)
-          const dx = Math.sin(tt + n.phase) * n.driftAmpX;
-          const dy = Math.cos(tt * 0.65 + n.phase * 1.3) * n.driftAmpY;
-          // Secondary micro-wobble (high-freq, low-amp)
-          const wx = Math.sin(tt * n.wobbFreq + n.wobbPhase) * n.wobbAmpX;
-          const wy = Math.cos(tt * n.wobbFreq * 1.1 + n.wobbPhase * 0.9) * n.wobbAmpY;
-          n.displayDX = dx + wx;
-          n.displayDY = dy + wy;
-        });
-      } else {
-        nodes.forEach((n) => { n.displayDX = 0; n.displayDY = 0; });
-      }
-
-      setTick((k) => (k + 1) % 1e9);
       rafRef.current = requestAnimationFrame(step);
     };
     stepRef.current = step;
@@ -498,9 +461,13 @@ export default function HomeGraph({
 
   const groupTransform = `translate(${cx + view.tx} ${cy + view.ty}) scale(${view.scale})`;
 
-  // Entry fade: hubs appear first, leaves materialise over ~1.5s starting at 300ms
-  const catEntryOpacity  = Math.min(1, entryMsRef.current / 400);
-  const leafEntryOpacity = Math.max(0, Math.min(1, (entryMsRef.current - 300) / 1500));
+  // Single-wave entry fade over 1.2 s
+  const entryOpacity = Math.min(1, entryMsRef.current / 1200);
+
+  // Mobile: omit expensive SVG displacement filters
+  const isMobile   = size.w < 640;
+  const filterDrip = isMobile ? undefined : 'url(#drip)';
+  const filterWave = isMobile ? undefined : 'url(#wave-edge)';
 
   return (
     <div
@@ -536,7 +503,7 @@ export default function HomeGraph({
         </defs>
 
         {/* edges */}
-        <g transform={groupTransform} fill="none" filter="url(#wave-edge)">
+        <g transform={groupTransform} fill="none" filter={filterWave}>
           {edges.map((e, i) => {
             const a = nodeMap.get(e.a);
             const b = nodeMap.get(e.b);
@@ -571,72 +538,33 @@ export default function HomeGraph({
         {/* nodes */}
         <g transform={groupTransform}>
           {nodes.map((n) => {
-            const visible = isVisible(n);
-            const isHover   = hoverId  === n.id;
+            const visible   = isVisible(n);
+            const isHover   = hoverId   === n.id;
             const isClicked = clickedId === n.id;
-            const hl = highlightSet ? highlightSet.has(n.id) : false;
+            const hl  = highlightSet ? highlightSet.has(n.id) : false;
             const dim = highlightSet ? !hl : !visible;
             const x = n.x + (n.displayDX ?? 0);
             const y = n.y + (n.displayDY ?? 0);
 
-            // More pronounced dim contrast (was 0.22 / 0.20)
-            const dimOpacity = n.kind === 'cat' ? 0.15 : 0.07;
-            const baseOp = dim ? dimOpacity : 1;
-            const entryOp = n.kind === 'cat' ? catEntryOpacity : leafEntryOpacity;
-            const op = baseOp * entryOp;
+            const baseOp = dim ? 0.08 : 1;
+            const op = baseOp * entryOpacity;
 
             const onEnter = () => setHoverId(n.id);
             const onLeave = () => setHoverId(null);
             const onClick = (e: React.MouseEvent) => {
               if (dragRef.current.moved) return;
               e.stopPropagation();
-              if (n.kind === 'cat') {
-                toggleCat(n.id);
-              } else {
-                setClickedId(n.id);
-                const href = n.href;
-                setTimeout(() => {
-                  setClickedId(null);
-                  window.location.href = href;
-                }, 180);
-              }
+              setClickedId(n.id);
+              const href = n.href;
+              setTimeout(() => {
+                setClickedId(null);
+                window.location.href = href;
+              }, 180);
             };
 
-            if (n.kind === 'cat') {
-              return (
-                <g
-                  key={n.id}
-                  transform={`translate(${x} ${y})`}
-                  onMouseEnter={onEnter}
-                  onMouseLeave={onLeave}
-                  onClick={onClick}
-                  style={{ cursor: 'pointer', opacity: op, transition: 'opacity 0.3s ease' }}
-                >
-                  {isHover && (
-                    <circle r={n.r + 18} fill="none" stroke={n.color} strokeWidth={1.2 / view.scale} strokeDasharray="3 5" opacity="0.5">
-                      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="22s" repeatCount="indefinite" />
-                    </circle>
-                  )}
-                  <circle r={n.r + 7} fill={n.color} opacity="0.22" filter="url(#drip-strong)" />
-                  <circle r={n.r}     fill={n.color} filter="url(#drip)" />
-                  <text
-                    y={n.r + 26}
-                    textAnchor="middle"
-                    fontFamily="'Geist', 'Inter', system-ui, sans-serif"
-                    fontWeight="700"
-                    fontSize="13"
-                    letterSpacing="3"
-                    fill="#0e1822"
-                    style={{ pointerEvents: 'none' }}
-                  >
-                    {n.label}
-                  </text>
-                </g>
-              );
-            }
-
-            const r = isHover ? n.r * 1.6 : n.r;
+            const r           = isHover ? n.r * 1.6 : n.r;
             const springScale = isClicked ? 1.5 : 1;
+            const labelText   = n.label.length > 24 ? n.label.slice(0, 22) + '…' : n.label;
 
             return (
               <g
@@ -658,14 +586,28 @@ export default function HomeGraph({
                   {isHover && (
                     <circle r={r * 3.5} fill={n.color} opacity="0.14" />
                   )}
-                  <circle r={r + 3} fill={n.color} opacity="0.28" filter="url(#drip)" />
-                  <circle r={r}     fill={n.color} filter="url(#drip)" />
+                  <circle r={r + 3} fill={n.color} opacity="0.28" filter={filterDrip} />
+                  <circle r={r}     fill={n.color} filter={filterDrip} />
                   {/* Pulsing ring on hover */}
                   {isHover && (
                     <circle r={r + 9} fill="none" stroke={n.color} strokeWidth={1.4 / view.scale} opacity="0.6">
                       <animate attributeName="r" from={r + 4} to={r + 26} dur="1.6s" repeatCount="indefinite" />
                       <animate attributeName="opacity" from="0.7" to="0" dur="1.6s" repeatCount="indefinite" />
                     </circle>
+                  )}
+                  {/* Label at zoom threshold */}
+                  {view.scale >= LABEL_THRESHOLD && (
+                    <text
+                      y={n.r + 14}
+                      textAnchor="middle"
+                      fontFamily="var(--font-mono-stack)"
+                      fontSize={10 / view.scale}
+                      opacity="0.65"
+                      fill="currentColor"
+                      style={{ pointerEvents: 'none' }}
+                    >
+                      {labelText}
+                    </text>
                   )}
                 </g>
               </g>

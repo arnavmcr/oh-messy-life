@@ -145,6 +145,17 @@ status: published
 - [x] Category pages for `projects`, `mba`, `essays`, `music` — `[slug]/page.tsx` now dual-purpose: detects category keys and renders listing view, otherwise renders article
 - [x] Writing dropdown hover gap fixed — replaced CSS `group-hover` with JS state + 150ms close delay
 
+### Milestone 1.9 — Hero graph: flat constellation ✓ `2026-06-03`
+- [x] Hub nodes removed — graph is now a flat leaf-only constellation
+- [x] SIGNAL_LEAVES trimmed to 2 valid entries; LABS_LEAVES and `CAT_HREFS` deleted (LABS returns when `/projects` ships)
+- [x] `GraphNode.kind`, `ax`, `ay` removed — no conditional branches in physics or render hot path
+- [x] `makeLeafNode` spread widened: angle `rand(-1.6, 1.6)`, distance `rand(40, 300)`
+- [x] Physics: `k_anchor` force deleted; all nodes get uniform weak center pull
+- [x] Entry animation collapsed to single 1.2s opacity fade (was 2-speed hubs-then-leaves)
+- [x] Labels at zoom ≥ 1.5×, scale-normalised font (`10 / view.scale`), truncated at 22 chars
+- [x] Mobile: SVG `feDisplacementMap` filters gated off below 640px; 30fps frame-skip; 1.4s settle
+- [x] Legend trimmed to 3 chips — WRITING, RECORD, SIGNAL
+
 ---
 
 ## Phase 2 — Labs (Projects) `[ PLANNED ]`
@@ -232,3 +243,7 @@ status: published
 | 2026-03-24 | Homepage changelog: hybrid auto-derived + manual, terminal feed aesthetic | Auto-derives WRITING/RECORD entries from content files; manual `changelog.json` for SITE entries; pure Server Component, no client JS; 10 entries below hero |
 | 2026-03-25 | SIGNAL nav: plain `<a>` for `/music/index.html` (not Next.js `<Link>`) | Avoids prefetch of the external library app; drop-in rewrite handles the proxy, no config change needed |
 | 2026-03-29 | Reading pill extracted to `ReadingPill.tsx` client component | Enables Web Share API + clipboard fallback for share, localStorage text-size preference, localStorage bookmark toggle |
+| 2026-06-03 | Hero graph: hub nodes removed, flat constellation | Hub-spoke topology fought the constellation aesthetic; toggle-on-hub-click was non-obvious; LABS nodes all linked to `/projects` (unbuilt route) |
+| 2026-06-03 | Hero graph: `GraphNode.kind` discriminant deleted | Its only consumers were `k_anchor` physics branch and hub render split — removing it cleaned all three simultaneously |
+| 2026-06-03 | Hero graph: labels at zoom ≥ 1.5× with `10 / view.scale` normalised font | Orientation without persistent visual clutter; scale-normalised size keeps labels consistent at any zoom |
+| 2026-06-03 | Hero graph: SVG filter gating + 30fps frame-skip on mobile | `feDisplacementMap` exceeds 16ms budget on mobile; frame-skip keeps gesture loop at native fps without a canvas rewrite |
