@@ -464,10 +464,14 @@ export default function HomeGraph({
   // Single-wave entry fade over 1.2 s
   const entryOpacity = Math.min(1, entryMsRef.current / 1200);
 
-  // Mobile: omit expensive SVG displacement filters
+  // Mobile and high-zoom: omit expensive SVG displacement filters.
+  // At >180% zoom the feTurbulence+feDisplacementMap work area scales quadratically;
+  // 60 filter ops/frame (30 nodes × 2 circles) can't complete within 16 ms, collapsing
+  // frame rate below the wobble frequency and producing uncontrolled flicker.
   const isMobile   = size.w < 640;
-  const filterDrip = isMobile ? undefined : 'url(#drip)';
-  const filterWave = isMobile ? undefined : 'url(#wave-edge)';
+  const highZoom   = view.scale > 1.8;
+  const filterDrip = (isMobile || highZoom) ? undefined : 'url(#drip)';
+  const filterWave = (isMobile || highZoom) ? undefined : 'url(#wave-edge)';
 
   return (
     <div
