@@ -452,7 +452,6 @@ export default function HomeGraph({
   // Single-wave entry fade over 1.2 s
   const entryOpacity = Math.min(1, entryMsRef.current / 1200);
 
-  const filterDrip = undefined;
   const filterWave = undefined;
 
   return (
@@ -570,10 +569,14 @@ export default function HomeGraph({
                 }}>
                   {/* Hover glow — larger ambient fill behind the node */}
                   {isHover && (
-                    <circle r={r * 3.5} fill={n.color} opacity="0.14" />
+                    <circle r={r * 3.5} fill={n.color} opacity="0.22" />
                   )}
-                  <circle r={r + 3} fill={n.color} opacity="0.28" filter={filterDrip} />
-                  <circle r={r}     fill={n.color} filter={filterDrip} />
+                  {/* Outer ambient halo — brand color, soft glow */}
+                  <circle r={r * 4} fill={n.color} opacity="0.18" />
+                  {/* Inner core — bright paper fill */}
+                  <circle r={r} fill="var(--paper)" opacity="0.92" />
+                  {/* Hot-point highlight */}
+                  <circle r={r * 0.35} fill="white" opacity="0.7" />
                   {/* Pulsing ring on hover */}
                   {isHover && (
                     <circle r={r + 9} fill="none" stroke={n.color} strokeWidth={1.4 / view.scale} opacity="0.6">
