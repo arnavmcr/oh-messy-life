@@ -38,10 +38,6 @@ interface GraphNode {
   phase: number;
   driftAmpX: number;
   driftAmpY: number;
-  wobbAmpX: number;
-  wobbAmpY: number;
-  wobbFreq: number;
-  wobbPhase: number;
   displayDX?: number;
   displayDY?: number;
 }
@@ -93,12 +89,8 @@ function makeLeafNode(
     y: Math.sin(a) * dist,
     vx: 0, vy: 0,
     phase:     rand(0, Math.PI * 2),
-    driftAmpX: rand(0.2, 4.0),
-    driftAmpY: rand(0.3, 5.0),
-    wobbAmpX:  rand(0.2, 0.9),
-    wobbAmpY:  rand(0.2, 0.9),
-    wobbFreq:  rand(16, 30),
-    wobbPhase: rand(0, Math.PI * 2),
+    driftAmpX: rand(0.2, 2.0),
+    driftAmpY: rand(0.3, 2.5),
     displayDX: 0, displayDY: 0,
   };
 }
@@ -399,14 +391,10 @@ export default function HomeGraph({
         if (motion !== 'off') {
           const tt = tRef.current * 0.014;
           nodes.forEach((n) => {
-            // Primary slow drift (varied amplitude)
             const dx = Math.sin(tt + n.phase) * n.driftAmpX;
             const dy = Math.cos(tt * 0.65 + n.phase * 1.3) * n.driftAmpY;
-            // Secondary micro-wobble (high-freq, low-amp)
-            const wx = Math.sin(tt * n.wobbFreq + n.wobbPhase) * n.wobbAmpX;
-            const wy = Math.cos(tt * n.wobbFreq * 1.1 + n.wobbPhase * 0.9) * n.wobbAmpY;
-            n.displayDX = dx + wx;
-            n.displayDY = dy + wy;
+            n.displayDX = dx;
+            n.displayDY = dy;
           });
         } else {
           nodes.forEach((n) => { n.displayDX = 0; n.displayDY = 0; });
@@ -464,14 +452,8 @@ export default function HomeGraph({
   // Single-wave entry fade over 1.2 s
   const entryOpacity = Math.min(1, entryMsRef.current / 1200);
 
-  // Mobile and high-zoom: omit expensive SVG displacement filters.
-  // At >180% zoom the feTurbulence+feDisplacementMap work area scales quadratically;
-  // 60 filter ops/frame (30 nodes × 2 circles) can't complete within 16 ms, collapsing
-  // frame rate below the wobble frequency and producing uncontrolled flicker.
-  const isMobile   = size.w < 640;
-  const highZoom   = view.scale > 1.8;
-  const filterDrip = (isMobile || highZoom) ? undefined : 'url(#drip)';
-  const filterWave = (isMobile || highZoom) ? undefined : 'url(#wave-edge)';
+  const filterDrip = undefined;
+  const filterWave = undefined;
 
   return (
     <div
