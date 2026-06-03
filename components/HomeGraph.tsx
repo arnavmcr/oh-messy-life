@@ -91,7 +91,6 @@ function makeLeafNode(
     phase:     rand(0, Math.PI * 2),
     driftAmpX: rand(0.2, 2.0),
     driftAmpY: rand(0.3, 2.5),
-    displayDX: 0, displayDY: 0,
   };
 }
 
@@ -452,8 +451,6 @@ export default function HomeGraph({
   // Single-wave entry fade over 1.2 s
   const entryOpacity = Math.min(1, entryMsRef.current / 1200);
 
-  const filterWave = undefined;
-
   return (
     <div
       className={`graph-stage ${panning ? 'panning' : ''}`}
@@ -472,23 +469,8 @@ export default function HomeGraph({
         viewBox={`0 0 ${size.w} ${size.h}`}
         preserveAspectRatio="xMidYMid meet"
       >
-        <defs>
-          <filter id="drip" x="-30%" y="-30%" width="160%" height="160%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="3" result="t" />
-            <feDisplacementMap in="SourceGraphic" in2="t" scale="3.0" />
-          </filter>
-          <filter id="drip-strong" x="-30%" y="-30%" width="160%" height="160%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="6" result="t" />
-            <feDisplacementMap in="SourceGraphic" in2="t" scale="6" />
-          </filter>
-          <filter id="wave-edge" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="1" seed="9" result="t" />
-            <feDisplacementMap in="SourceGraphic" in2="t" scale="1.0" />
-          </filter>
-        </defs>
-
         {/* edges */}
-        <g transform={groupTransform} fill="none" filter={filterWave}>
+        <g transform={groupTransform} fill="none">
           {edges.map((e, i) => {
             const a = nodeMap.get(e.a);
             const b = nodeMap.get(e.b);
@@ -571,8 +553,8 @@ export default function HomeGraph({
                   {isHover && (
                     <circle r={r * 3.5} fill={n.color} opacity="0.22" />
                   )}
-                  {/* Outer ambient halo — brand color, soft glow */}
-                  <circle r={r * 4} fill={n.color} opacity="0.18" />
+                  {/* Outer ambient halo — brand color, soft glow (suppressed on hover; hover glow takes over) */}
+                  {!isHover && <circle r={r * 4} fill={n.color} opacity="0.18" />}
                   {/* Inner core — bright paper fill */}
                   <circle r={r} fill="var(--paper)" opacity="0.92" />
                   {/* Hot-point highlight */}
