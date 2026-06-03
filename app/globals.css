@@ -89,6 +89,37 @@
   --banner-height: 38px;
 }
 
+/* ─── Dark mode palette ──────────────────────────────────────────────────── */
+.dark {
+  /* Direct CSS vars used by body, nav, etc. */
+  --paper:      #1a1612;
+  --paper-warm: #221d18;
+  --paper-cool: #1e1c1a;
+  --ink:        #e8e0d5;
+  --ink-soft:   #cfc7bc;
+  --bone:       #2a2420;
+
+  /* Tailwind token overrides */
+  --color-paper:                   #1a1612;
+  --color-paper-warm:              #221d18;
+  --color-paper-cool:              #1e1c1a;
+  --color-ink:                     #e8e0d5;
+  --color-ink-soft:                #cfc7bc;
+  --color-bone:                    #2a2420;
+  --color-surface:                 #221d18;
+  --color-surface-dim:             #161310;
+  --color-surface-container:       #2a2420;
+  --color-surface-container-low:   #252018;
+  --color-surface-container-high:  #30291f;
+  --color-surface-container-highest:#352e24;
+  --color-on-surface:              #e8e0d5;
+  --color-on-surface-variant:      #b0a89e;
+  --color-outline:                 #6a6258;
+  --color-outline-variant:         #3a3530;
+  --color-secondary-container:     #2d2540;
+  --color-primary-container:       #3d1e27;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
@@ -111,6 +142,16 @@ body::after {
     radial-gradient(120% 70% at 80% 0%,   color-mix(in oklab, var(--coral) 16%, transparent), transparent 60%),
     radial-gradient(100% 60% at 10% 100%, color-mix(in oklab, var(--violet) 13%, transparent), transparent 65%);
   mix-blend-mode: multiply;
+}
+
+.dark body::after {
+  mix-blend-mode: screen;
+  opacity: 0.5;
+}
+
+.dark body::before {
+  mix-blend-mode: overlay;
+  opacity: 0.18;
 }
 
 /* Film grain */

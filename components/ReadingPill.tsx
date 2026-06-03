@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import Link from 'next/link';
 
 const SIZE_CYCLE = ['normal', 'large', 'small'] as const;
@@ -21,15 +22,16 @@ export default function ReadingPill({ slug, title }: ReadingPillProps) {
   const [textSize, setTextSize] = useState<TextSize>('normal');
   const [bookmarked, setBookmarked] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
 
-  // Restore state from localStorage on mount
   useEffect(() => {
+    setMounted(true);
     const saved = localStorage.getItem('reading-text-size') as TextSize | null;
     if (saved && SIZE_CYCLE.includes(saved)) {
       setTextSize(saved);
       applyTextSize(saved);
     }
-
     const bookmarks: string[] = JSON.parse(localStorage.getItem('bookmarks') ?? '[]');
     setBookmarked(bookmarks.includes(slug));
   }, [slug]);
@@ -45,6 +47,10 @@ export default function ReadingPill({ slug, title }: ReadingPillProps) {
     setTextSize(next);
     applyTextSize(next);
     localStorage.setItem('reading-text-size', next);
+  }
+
+  function toggleTheme() {
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
   }
 
   async function handleShare() {
@@ -71,11 +77,13 @@ export default function ReadingPill({ slug, title }: ReadingPillProps) {
     setBookmarked(!bookmarked);
   }
 
+  const isDark = mounted && resolvedTheme === 'dark';
+
   return (
     <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
       <div className="bg-white/80 dark:bg-black/80 backdrop-blur-xl px-6 py-3 rounded-full flex items-center gap-8 shadow-[0_20px_40px_rgba(0,0,0,0.08)] border border-white/20 dark:border-white/10">
 
-        {/* Text size + contrast */}
+        {/* Text size + theme toggle */}
         <div className="flex items-center gap-4 border-r border-stone-200 dark:border-stone-700 pr-8">
           <button
             onClick={cycleTextSize}
@@ -87,8 +95,17 @@ export default function ReadingPill({ slug, title }: ReadingPillProps) {
               <span className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-primary" />
             )}
           </button>
-          <button aria-hidden="true" tabIndex={-1} className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors">
-            <span className="material-symbols-outlined text-[20px]">contrast</span>
+          <button
+            onClick={toggleTheme}
+            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            className={`transition-colors ${isDark ? 'text-primary' : 'text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'}`}
+          >
+            <span
+              className="material-symbols-outlined text-[20px]"
+              style={{ fontVariationSettings: isDark ? "'FILL' 1" : "'FILL' 0" }}
+            >
+              contrast
+            </span>
           </button>
         </div>
 

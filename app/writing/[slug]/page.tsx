@@ -137,22 +137,22 @@ function CategoryPage({ slug }: { slug: string }) {
 
 const mdxComponents = {
   h2: ({ children, id }: { children?: React.ReactNode; id?: string }) => (
-    <h2 id={id} className="font-headline text-xl font-bold uppercase tracking-tight flex items-center gap-3 mb-6 mt-12">
+    <h2 id={id} className="font-headline text-xl font-bold uppercase tracking-tight flex items-center gap-3 mb-6 mt-14 text-on-surface">
       <span className="w-8 h-[2px] bg-primary flex-shrink-0" />
       {children}
     </h2>
   ),
   p: ({ children }: { children?: React.ReactNode }) => (
-    <p className="font-body text-stone-800 dark:text-stone-200 leading-[1.8] mb-6">{children}</p>
+    <p className="font-body text-on-surface leading-[1.85] mb-7">{children}</p>
   ),
   blockquote: ({ children }: { children?: React.ReactNode }) => (
-    <blockquote className="px-12 border-l-4 border-primary py-4 my-16">
-      <div className="font-headline text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100 leading-tight uppercase">
+    <blockquote className="px-10 border-l-4 border-primary py-4 my-14">
+      <div className="font-headline text-2xl md:text-3xl font-bold tracking-tight text-on-surface leading-tight uppercase">
         {children}
       </div>
     </blockquote>
   ),
-  hr: () => <hr className="border-zinc-200 dark:border-zinc-800 my-12" />,
+  hr: () => <hr className="border-outline-variant my-12" />,
   strong: ({ children }: { children?: React.ReactNode }) => (
     <strong className="font-bold text-on-surface">{children}</strong>
   ),
@@ -175,10 +175,10 @@ const mdxComponents = {
     </a>
   ),
   ul: ({ children }: { children?: React.ReactNode }) => (
-    <ul className="space-y-2 mb-6 ml-4">{children}</ul>
+    <ul className="space-y-3 mb-7 ml-4">{children}</ul>
   ),
   li: ({ children }: { children?: React.ReactNode }) => (
-    <li className="font-body text-stone-800 dark:text-stone-200 flex gap-3 leading-relaxed">
+    <li className="font-body text-on-surface flex gap-3 leading-[1.75]">
       <span className="text-primary font-bold flex-shrink-0">—</span>
       <span>{children}</span>
     </li>
@@ -212,17 +212,17 @@ export default async function WritingSlugPage({ params }: { params: Promise<{ sl
 
         {/* Centralized Metadata */}
         <div className="flex flex-col items-center text-center mb-20">
-          <div className="flex flex-wrap justify-center gap-8 border-y border-stone-200 dark:border-stone-800 py-6 w-full">
+          <div className="flex flex-wrap justify-center gap-8 border-y border-outline-variant py-6 w-full">
             <div className="space-y-1">
-              <p className="font-label text-[10px] text-stone-400 tracking-widest uppercase">{COPY.article.dateLabel}</p>
+              <p className="font-label text-[10px] text-on-surface-variant tracking-widest uppercase">{COPY.article.dateLabel}</p>
               <p className="font-headline font-bold text-xs tracking-tight text-on-surface">{formattedDate}</p>
             </div>
             {post.tags && post.tags.length > 0 && (
               <div className="space-y-1">
-                <p className="font-label text-[10px] text-stone-400 tracking-widest uppercase">{COPY.article.taggedLabel}</p>
+                <p className="font-label text-[10px] text-on-surface-variant tracking-widest uppercase">{COPY.article.taggedLabel}</p>
                 <div className="flex flex-wrap justify-center gap-2 pt-1">
                   {post.tags.map((tag) => (
-                    <span key={tag} className="border border-outline-variant px-2 py-0.5 font-label text-[9px] text-stone-500">
+                    <span key={tag} className="border border-outline-variant px-2 py-0.5 font-label text-[9px] text-on-surface-variant">
                       {tag}
                     </span>
                   ))}
@@ -234,12 +234,12 @@ export default async function WritingSlugPage({ params }: { params: Promise<{ sl
 
         {/* Title + Divider + Excerpt */}
         <header className="mb-16 text-center">
-          <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter leading-[0.9] text-stone-900 dark:text-stone-100 mb-8 uppercase">
+          <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-8 uppercase">
             {post.title}
           </h1>
           <div className="h-1 w-24 bg-primary mb-8 mx-auto" />
           {post.excerpt && (
-            <p className="font-body italic text-xl md:text-2xl text-stone-500 dark:text-stone-400 leading-relaxed font-light">
+            <p className="font-body italic text-xl md:text-2xl text-on-surface-variant leading-relaxed font-light">
               {post.excerpt}
             </p>
           )}
@@ -258,7 +258,7 @@ export default async function WritingSlugPage({ params }: { params: Promise<{ sl
         )}
 
         {/* Article Body */}
-        <div className="article-body text-lg space-y-0 mb-32">
+        <div className="article-body text-lg space-y-0 mb-32 max-w-prose mx-auto">
           <MDXRemote source={post.content} components={mdxComponents} />
         </div>
 
