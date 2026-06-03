@@ -469,6 +469,16 @@ export default function HomeGraph({
         viewBox={`0 0 ${size.w} ${size.h}`}
         preserveAspectRatio="xMidYMid meet"
       >
+        <defs>
+          {CATS.map((c) => (
+            <radialGradient key={c.id} id={`blob-${c.id}`} cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stopColor={c.cssColor} stopOpacity="0.95" />
+              <stop offset="28%"  stopColor={c.cssColor} stopOpacity="0.62" />
+              <stop offset="62%"  stopColor={c.cssColor} stopOpacity="0.20" />
+              <stop offset="100%" stopColor={c.cssColor} stopOpacity="0"    />
+            </radialGradient>
+          ))}
+        </defs>
         {/* edges */}
         <g transform={groupTransform} fill="none">
           {edges.map((e, i) => {
@@ -479,9 +489,9 @@ export default function HomeGraph({
             const hl = highlightSet ? (highlightSet.has(a.id) && highlightSet.has(b.id)) : false;
             const dim = highlightSet ? !hl : !visible;
             const isTag = e.kind === 'tag';
-            const opacity = !visible ? (isTag ? 0.04 : 0.06) : dim ? (isTag ? 0.05 : 0.10) : hl ? (isTag ? 0.75 : 0.95) : (isTag ? 0.28 : 0.5);
+            const opacity = !visible ? (isTag ? 0.02 : 0.03) : dim ? (isTag ? 0.03 : 0.05) : hl ? (isTag ? 0.50 : 0.60) : (isTag ? 0.14 : 0.18);
             const stroke = isTag ? '#9b7fff' : '#0e1822';
-            const sw = (isTag ? (hl ? 1.2 : 0.8) : (hl ? 1.7 : 1.0)) / Math.max(0.6, view.scale);
+            const sw = (isTag ? (hl ? 0.6 : 0.35) : (hl ? 0.75 : 0.4)) / Math.max(0.6, view.scale);
             const dash = isTag ? '3 6' : 'none';
             const amp = isTag ? 10 : 11;
             const ax = a.x + (a.displayDX ?? 0);
@@ -530,8 +540,11 @@ export default function HomeGraph({
             };
 
             const r           = isHover ? n.r * 1.6 : n.r;
+            const blobR       = r * 4.5;
             const springScale = isClicked ? 1.5 : 1;
             const labelText   = n.label.length > 24 ? n.label.slice(0, 22) + '…' : n.label;
+            // slow per-node shimmer — each blob breathes independently
+            const shimmer     = 0.88 + 0.12 * Math.sin(tRef.current * 0.018 + n.phase * 1.4);
 
             return (
               <g
@@ -540,7 +553,7 @@ export default function HomeGraph({
                 onMouseEnter={onEnter}
                 onMouseLeave={onLeave}
                 onClick={onClick}
-                style={{ cursor: 'pointer', opacity: op, transition: 'opacity 0.3s ease' }}
+                style={{ cursor: 'pointer', opacity: op * shimmer, transition: 'opacity 0.3s ease' }}
               >
                 {/* Inner group for click spring scale */}
                 <g style={{
@@ -549,16 +562,8 @@ export default function HomeGraph({
                   transformOrigin: 'center',
                   transition: 'transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 }}>
-                  {/* Hover glow — larger ambient fill behind the node */}
-                  {isHover && (
-                    <circle r={r * 3.5} fill={n.color} opacity="0.22" />
-                  )}
-                  {/* Outer ambient halo — brand color, soft glow (suppressed on hover; hover glow takes over) */}
-                  {!isHover && <circle r={r * 4} fill={n.color} opacity="0.18" />}
-                  {/* Inner core — bright paper fill */}
-                  <circle r={r} fill="var(--paper)" opacity="0.92" />
-                  {/* Hot-point highlight */}
-                  <circle r={r * 0.35} fill="white" opacity="0.7" />
+                  {/* Gradient blob — single element, white center → brand color → transparent */}
+                  <circle r={blobR} fill={`url(#blob-${n.cat})`} />
                   {/* Pulsing ring on hover */}
                   {isHover && (
                     <circle r={r + 9} fill="none" stroke={n.color} strokeWidth={1.4 / view.scale} opacity="0.6">
@@ -574,7 +579,7 @@ export default function HomeGraph({
                       fontFamily="var(--font-mono-stack)"
                       fontSize={10 / view.scale}
                       opacity="0.65"
-                      fill="currentColor"
+                      fill="var(--ink)"
                       style={{ pointerEvents: 'none' }}
                     >
                       {labelText}

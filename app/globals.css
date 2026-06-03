@@ -245,12 +245,10 @@ body::before {
   position: relative;
   height: calc(100dvh - var(--nav-height) - var(--banner-height));
   min-height: 520px;
+  background: var(--paper);
   border-bottom: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
   overflow: hidden;
 }
-.hero-waves { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-.wave-bg-host { position: absolute; inset: 0; }
-.wave-bg { width: 100%; height: 100%; display: block; }
 
 /* ─── Graph stage ────────────────────────────────────────────────────────── */
 .graph-stage {

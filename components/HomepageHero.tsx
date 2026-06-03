@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import WaveBackdrop from './WaveBackdrop';
 import HomeGraph, { type HoverInfo, type LeafItem } from './HomeGraph';
 import { COPY } from '@/lib/copy';
 
@@ -47,9 +46,6 @@ export default function HomepageHero({ writingLeaves, recordLeaves, tagEdges }: 
 
       {/* Hero graph */}
       <section className="hero-graph">
-        <div className="hero-waves">
-          <WaveBackdrop />
-        </div>
         <HomeGraph
           writingLeaves={writingLeaves}
           recordLeaves={recordLeaves}
