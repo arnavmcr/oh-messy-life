@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllJournalEntries, getJournalEntry, type JournalSection } from '@/lib/journal';
 import CollapsibleSection from '@/components/CollapsibleSection';
+import ScrollReveal from '@/components/ScrollReveal';
 
 // ─── MDX component map (matches writing/[slug]/page.tsx) ─────────────────────
 
@@ -147,17 +148,17 @@ export default async function EntryPage({ params }: { params: Promise<{ slug: st
   const formattedDate = formatEntryDate(entry.date);
 
   return (
-    <main className="min-h-screen pt-12 pb-32 px-6 md:px-12 max-w-3xl mx-auto">
+    <main className="relative record-vignette min-h-screen pt-12 pb-32 px-6 md:px-12 max-w-3xl mx-auto">
 
       {/* ── Entry Header ─────────────────────────────────────────────── */}
       <header className="mb-16 border-b-2 border-primary pb-8">
-        <div className="font-mono text-[10px] tracking-[3px] uppercase text-on-surface-variant mb-2">
+        <div className="entry-header-row font-mono text-[10px] tracking-[3px] uppercase text-on-surface-variant mb-2" style={{ animationDelay: '0s' }}>
           Issue {formatIssue(entry.issue)}
         </div>
-        <div className="font-mono text-[10px] tracking-[2px] uppercase text-outline mb-6">
+        <div className="entry-header-row font-mono text-[10px] tracking-[2px] uppercase text-outline mb-6" style={{ animationDelay: '0.08s' }}>
           {formattedDate}
         </div>
-        <h1 className="font-headline font-black tracking-tighter leading-none text-4xl md:text-5xl lg:text-6xl">
+        <h1 className="entry-header-row font-headline font-black tracking-tighter leading-none text-4xl md:text-5xl lg:text-6xl" style={{ animationDelay: '0.18s' }}>
           {entry.title}
         </h1>
       </header>
@@ -167,43 +168,51 @@ export default async function EntryPage({ params }: { params: Promise<{ slug: st
         {entry.sections.map((section, i) => {
           const body = renderedBodies[i];
 
+          const revealDelay = i < 3 ? `${i * 0.05}s` : undefined;
+
           if (section.collapsible) {
             return (
-              <CollapsibleSection key={section.title} title={section.title}>
-                <div className="font-body text-on-surface-variant text-sm leading-relaxed space-y-3 pt-2">
-                  {body}
-                </div>
-              </CollapsibleSection>
+              <ScrollReveal key={section.title} delay={revealDelay}>
+                <CollapsibleSection title={section.title}>
+                  <div className="font-body text-on-surface-variant text-sm leading-relaxed space-y-3 pt-2">
+                    {body}
+                  </div>
+                </CollapsibleSection>
+              </ScrollReveal>
             );
           }
 
           if (section.bulletList) {
             return (
-              <section key={section.title} aria-label={section.title}>
-                <div className="border-t border-outline-variant pt-6 mb-6">
-                  <span className="font-mono text-[9px] tracking-[4px] uppercase text-outline">
-                    {section.title}
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  {body}
-                </div>
-              </section>
+              <ScrollReveal key={section.title} delay={revealDelay}>
+                <section aria-label={section.title}>
+                  <div className="border-t border-outline-variant pt-6 mb-6">
+                    <span className="font-mono text-[9px] tracking-[4px] uppercase text-outline">
+                      {section.title}
+                    </span>
+                  </div>
+                  <div className="space-y-2">
+                    {body}
+                  </div>
+                </section>
+              </ScrollReveal>
             );
           }
 
           // Standard chapter section
           return (
-            <section key={section.title} aria-label={section.title}>
-              <div className="border-t-2 border-on-surface pt-6 mb-8">
-                <h2 className="font-headline font-black text-2xl tracking-tight uppercase leading-tight">
-                  {section.title}
-                </h2>
-              </div>
-              <div>
-                {body}
-              </div>
-            </section>
+            <ScrollReveal key={section.title} delay={revealDelay}>
+              <section aria-label={section.title}>
+                <div className="border-t-2 border-on-surface pt-6 mb-8">
+                  <h2 className="font-headline font-black text-2xl tracking-tight uppercase leading-tight">
+                    {section.title}
+                  </h2>
+                </div>
+                <div>
+                  {body}
+                </div>
+              </section>
+            </ScrollReveal>
           );
         })}
       </div>

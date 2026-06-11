@@ -79,7 +79,7 @@ export default function RecordPage() {
   }
 
   return (
-    <main className="min-h-screen pt-12 pb-32 px-6 md:px-12 max-w-4xl mx-auto">
+    <main className="relative record-vignette min-h-screen pt-12 pb-32 px-6 md:px-12 max-w-4xl mx-auto">
 
       {/* Masthead */}
       <div className="flex justify-between items-end border-b-2 border-primary pb-6 mb-0">
@@ -101,7 +101,7 @@ export default function RecordPage() {
 
       {/* Archive rows */}
       {entries.length === 0 ? (
-        <p className="font-body italic text-stone-400 mt-8">
+        <p className="font-body italic text-on-surface-variant mt-8">
           nothing here yet.
         </p>
       ) : (
