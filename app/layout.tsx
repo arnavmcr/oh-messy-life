@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
 import Providers from '@/components/Providers';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
@@ -51,6 +52,7 @@ export default function RootLayout({
           <div className="flex-grow">{children}</div>
           <Footer />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );

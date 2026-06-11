@@ -9,6 +9,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "gray-matter": "^4.0.3",
     "next": "16.2.1",
     "next-mdx-remote": "^6.0.0",
