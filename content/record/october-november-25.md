@@ -19,6 +19,8 @@ This will also not be good writing, but it will be simple and unnuanced.
 
 Also - feel free to reply/not reply at your own pace/convenience. The goal with this is not to force conversation or engage. It is to asynchronously, honestly and (within reasonable bounds) meaningfully remain “in touch” or connected with people I care about.
 
+### The hedonic treadmill
+
 Two Tuesdays ago I found out that I got into INSEAD. Ever since, I have felt more lost, avoidant and anxious than I was earlier. Much of this year has been unmotivated and an internal struggle to do things, especially with Putt One. I spent most days staring out of my window, watching sunsets or chainsmoking, trying to muster up the will to do the obvious and basic tasks I needed to propel Putt One further.
 
 Worse than lack of momentum or lack of 'success', this apathy came from a (self diagnosed) lack of motivation. Most decisions in my career unto this point were with 'entrepreneurship' as an endpoint, the final realisation and coalescence of the skills I value and a lifestyle I wanted. The foundational maxim of entrepreneurship (or anything to the same level of devotion) is one's unrelenting personal belief in what is being built, or the ‘problem’ being solved. I didn't believe that this rule applied to me when I started Putt One -- I didn't think I needed to love it all that much, that I could keep it at an arms length and decouple meaning and money. I was wrong. The 'grand narratives' of Scaler (real tangible changes to how people are educated), or After EOD (pushing the music scene to reflect more, even if at a limited scale) were essential to my motivation and excitement, things I didn't think I needed and were rules that didn't apply to me (my unrelenting belief in my own exceptionalism LOL).
@@ -37,7 +39,7 @@ In the first edition of this newsletter situation, I wrote these as possible nex
 
 ![](https://tidal-seahorse-bc0.notion.site/image/attachment%3A96b6016c-245e-42bf-bbc6-f2ae5e154929%3AScreenshot_2025-12-03_at_9.35.36_AM.png?table=block&id=2be46a67-9169-802f-97be-d45bfe68bedf&spaceId=743a16a0-8cd9-4648-bd76-d789f79e3cf6&width=2000&userId=&cache=v2)
 
-#### Other random things
+### Other random things
 
 My fantasy to fill the next 8 months is/was to do several two-week long projects that I would otherwise not have the time to do.
 
