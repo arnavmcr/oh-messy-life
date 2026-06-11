@@ -836,6 +836,52 @@ body::before {
   opacity: 0;
   animation: fadeUp 0.35s ease forwards;
 }
+
+/* ─── Record: entry header stagger ──────────────────────────────────────── */
+.entry-header-row {
+  opacity: 0;
+  animation: fadeUp 0.35s ease forwards;
+}
+
+/* ─── Record: scroll-reveal sections ────────────────────────────────────── */
+.entry-section-reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.entry-section-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Record: warm vignette ──────────────────────────────────────────────── */
+.record-vignette {
+  position: relative;
+}
+.record-vignette::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 0;
+  background: radial-gradient(
+    ellipse 120% 100% at 50% 50%,
+    transparent 35%,
+    color-mix(in oklab, var(--paper-warm) 25%, transparent) 60%,
+    color-mix(in oklab, var(--paper-warm) 48%, transparent) 80%,
+    color-mix(in oklab, var(--paper-warm) 65%, transparent) 100%
+  );
+  mix-blend-mode: multiply;
+}
+.dark .record-vignette::before {
+  mix-blend-mode: screen;
+  opacity: 0.6;
+}
+.record-vignette > * {
+  position: relative;
+  z-index: 1;
+}
 .record-entry-arrow {
   opacity: 0;
   transform: translateX(-4px);
@@ -865,4 +911,6 @@ html.reading-small .article-body { font-size: 0.875em; }
   .status-dot             { animation: none !important; }
   .labs-progress > i      { animation: none !important; }
   .record-row             { animation: none !important; opacity: 1; }
+  .entry-header-row       { animation: none !important; opacity: 1; transform: none !important; }
+  .entry-section-reveal   { transition: none !important; opacity: 1 !important; transform: none !important; }
 }
