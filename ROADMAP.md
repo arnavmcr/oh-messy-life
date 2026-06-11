@@ -156,6 +156,15 @@ status: published
 - [x] Mobile: SVG `feDisplacementMap` filters gated off below 640px; 30fps frame-skip; 1.4s settle
 - [x] Legend trimmed to 3 chips — WRITING, RECORD, SIGNAL
 
+### Milestone 1.10 — Record: warm-organic animation system ✓ `2026-06-11`
+- [x] `.entry-header-row` in `globals.css` — reuses `@keyframes fadeUp`; issue #, date, title stagger in at 0s / 0.08s / 0.18s (server component, CSS-only)
+- [x] `.entry-section-reveal` + `.is-visible` in `globals.css` — CSS `transition` triggered by class toggle from IntersectionObserver
+- [x] `.record-vignette::before` in `globals.css` — warm radial gradient on page edges; `mix-blend-mode: multiply` light / `screen` dark; `> *` z-index lift ensures content stays above pseudo-element
+- [x] `components/ScrollReveal.tsx` — `'use client'` leaf component; IO-based one-shot reveal; `IntersectionObserver` unavailability guard; optional `delay` prop as `transitionDelay`
+- [x] `app/record/[slug]/page.tsx` — header stagger wired, all three section variants wrapped in `ScrollReveal`, `<main>` gets `record-vignette`
+- [x] `app/record/page.tsx` — `<main>` gets `record-vignette`; pre-existing `text-stone-400` replaced with `text-on-surface-variant`
+- [x] `prefers-reduced-motion` extended — both new classes get `animation/transition: none`, `opacity: 1`, `transform: none`; vignette unaffected (non-motion)
+
 ---
 
 ## Phase 2 — Labs (Projects) `[ PLANNED ]`
@@ -247,3 +256,6 @@ status: published
 | 2026-06-03 | Hero graph: `GraphNode.kind` discriminant deleted | Its only consumers were `k_anchor` physics branch and hub render split — removing it cleaned all three simultaneously |
 | 2026-06-03 | Hero graph: labels at zoom ≥ 1.5× with `10 / view.scale` normalised font | Orientation without persistent visual clutter; scale-normalised size keeps labels consistent at any zoom |
 | 2026-06-03 | Hero graph: SVG filter gating + 30fps frame-skip on mobile | `feDisplacementMap` exceeds 16ms budget on mobile; frame-skip keeps gesture loop at native fps without a canvas rewrite |
+| 2026-06-11 | Record animations: CSS-first, no animation library | Three patterns (fadeUp, scroll-reveal, vignette) don't justify a motion token layer yet; introduce tokens when a fourth distinct pattern is added site-wide |
+| 2026-06-11 | Record scroll-reveal: IntersectionObserver fires once, CSS transition for visibility | Prevents re-animation on back-scroll; CSS transition avoids new keyframe; `ScrollReveal` is a leaf client component wrapping a server-rendered section tree |
+| 2026-06-11 | Record vignette: page-scoped `::before` on `<main>`, not a fixed overlay | Avoids z-index entanglement with existing `body::after` fog (z-index 0) and `body::before` grain (z-index 1000) |
