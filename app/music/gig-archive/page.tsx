@@ -5,7 +5,7 @@ import { GIG_PHOTOS } from '@/lib/gig-photos';
 import GigPolaroidWall from '@/components/GigPolaroidWall';
 
 export const metadata: Metadata = {
-  title: 'Gig Archive — THE SIGNAL',
+  title: 'Gig Archive — music — oh messy life',
   description: COPY.signal.gigArchive.tagline,
 };
 
@@ -16,7 +16,7 @@ export default function GigArchivePage() {
       {/* Metadata strip */}
       <div className="flex items-center gap-3 mb-6">
         <span className="font-mono text-[10px] uppercase tracking-widest opacity-50">
-          {COPY.signal.eyebrow} / GIG ARCHIVE
+          music / gig archive
         </span>
         <span className="stamp-green font-mono text-[9px] uppercase tracking-widest font-bold">
           ACTIVE

@@ -40,12 +40,11 @@ export default function WritingIndexPage() {
         <div className="font-mono text-[10px] tracking-[0.3em] text-on-surface-variant mb-4 uppercase">
           Archive
         </div>
-        <h1 className="font-headline font-black text-7xl md:text-9xl tracking-tighter uppercase leading-none italic mb-6">
-          THE{' '}
-          <span className="text-primary ink-bleed">VOID</span>
+        <h1 className="font-headline font-black text-7xl md:text-9xl tracking-tighter leading-none italic mb-6">
+          <span className="text-primary ink-bleed">writing</span>
         </h1>
         <p className="font-body text-on-surface-variant text-sm max-w-md">
-          Everything written. Pick a category.
+          everything written, loosely organized. take your time.
         </p>
       </div>
 

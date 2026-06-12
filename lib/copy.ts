@@ -4,26 +4,8 @@
 
 export const COPY = {
 
-  // ── Navigation ────────────────────────────────────────────────────────────
-  nav: {
-    writing:            'WRITING',
-    record:             'RECORD',
-    signal:             'SIGNAL',
-    labs:               'LABS',
-    allWriting:         'ALL WRITING',
-    build:              'BUILD: 0.1.0_ALPHA',
-    signalLibrary:      'LIBRARY',
-    signalGigArchive:   'GIG ARCHIVE',
-    signalTshirtArchive:'T-SHIRT ARCHIVE',
-  },
-
-  // ── Homepage ──────────────────────────────────────────────────────────────
+  // ── Homepage graph hints ──────────────────────────────────────────────────
   home: {
-    eyebrow:          'public archive',
-    scriptoriumTag:   'SCRIPTORIUM // ARCHIVE_01',
-    labsHeading:      'LABS_EXT',
-    labsDescription:  'Projects, interactive experiments, and annotated case studies — in construction.',
-    vaultHeading:     'VAULT_99',
     graph: {
       idle:       'hover to explore',
       idleHint:   'nodes are articles and journal entries',
@@ -31,12 +13,10 @@ export const COPY = {
     },
   },
 
-  // ── Writing — THE VOID ────────────────────────────────────────────────────
+  // ── Writing ───────────────────────────────────────────────────────────────
   writing: {
-    pageTitle:       'THE VOID // Oh Messy Life',
-    pageDescription: 'Writing archive',
-    entriesLabel:    'entries',
-    emptyState:      'nothing here yet.',
+    entriesLabel: 'entries',
+    emptyState:   'nothing here yet.',
   },
 
   // ── Article — THE MANUSCRIPT ──────────────────────────────────────────────
@@ -45,21 +25,19 @@ export const COPY = {
     taggedLabel:     'tagged',
   },
 
-  // ── Record — THE RECORD ───────────────────────────────────────────────────
+  // ── Record ────────────────────────────────────────────────────────────────
   record: {
-    pageTitle:       'THE RECORD // Oh Messy Life',
+    pageTitle:       'the record // oh messy life',
     pageDescription: 'A monthly journal — issues, observations, and the ongoing mess of being alive.',
-    heading:         'THE RECORD',
     footerNote:      'Est. December 2023 · Published monthly · Written from Mumbai',
   },
 
-  // ── Signal / Music — THE SIGNAL ───────────────────────────────────────────
+  // ── Music ─────────────────────────────────────────────────────────────────
   signal: {
-    pageTitle:       'Music — Oh Messy Life',
-    pageDescription: 'THE SIGNAL. Crate digging, gigs, and everything in between.',
-    eyebrow:         'THE SIGNAL',
+    pageTitle:       'music — oh messy life',
+    pageDescription: 'records, gigs, and opinions nobody asked for.',
     heading:         'MUSIC',
-    tagline:         'Crate digging, live shows, and everything in between.',
+    tagline:         'records, gigs, and opinions nobody asked for.',
     library: {
       label:       'THE LIBRARY',
       heading:     'LIBRARY',

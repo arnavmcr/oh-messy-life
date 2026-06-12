@@ -13,9 +13,6 @@ export default function MusicPage() {
 
       {/* Metadata strip */}
       <div className="flex items-center gap-3 mb-6">
-        <span className="font-mono text-[10px] uppercase tracking-widest opacity-50">
-          {COPY.signal.eyebrow}
-        </span>
         <span className="stamp-green font-mono text-[9px] uppercase tracking-widest font-bold">
           ACTIVE
         </span>

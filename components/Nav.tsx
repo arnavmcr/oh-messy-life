@@ -17,7 +17,7 @@ export default function Nav() {
         <div className="nav-links">
           <Link href="/writing" className="nav-link coral">writing</Link>
           <Link href="/record"  className="nav-link violet">record</Link>
-          <Link href="/music"   className="nav-link kelp">signal</Link>
+          <Link href="/music"   className="nav-link kelp">music</Link>
           <Link href="/projects" className="nav-link wine">labs</Link>
         </div>
       </div>
@@ -66,7 +66,7 @@ export default function Nav() {
           {[
             { href: '/writing',  label: 'writing', cls: 'coral' },
             { href: '/record',   label: 'record',  cls: 'violet' },
-            { href: '/music',    label: 'signal',  cls: 'kelp' },
+            { href: '/music',    label: 'music',   cls: 'kelp' },
             { href: '/projects', label: 'labs',    cls: 'wine' },
           ].map(({ href, label, cls }) => (
             <Link

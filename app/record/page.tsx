@@ -84,7 +84,7 @@ export default function RecordPage() {
       {/* Masthead */}
       <div className="flex justify-between items-end border-b-2 border-primary pb-6 mb-0">
         <h1 className="font-headline font-black leading-none tracking-tighter" style={{ fontSize: 'clamp(48px, 8vw, 80px)', letterSpacing: '-3px' }}>
-          THE<br />RECORD
+          the<br />record
         </h1>
         <div className="text-right font-mono text-[10px] tracking-widest text-on-surface-variant uppercase leading-relaxed">
           {entries.length} issues<br />

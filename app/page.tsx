@@ -57,20 +57,19 @@ export default function HomePage() {
       {/* ── Intro ──────────────────────────────────────────────────────── */}
       <section className="intro">
         <div className="intro-inner">
-          <div className="intro-eyebrow">issue zero-two</div>
+          <div className="intro-eyebrow">liminality as a filing system</div>
           <h1 className="intro-headline">
-            a <span className="accent">thingi</span> for staying in touch.
+            suspended between <span className="accent">idea</span> and object
           </h1>
           <p className="intro-blurb">
-            hello. this is a small, public version of a monthly newsletter
-            i write to stay connected with my friends — alongside essays, a music
-            library, a few half-built things. mostly not good writing, but simple
-            and unnuanced. reply or don&rsquo;t, at your own pace.
+            writing, a monthly thingi, and projects paused mid-thought &mdash;
+            collected here because they wouldn&rsquo;t stay filed away.
+            a holding space for things still in transit.
           </p>
           <div className="chip-row">
             <Link className="chip coral"  href="/writing">writing →</Link>
             <Link className="chip violet" href="/record">record →</Link>
-            <Link className="chip kelp"   href="/music">signal →</Link>
+            <Link className="chip kelp"   href="/music">music →</Link>
             <Link className="chip wine"   href="/projects">labs →</Link>
           </div>
         </div>
