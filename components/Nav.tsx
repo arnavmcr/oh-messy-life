@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import DarkModeToggle from './DarkModeToggle';
+
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -20,24 +22,27 @@ export default function Nav() {
         </div>
       </div>
 
-      {/* Mobile hamburger */}
-      <button
-        className="md:hidden"
-        onClick={() => setMenuOpen((v) => !v)}
-        aria-label="toggle menu"
-        style={{
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          padding: '4px',
-          color: 'var(--ink)',
-          fontFamily: 'var(--font-mono-stack)',
-          fontSize: '12px',
-          letterSpacing: '0.08em',
-        }}
-      >
-        {menuOpen ? 'close' : 'menu'}
-      </button>
+      {/* Right side: theme toggle + mobile hamburger */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <DarkModeToggle />
+        <button
+          className="md:hidden"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label="toggle menu"
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '4px',
+            color: 'var(--ink)',
+            fontFamily: 'var(--font-mono-stack)',
+            fontSize: '12px',
+            letterSpacing: '0.08em',
+          }}
+        >
+          {menuOpen ? 'close' : 'menu'}
+        </button>
+      </div>
 
       {/* Mobile dropdown */}
       {menuOpen && (
