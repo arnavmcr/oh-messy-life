@@ -337,6 +337,42 @@ def to_compact_record(r: dict) -> dict:
     }
 
 
+# ── Stage 3.5: Dataset inference ─────────────────────────────────────────────
+
+
+def run_price_inference(records: list[dict]) -> list[dict]:
+    """Fill original_price_inferred for SELL records missing it from same (event, category) pair.
+
+    Strategy: use the first explicit price found per (event, category) pair.
+    Multiple explicit prices are not averaged — first-found wins because the
+    distribution within a category is narrow and averaging adds little value.
+    """
+    # Build lookup: (event, category) → first explicit original_price_inferred
+    index: dict[tuple, float] = {}
+    for r in records:
+        if (
+            r.get("type", "").upper() == "SELL"
+            and r.get("original_price_inferred") is not None
+            and r.get("price_inference_source") == "explicit"
+        ):
+            key = (r.get("event"), r.get("category"))
+            if key not in index:
+                index[key] = r["original_price_inferred"]
+
+    # Fill missing prices for SELL records
+    filled = 0
+    for r in records:
+        if r.get("type", "").upper() == "SELL" and r.get("original_price_inferred") is None:
+            key = (r.get("event"), r.get("category"))
+            if key in index:
+                r["original_price_inferred"] = index[key]
+                r["price_inference_source"] = "dataset"
+                filled += 1
+
+    print(f"  [inference] filled {filled} SELL records via dataset inference")
+    return records
+
+
 def load_existing_json(path: str) -> list[dict]:
     if not os.path.exists(path):
         return []
@@ -416,7 +452,19 @@ def run_seed(seed_csv: str, existing_path: str | None, output_path: str) -> None
     ]
     print(f"  {len(kept)} new records after confidence/dedup filter")
 
-    merged = existing + [to_compact_record(r) for r in kept]
+    # Stage 3.5 — dataset inference on all CSV-derived compact records
+    # Run inference over the full CSV batch so the lookup has the widest coverage
+    all_csv_compact = [to_compact_record(r) for r in cleaned if not r.get("is_duplicate")]
+    run_price_inference(all_csv_compact)
+    # Build a hash→compact map so inferred prices carry forward to the kept subset
+    compact_by_hash = {r["message_hash"]: r for r in all_csv_compact}
+    new_compact = [
+        compact_by_hash[r["message_hash"]]
+        for r in kept
+        if r.get("message_hash") in compact_by_hash
+    ]
+
+    merged = existing + new_compact
     write_output(merged, output_path)
 
 # ── Main pipeline ─────────────────────────────────────────────────────────────
@@ -485,6 +533,13 @@ def run_pipeline(
     deduped = [r for r in cleaned if not r.get("is_duplicate")]
     print(f"  {len(deduped)} records after dedup ({len(cleaned) - len(deduped)} flagged)")
 
+    # Stage 3.5 — dataset price inference
+    print("\n─── Stage 3.5: Price inference ───")
+    # Inference runs on compact records; build lookup from the full cleaned set
+    all_compact = [to_compact_record(r) for r in deduped]
+    run_price_inference(all_compact)
+    compact_by_hash = {r["message_hash"]: r for r in all_compact}
+
     # Stage 4 — merge + export
     print("\n─── Stage 4: Merge & export ───")
     high_conf = [
@@ -493,7 +548,11 @@ def run_pipeline(
     ]
     print(f"  {len(high_conf)} records at confidence ≥ 0.6")
 
-    new_compact = [to_compact_record(r) for r in high_conf]
+    new_compact = [
+        compact_by_hash[r["message_hash"]]
+        for r in high_conf
+        if r.get("message_hash") in compact_by_hash
+    ]
     merged = existing + new_compact
     write_output(merged, output_path)
     print(f"\n[OK] Done. {len(new_compact)} new records added, {len(merged)} total.")
