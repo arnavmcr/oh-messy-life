@@ -5,7 +5,7 @@ import TicketTickerChart from '@/components/TicketTickerChart';
 export const metadata: Metadata = {
   title: 'Ticket Ticker — oh messy life',
   description:
-    'India's concert resale market visualised — demand, seller loss %, and pricing across 180+ events and 7k+ WhatsApp listings.',
+    "India's concert resale market visualised — demand, seller loss %, and pricing across 180+ events and 7k+ WhatsApp listings.",
 };
 
 export default function TicketTickerPage() {
