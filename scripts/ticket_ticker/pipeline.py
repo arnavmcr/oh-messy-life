@@ -370,7 +370,7 @@ def _csv_row_to_pipeline_record(row: dict) -> dict:
         "price_per_ticket": row.get("price_per_ticket"),
         "original_price": row.get("original_price"),
         "price_type": row.get("price_type", ""),
-        "ticket_category": row.get("ticket_category", ""),
+        "ticket_category": row.get("ticket_category_normalized") or row.get("ticket_category", ""),
         "location": row.get("location", ""),
         "confidence": row.get("confidence", "0"),
         "source_file": row.get("source_file", ""),

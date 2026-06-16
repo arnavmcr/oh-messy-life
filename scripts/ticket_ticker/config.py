@@ -69,6 +69,13 @@ FESTIVAL_MAP = [
     ("guns n roses",           "Guns N' Roses",          None,    True),
     ("metronomy",              "Metronomy",              None,    True),
     ("when chai met toast",    "When Chai Met Toast",    None,    True),
+    # Co-headlining tours — must precede individual artist entries in ARTIST_MAP
+    ("def leppard and scorpions", "Def Leppard & Scorpions", None, True),
+    # Annual Indian festivals
+    ("mahindra blues festival",   "Mahindra Blues Festival", None, False),
+    ("mahindra blues",            "Mahindra Blues Festival", None, False),
+    ("sounds good festival",      "Sounds Good Festival",    None, True),
+    ("no art",                    "No Art",                  None, True),
 ]
 
 # ── Artist map ─────────────────────────────────────────────────────────────────
@@ -92,6 +99,30 @@ ARTIST_MAP = [
     ("prateek kuhad",          "Prateek Kuhad"),
     ("armin van buuren",       "Armin van Buuren"),
     ("armin",                  "Armin van Buuren"),   # false-positive risk: "Armin Kapoor"
+    # International artists added from 2026 data
+    ("john mayer",             "John Mayer"),
+    ("anoushka shankar",       "Anoushka Shankar"),
+    ("kanye west",             "Kanye West"),
+    ("ye live",                "Kanye West"),          # "ye" alone too broad; use longer phrases
+    ("ye - live",              "Kanye West"),
+    ("def leppard",            "Def Leppard"),
+    ("calvin harris",          "Calvin Harris"),
+    ("keinemusik",             "Keinemusik"),
+    ("mltr",                   "MLTR"),
+    ("black coffee",           "Black Coffee"),
+    ("scorpions",              "Scorpions"),
+    ("baby j",                 "Baby J"),
+    # Rishab Rikhiram Sharma — many spelling variants; tour name first, then name forms
+    ("sitar for mental health","Rishab Rikhiram Sharma"),
+    ("rishab rikhiram",        "Rishab Rikhiram Sharma"),
+    ("rishabh rikhiram",       "Rishab Rikhiram Sharma"),
+    ("rishab rikiram",         "Rishab Rikhiram Sharma"),
+    ("rishabh rakhiram",       "Rishab Rikhiram Sharma"),
+    ("rishab sharma",          "Rishab Rikhiram Sharma"),
+    # Circoloco — two spellings in use
+    ("circoloco",              "Circoloco"),
+    ("circo loco",             "Circoloco"),
+    # High false-positive risk — keep last so more specific entries match first
     ("fisher",                 "Fisher"),              # false-positive risk: "fisher price"
     ("king",                   "King"),                # false-positive risk: unrelated "king" uses
     ("sting",                  "Sting"),               # false-positive risk: "listing", "existing"

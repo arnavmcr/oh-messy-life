@@ -43,3 +43,7 @@ gig-videos-skipped/
 __pycache__/
 *.py[cod]
 *.pyo
+
+# Ticket Ticker pipeline artifacts (progress checkpoints and failure logs)
+extracted_*.json
+failed_chunks_*.json
