@@ -320,13 +320,18 @@ def _to_num(val) -> float | None:
 
 
 def to_compact_record(r: dict) -> dict:
-    """Project a full pipeline record to the compact frontend schema."""
+    """Project a full pipeline record to the compact frontend schema (11 fields)."""
+    original_price = _to_num(r.get("original_price"))
     return {
         "event": r.get("event_name_normalized") or r.get("event_name") or "",
+        "location": r.get("location") or None,
         "type": (r.get("message_type") or "").upper(),
         "price": _to_num(r.get("price_per_ticket")),
-        "originalPrice": _to_num(r.get("original_price")),
+        "original_price_inferred": original_price,
+        "price_inference_source": "explicit" if original_price is not None else None,
         "message_date": r.get("message_date") or "",
+        "event_date": r.get("event_date") or None,
+        "num_tickets": _to_num(r.get("num_tickets")),
         "category": r.get("ticket_category") or None,
         "message_hash": r.get("message_hash") or "",
     }

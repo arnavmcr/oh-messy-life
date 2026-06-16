@@ -38,12 +38,15 @@ def renorm(input_path: str, output_path: str) -> None:
 
         # Use the current (already partially-normalized) event name as the raw input
         # so keyword matching still fires on known artist/festival strings.
+        # Note: compact JSON lacks original_message, so city cannot be re-inferred
+        # from message body — only the event name string is available here.
         pseudo = {
             "event_name": old_event,
             "message_date": r.get("message_date") or "",
             "original_message": "",  # not stored in compact JSON
         }
-        new_event = normalize_event_name(pseudo) or old_event
+        canonical, _city = normalize_event_name(pseudo)
+        new_event = canonical or old_event
         after[new_event] += 1
 
         if new_event != old_event:
@@ -66,7 +69,8 @@ def renorm(input_path: str, output_path: str) -> None:
                         "message_date": "",
                         "original_message": "",
                     }
-                    if (normalize_event_name(pseudo_check) or old_e) == new_e:
+                    canonical_check, _ = normalize_event_name(pseudo_check)
+                    if (canonical_check or old_e) == new_e:
                         print(f"  {cnt:3d}x  \"{old_e}\"  →  \"{new_e}\"")
                         seen.add(old_e)
 
