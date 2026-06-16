@@ -47,3 +47,6 @@ __pycache__/
 # Ticket Ticker pipeline artifacts (progress checkpoints and failure logs)
 extracted_*.json
 failed_chunks_*.json
+
+# Ticket Ticker source data — large personal data files, never committed
+scripts/ticket_ticker/data/
