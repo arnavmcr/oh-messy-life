@@ -7,10 +7,9 @@ export const COPY = {
   // ── Homepage graph hints ──────────────────────────────────────────────────
   home: {
     graph: {
-      idle:       'a compulsive digital garden',
-      idleMobile: 'a compulsive digital garden',
-      idleHint:   'hover to explore',
-      idleHintMobile: 'tap to explore',
+      idle:       'hover to explore',
+      idleMobile: 'tap to explore',
+      idleHint:   'nodes are articles and journal entries',
       activeHint: 'click to open',
     },
   },

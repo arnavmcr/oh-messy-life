@@ -58,7 +58,7 @@ export default function HomePage() {
       <section className="intro">
         <div className="intro-inner">
           <h1 className="intro-headline">
-            compulsive digital garden
+            a compulsive digital garden
           </h1>
           <p className="intro-blurb">
             a home for things to live: writing from many moons ago, a monthly confessional, music-y stuff and indie hacked stuff
