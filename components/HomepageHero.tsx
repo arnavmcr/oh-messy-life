@@ -56,8 +56,8 @@ export default function HomepageHero({ writingLeaves, recordLeaves, tagEdges }: 
       <div className="status-banner">
         <div className="status-inner">
           <span className="status-dot" />
-          <span className="status-idle">{isTouch ? COPY.home.graph.idleMobile : COPY.home.graph.idle}</span>
-          <span className="status-hint">{COPY.home.graph.idleHint}</span>
+          <span className="status-idle">{COPY.home.graph.idle}</span>
+          <span className="status-hint">{isTouch ? COPY.home.graph.idleHintMobile : COPY.home.graph.idleHint}</span>
         </div>
       </div>
 
