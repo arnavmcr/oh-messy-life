@@ -6,11 +6,10 @@ export default function Footer() {
       <div className="footer-inner">
         <div className="footer-col">
           <h3 className="footer-title">
-            oh <span className="accent">messy</span> life.
+            oh <span className="accent">messy</span> life
           </h3>
           <p className="footer-sub">
-            an asynchronous, honest, (within reasonable bounds) meaningful way to remain
-            in touch — mostly written at 2am.
+            a compulsive digital garden
           </p>
         </div>
 
@@ -36,7 +35,7 @@ export default function Footer() {
 
       <div className="footer-bottom">
         <span>© 2014 — 2026</span>
-        <span>reply or don&rsquo;t, at your own pace</span>
+
       </div>
     </footer>
   );

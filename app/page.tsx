@@ -57,14 +57,11 @@ export default function HomePage() {
       {/* ── Intro ──────────────────────────────────────────────────────── */}
       <section className="intro">
         <div className="intro-inner">
-          <div className="intro-eyebrow">liminality as a filing system</div>
           <h1 className="intro-headline">
-            suspended between <span className="accent">idea</span> and object
+            compulsive digital garden
           </h1>
           <p className="intro-blurb">
-            writing, a monthly thingi, and projects paused mid-thought &mdash;
-            collected here because they wouldn&rsquo;t stay filed away.
-            a holding space for things still in transit.
+            a home for things to live: writing from many moons ago, a monthly confessional, music-y stuff and indie hacked stuff
           </p>
           <div className="chip-row">
             <Link className="chip coral"  href="/writing">writing →</Link>
@@ -82,9 +79,6 @@ export default function HomePage() {
             <h2 className="hp-section-title">
               <span className="accent">lately</span>
             </h2>
-            <p className="hp-section-sub">
-              every push and pour and patch — chronologically incorrect, mostly.
-            </p>
           </div>
 
           <div className="cl-list">
@@ -112,9 +106,6 @@ export default function HomePage() {
             <h2 className="hp-section-title">
               the <span className="accent">void</span>
             </h2>
-            <p className="hp-section-sub">
-              essays, reviews, dispatches — slowly accumulating, no schedule.
-            </p>
           </div>
 
           <div className="hp-card-grid">

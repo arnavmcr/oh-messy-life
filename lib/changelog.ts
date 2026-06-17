@@ -26,7 +26,7 @@ export function getChangelogEntries(limit = 10): ChangelogEntry[] {
 
   const site: ChangelogEntry[] = (changelogJson as ChangelogEntry[]).map((e) => ({
     date: e.date,
-    type: 'SITE',
+    type: e.type,
     description: e.description,
     href: e.href,
   }));
