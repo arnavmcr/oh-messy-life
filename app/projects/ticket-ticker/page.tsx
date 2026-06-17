@@ -33,7 +33,7 @@ export default function TicketTickerPage() {
         Hover or tap a bubble for details. Filter by event or date range below.
       </p>
       <p className="font-mono text-[10px] uppercase tracking-widest opacity-40 mt-3">
-        Source: 7k+ WhatsApp listings · Nov 2023 – Jan 2026 · Mumbai-focused groups
+        Source: 16k+ WhatsApp listings · Nov 2023 – Jun 2026 · Mumbai-focused groups
       </p>
 
       {/* Chart */}

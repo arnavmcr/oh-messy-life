@@ -10,16 +10,19 @@ const MIN_SVG_WIDTH = 480;
 const PAD = { top: 40, right: 40, bottom: 55, left: 68 };
 const MIN_R = 6;
 const MAX_R = 36;
-const MIN_DOMAIN_SPAN = 10; // guard for single-event degenerate axis
+const MIN_DOMAIN_SPAN = 10;
+const DEFAULT_MIN_DEMAND = 40;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 interface EventAggregate {
   event: string;
   demand: number;
+  sells: number;
   avgLoss: number;
   avgLossValid: boolean;
   avgPrice: number;
+  eventDate: string | null;
   cx: number;
   cy: number;
   r: number;
@@ -56,6 +59,16 @@ function niceRange(min: number, max: number, ticks: number): number[] {
   return Array.from({ length: ticks }, (_, i) => lo + i * step);
 }
 
+function formatEventDate(dateStr: string | null): string | null {
+  if (!dateStr) return null;
+  try {
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  } catch {
+    return null;
+  }
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function TicketTickerChart({ records }: Props) {
@@ -64,6 +77,8 @@ export default function TicketTickerChart({ records }: Props) {
   const [eventFilter, setEventFilter] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [minDemand, setMinDemand] = useState(DEFAULT_MIN_DEMAND);
+  const [drillDownArtist, setDrillDownArtist] = useState<string | null>(null);
   const [hoveredEvent, setHoveredEvent] = useState<string | null>(null);
   const [clickedEvent, setClickedEvent] = useState<string | null>(null);
 
@@ -82,54 +97,83 @@ export default function TicketTickerChart({ records }: Props) {
 
   const aggregates: EventAggregate[] = useMemo(() => {
     const filterLower = eventFilter.toLowerCase();
+    const isDrillDown = drillDownArtist !== null;
 
     const filtered = records.filter((r) => {
       if (!r.event) return false;
-      if (filterLower && !r.event.toLowerCase().includes(filterLower)) return false;
+      if (isDrillDown) {
+        // Drill-down: only records for this artist
+        if (r.event !== drillDownArtist) return false;
+      } else {
+        // Artist view: apply event name filter
+        if (filterLower && !r.event.toLowerCase().includes(filterLower)) return false;
+      }
       if (startDate && r.message_date < startDate) return false;
       if (endDate && r.message_date > endDate) return false;
       return true;
     });
 
-    const byEvent = new Map<string, { buys: number; lossSum: number; lossCount: number; priceSum: number; priceCount: number }>();
+    // Group key: in drill-down, group by location (city); otherwise by event name
+    const getKey = (r: TicketRecord): string =>
+      isDrillDown ? (r.location ?? 'Unknown') : r.event;
+
+    const byKey = new Map<string, {
+      buys: number;
+      sells: number;
+      lossSum: number;
+      lossCount: number;
+      priceSum: number;
+      priceCount: number;
+      eventDate: string | null;
+    }>();
 
     for (const r of filtered) {
-      if (!r.event) continue;
-      if (!byEvent.has(r.event)) {
-        byEvent.set(r.event, { buys: 0, lossSum: 0, lossCount: 0, priceSum: 0, priceCount: 0 });
+      const key = getKey(r);
+      if (!byKey.has(key)) {
+        byKey.set(key, { buys: 0, sells: 0, lossSum: 0, lossCount: 0, priceSum: 0, priceCount: 0, eventDate: null });
       }
-      const agg = byEvent.get(r.event)!;
+      const agg = byKey.get(key)!;
 
       if (r.type === 'BUY') {
         agg.buys++;
+        // Capture first non-null event_date for tooltip
+        if (!agg.eventDate && r.event_date) agg.eventDate = r.event_date;
       }
 
       if (r.type === 'SELL') {
+        agg.sells++;
+        if (!agg.eventDate && r.event_date) agg.eventDate = r.event_date;
         if (r.price != null) {
           agg.priceSum += r.price;
           agg.priceCount++;
         }
-        if (r.price != null && r.originalPrice != null && r.originalPrice > 0) {
-          const loss = ((r.originalPrice - r.price) / r.originalPrice) * 100;
+        if (r.price != null && r.original_price_inferred != null && r.original_price_inferred > 0) {
+          const loss = ((r.original_price_inferred - r.price) / r.original_price_inferred) * 100;
           agg.lossSum += loss;
           agg.lossCount++;
         }
       }
     }
 
-    const result: Omit<EventAggregate, 'cx' | 'cy' | 'r'>[] = [];
-    byEvent.forEach((agg, event) => {
-      if (agg.buys === 0 && agg.priceCount === 0) return; // no data worth showing
+    let result: Omit<EventAggregate, 'cx' | 'cy' | 'r'>[] = [];
+    byKey.forEach((agg, key) => {
+      if (agg.buys === 0 && agg.priceCount === 0) return;
       result.push({
-        event,
+        event: key,
         demand: agg.buys,
+        sells: agg.sells,
         avgLoss: agg.lossCount > 0 ? agg.lossSum / agg.lossCount : 0,
         avgLossValid: agg.lossCount > 0,
         avgPrice: agg.priceCount > 0 ? agg.priceSum / agg.priceCount : 0,
+        eventDate: agg.eventDate,
       });
     });
 
-    // Compute axis domains
+    // Apply minDemand filter in artist view only
+    if (!isDrillDown && minDemand > 0) {
+      result = result.filter((e) => e.demand >= minDemand);
+    }
+
     if (result.length === 0) return [];
 
     const demands = result.map((e) => e.demand);
@@ -150,10 +194,10 @@ export default function TicketTickerChart({ records }: Props) {
     return result.map((e) => ({
       ...e,
       cx: PAD.left + linear(e.demand, demandMin, demandMax, 0, chartW),
-      cy: PAD.top + linear(e.avgLoss, lossMax, lossMin, 0, chartH), // inverted: high loss → top
+      cy: PAD.top + linear(e.avgLoss, lossMax, lossMin, 0, chartH),
       r: Math.max(MIN_R, sqrtScale(e.avgPrice, priceMin, priceMax, MIN_R, MAX_R)),
     }));
-  }, [records, eventFilter, startDate, endDate, svgWidth]);
+  }, [records, eventFilter, startDate, endDate, minDemand, drillDownArtist, svgWidth]);
 
   // ── Tooltip ────────────────────────────────────────────────────────────────
 
@@ -193,77 +237,132 @@ export default function TicketTickerChart({ records }: Props) {
     }
   }
 
+  // ── Drill-down entry ───────────────────────────────────────────────────────
+
+  function enterDrillDown(artist: string) {
+    setDrillDownArtist(artist);
+    setClickedEvent(null);
+    setHoveredEvent(null);
+  }
+
+  function exitDrillDown() {
+    setDrillDownArtist(null);
+    setClickedEvent(null);
+    setHoveredEvent(null);
+  }
+
   // ── Clear handlers ─────────────────────────────────────────────────────────
 
   function clearAll() {
     setEventFilter('');
     setStartDate('');
     setEndDate('');
+    setMinDemand(DEFAULT_MIN_DEMAND);
+    setDrillDownArtist(null);
     setHoveredEvent(null);
     setClickedEvent(null);
   }
 
-  const hasActiveFilter = eventFilter || startDate || endDate;
+  const hasActiveFilter =
+    eventFilter || startDate || endDate || minDemand !== DEFAULT_MIN_DEMAND || drillDownArtist !== null;
+
+  const isDrillDown = drillDownArtist !== null;
 
   return (
     <div className="space-y-4">
 
+      {/* ── Breadcrumb (drill-down only) ──────────────────────────────────── */}
+      {isDrillDown && (
+        <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest">
+          <button
+            onClick={exitDrillDown}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); exitDrillDown(); } }}
+            className="opacity-50 hover:opacity-100 transition-opacity underline underline-offset-2"
+            aria-label="Return to all artists view"
+          >
+            All Artists
+          </button>
+          <span className="opacity-30">›</span>
+          <span className="text-primary font-bold">{drillDownArtist}</span>
+        </div>
+      )}
+
       {/* ── Filter bar ────────────────────────────────────────────────────── */}
       <div className="flex flex-wrap items-end gap-3">
 
-        {/* Event name filter */}
-        <div className="flex flex-col gap-1 min-w-[180px] flex-1">
-          <label className="font-mono text-[10px] uppercase tracking-widest opacity-50">
-            Event
-          </label>
-          <div className="relative">
-            <input
-              type="text"
-              value={eventFilter}
-              onChange={(e) => setEventFilter(e.target.value)}
-              placeholder="Search events…"
-              className="w-full border border-black/15 dark:border-white/15 bg-transparent px-3 py-1.5 font-mono text-xs focus:outline-none focus:border-primary"
-            />
-            {eventFilter && (
-              <button
-                onClick={() => setEventFilter('')}
-                aria-label="Clear event filter"
-                className="absolute right-2 top-1/2 -translate-y-1/2 opacity-40 hover:opacity-100 font-mono text-xs"
-              >
-                ×
-              </button>
-            )}
+        {/* Event name filter (artist view only) */}
+        {!isDrillDown && (
+          <div className="flex flex-col gap-1 min-w-[180px] flex-1">
+            <label className="font-mono text-[10px] uppercase tracking-widest opacity-50">
+              Event
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                value={eventFilter}
+                onChange={(e) => setEventFilter(e.target.value)}
+                placeholder="Search events…"
+                className="w-full border border-black/15 dark:border-white/15 bg-transparent px-3 py-1.5 font-mono text-xs focus:outline-none focus:border-primary"
+              />
+              {eventFilter && (
+                <button
+                  onClick={() => setEventFilter('')}
+                  aria-label="Clear event filter"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 opacity-40 hover:opacity-100 font-mono text-xs"
+                >
+                  ×
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Date range filters */}
         <div className="flex flex-col gap-1">
           <label className="font-mono text-[10px] uppercase tracking-widest opacity-50">
             From
           </label>
-          <div className="relative">
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="border border-black/15 dark:border-white/15 bg-transparent px-3 py-1.5 font-mono text-xs focus:outline-none focus:border-primary"
-            />
-          </div>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="border border-black/15 dark:border-white/15 bg-transparent px-3 py-1.5 font-mono text-xs focus:outline-none focus:border-primary"
+          />
         </div>
 
         <div className="flex flex-col gap-1">
           <label className="font-mono text-[10px] uppercase tracking-widest opacity-50">
             To
           </label>
-          <div className="relative">
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className="border border-black/15 dark:border-white/15 bg-transparent px-3 py-1.5 font-mono text-xs focus:outline-none focus:border-primary"
+          />
+        </div>
+
+        {/* Min demand control (artist view only) */}
+        {!isDrillDown && (
+          <div className="flex flex-col gap-1">
+            <label
+              htmlFor="min-demand"
+              className="font-mono text-[10px] uppercase tracking-widest opacity-50"
+            >
+              Min demand: {minDemand}
+            </label>
             <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="border border-black/15 dark:border-white/15 bg-transparent px-3 py-1.5 font-mono text-xs focus:outline-none focus:border-primary"
+              id="min-demand"
+              type="range"
+              min={0}
+              max={200}
+              step={5}
+              value={minDemand}
+              onChange={(e) => setMinDemand(Number(e.target.value))}
+              className="w-28 accent-[var(--coral)]"
             />
           </div>
-        </div>
+        )}
 
         {/* Clear all */}
         {hasActiveFilter && (
@@ -287,33 +386,28 @@ export default function TicketTickerChart({ records }: Props) {
           height={SVG_HEIGHT}
           viewBox={`0 0 ${svgWidth} ${SVG_HEIGHT}`}
           role="img"
-          aria-label={`Bubble chart showing ${aggregates.length} events by demand and seller loss`}
+          aria-label={
+            isDrillDown
+              ? `City breakdown for ${drillDownArtist}: ${aggregates.length} cities by demand and seller loss`
+              : `Bubble chart showing ${aggregates.length} events by demand and seller loss`
+          }
           onClick={handleSvgClick}
           style={{ display: 'block' }}
         >
           {/* ── Axes ──────────────────────────────────────────────────────── */}
           {axisData && (
             <g fill="none">
-              {/* X axis line */}
               <line
-                x1={PAD.left}
-                y1={SVG_HEIGHT - PAD.bottom}
-                x2={svgWidth - PAD.right}
-                y2={SVG_HEIGHT - PAD.bottom}
-                stroke="var(--ink)"
-                strokeOpacity="0.15"
+                x1={PAD.left} y1={SVG_HEIGHT - PAD.bottom}
+                x2={svgWidth - PAD.right} y2={SVG_HEIGHT - PAD.bottom}
+                stroke="var(--ink)" strokeOpacity="0.15"
               />
-              {/* Y axis line */}
               <line
-                x1={PAD.left}
-                y1={PAD.top}
-                x2={PAD.left}
-                y2={SVG_HEIGHT - PAD.bottom}
-                stroke="var(--ink)"
-                strokeOpacity="0.15"
+                x1={PAD.left} y1={PAD.top}
+                x2={PAD.left} y2={SVG_HEIGHT - PAD.bottom}
+                stroke="var(--ink)" strokeOpacity="0.15"
               />
 
-              {/* X ticks + labels */}
               {axisData.xTicks.map((v, i) => {
                 const x = PAD.left + linear(v, axisData.demandMin, axisData.demandMax, 0, axisData.chartW);
                 return (
@@ -324,13 +418,10 @@ export default function TicketTickerChart({ records }: Props) {
                       stroke="var(--ink)" strokeOpacity="0.25"
                     />
                     <text
-                      x={x}
-                      y={SVG_HEIGHT - PAD.bottom + 16}
+                      x={x} y={SVG_HEIGHT - PAD.bottom + 16}
                       textAnchor="middle"
                       fontFamily="var(--font-mono-stack)"
-                      fontSize={10}
-                      fill="var(--ink)"
-                      opacity={0.45}
+                      fontSize={10} fill="var(--ink)" opacity={0.45}
                     >
                       {Math.round(v)}
                     </text>
@@ -338,7 +429,6 @@ export default function TicketTickerChart({ records }: Props) {
                 );
               })}
 
-              {/* Y ticks + labels */}
               {axisData.yTicks.map((v, i) => {
                 const y = PAD.top + linear(v, axisData.lossMax, axisData.lossMin, 0, axisData.chartH);
                 return (
@@ -349,14 +439,10 @@ export default function TicketTickerChart({ records }: Props) {
                       stroke="var(--ink)" strokeOpacity="0.25"
                     />
                     <text
-                      x={PAD.left - 8}
-                      y={y}
-                      textAnchor="end"
-                      dominantBaseline="middle"
+                      x={PAD.left - 8} y={y}
+                      textAnchor="end" dominantBaseline="middle"
                       fontFamily="var(--font-mono-stack)"
-                      fontSize={10}
-                      fill="var(--ink)"
-                      opacity={0.45}
+                      fontSize={10} fill="var(--ink)" opacity={0.45}
                     >
                       {Math.round(v)}%
                     </text>
@@ -364,34 +450,24 @@ export default function TicketTickerChart({ records }: Props) {
                 );
               })}
 
-              {/* Axis labels */}
               <text
-                x={PAD.left + axisData.chartW / 2}
-                y={SVG_HEIGHT - 8}
+                x={PAD.left + axisData.chartW / 2} y={SVG_HEIGHT - 8}
                 textAnchor="middle"
                 fontFamily="var(--font-mono-stack)"
-                fontSize={9}
-                fill="var(--ink)"
-                opacity={0.4}
-                letterSpacing="0.08em"
+                fontSize={9} fill="var(--ink)" opacity={0.4} letterSpacing="0.08em"
               >
                 BUY DEMAND →
               </text>
               <text
-                x={14}
-                y={PAD.top + axisData.chartH / 2}
+                x={14} y={PAD.top + axisData.chartH / 2}
                 textAnchor="middle"
                 fontFamily="var(--font-mono-stack)"
-                fontSize={9}
-                fill="var(--ink)"
-                opacity={0.4}
-                letterSpacing="0.08em"
+                fontSize={9} fill="var(--ink)" opacity={0.4} letterSpacing="0.08em"
                 transform={`rotate(-90, 14, ${PAD.top + axisData.chartH / 2})`}
               >
                 SELLER LOSS % ↑
               </text>
 
-              {/* Zero line for Y axis if domain crosses 0 */}
               {axisData.lossMin < 0 && axisData.lossMax > 0 && (() => {
                 const zeroY = PAD.top + linear(0, axisData.lossMax, axisData.lossMin, 0, axisData.chartH);
                 return (
@@ -408,14 +484,10 @@ export default function TicketTickerChart({ records }: Props) {
           {/* ── Empty state ───────────────────────────────────────────────── */}
           {aggregates.length === 0 && (
             <text
-              x={svgWidth / 2}
-              y={SVG_HEIGHT / 2}
-              textAnchor="middle"
-              dominantBaseline="middle"
+              x={svgWidth / 2} y={SVG_HEIGHT / 2}
+              textAnchor="middle" dominantBaseline="middle"
               fontFamily="var(--font-mono-stack)"
-              fontSize={12}
-              fill="var(--ink)"
-              opacity={0.35}
+              fontSize={12} fill="var(--ink)" opacity={0.35}
             >
               {records.length === 0
                 ? 'No data loaded'
@@ -428,6 +500,7 @@ export default function TicketTickerChart({ records }: Props) {
             {aggregates.map((bubble) => {
               const isActive = activeEvent === bubble.event;
               const isDimmed = activeEvent !== null && !isActive;
+              const noData = !bubble.avgLossValid;
               return (
                 <circle
                   key={bubble.event}
@@ -435,10 +508,11 @@ export default function TicketTickerChart({ records }: Props) {
                   cy={bubble.cy}
                   r={bubble.r}
                   fill="var(--coral)"
-                  fillOpacity={isDimmed ? 0.12 : isActive ? 0.85 : 0.55}
+                  fillOpacity={isDimmed ? 0.12 : noData ? 0.22 : isActive ? 0.85 : 0.55}
                   stroke="var(--coral)"
-                  strokeOpacity={isDimmed ? 0.08 : isActive ? 1 : 0.7}
+                  strokeOpacity={isDimmed ? 0.08 : noData ? 0.35 : isActive ? 1 : 0.7}
                   strokeWidth={isActive ? 1.5 : 0.8}
+                  strokeDasharray={noData ? '4 2' : undefined}
                   role="button"
                   tabIndex={0}
                   aria-label={`${bubble.event}: ${bubble.demand} buys, ${bubble.avgLossValid ? bubble.avgLoss.toFixed(1) + '% avg loss' : 'no loss data'}, ₹${Math.round(bubble.avgPrice).toLocaleString()} avg price`}
@@ -450,12 +524,22 @@ export default function TicketTickerChart({ records }: Props) {
                   onMouseLeave={() => setHoveredEvent(null)}
                   onClick={(e) => {
                     e.stopPropagation();
-                    setClickedEvent(clickedEvent === bubble.event ? null : bubble.event);
+                    if (!isDrillDown) {
+                      // Artist view: click enters drill-down
+                      enterDrillDown(bubble.event);
+                    } else {
+                      // Drill-down: click pins tooltip
+                      setClickedEvent(clickedEvent === bubble.event ? null : bubble.event);
+                    }
                   }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      setClickedEvent(clickedEvent === bubble.event ? null : bubble.event);
+                      if (!isDrillDown) {
+                        enterDrillDown(bubble.event);
+                      } else {
+                        setClickedEvent(clickedEvent === bubble.event ? null : bubble.event);
+                      }
                     }
                   }}
                 />
@@ -475,7 +559,11 @@ export default function TicketTickerChart({ records }: Props) {
               {activeBubble.event}
             </div>
             <div className="opacity-60 space-y-0.5">
+              {activeBubble.eventDate && (
+                <div>{formatEventDate(activeBubble.eventDate)}</div>
+              )}
               <div>Demand: <span className="text-primary font-bold">{activeBubble.demand}</span> buys</div>
+              <div>Sells: <span className="font-bold">{activeBubble.sells}</span></div>
               <div>
                 Avg loss:{' '}
                 <span className="text-primary font-bold">
@@ -490,6 +578,9 @@ export default function TicketTickerChart({ records }: Props) {
                   ₹{Math.round(activeBubble.avgPrice).toLocaleString()}
                 </span>
               </div>
+              {!activeBubble.avgLossValid && (
+                <div className="opacity-70 italic">Loss data unavailable</div>
+              )}
             </div>
           </div>
         )}
@@ -501,8 +592,23 @@ export default function TicketTickerChart({ records }: Props) {
         <span>Y ↑ seller loss %</span>
         <span>● size = avg price</span>
         {aggregates.length > 0 && (
-          <span>{aggregates.length} events shown</span>
+          <span>{aggregates.length} {isDrillDown ? 'cities' : 'events'} shown</span>
         )}
+      </div>
+      {/* Loss data legend — always visible */}
+      <div className="flex flex-wrap gap-4 font-mono text-[10px] uppercase tracking-widest opacity-35">
+        <span className="flex items-center gap-1.5">
+          <svg width={14} height={14} aria-hidden>
+            <circle cx={7} cy={7} r={5} fill="var(--coral)" fillOpacity={0.55} stroke="var(--coral)" strokeWidth={1} />
+          </svg>
+          Loss data available
+        </span>
+        <span className="flex items-center gap-1.5">
+          <svg width={14} height={14} aria-hidden>
+            <circle cx={7} cy={7} r={5} fill="var(--coral)" fillOpacity={0.22} stroke="var(--coral)" strokeWidth={1} strokeDasharray="3 1.5" />
+          </svg>
+          Loss data unavailable
+        </span>
       </div>
     </div>
   );

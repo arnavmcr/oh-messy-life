@@ -8,17 +8,23 @@ const CATS = [
   { id: 'writing', label: 'WRITING', cssColor: '#ff5573' },
   { id: 'record',  label: 'RECORD',  cssColor: '#9b7fff' },
   { id: 'signal',  label: 'SIGNAL',  cssColor: '#5fc1a2' },
+  { id: 'labs',    label: 'LABS',    cssColor: '#872b54' },
 ] as const;
 
 const CAT_ANGLES: Record<string, number> = {
   writing: -Math.PI / 2,
   record: 0,
   signal: Math.PI / 2,
+  labs: Math.PI,
 };
 
 const SIGNAL_LEAVES = [
   { id: 's1', label: 'The Library', href: '/music/index.html' },
   { id: 's2', label: 'Gig Archive', href: '/music/gig-archive' },
+];
+
+const LABS_LEAVES = [
+  { id: 'l1', label: 'Ticket Ticker', href: '/projects/ticket-ticker' },
 ];
 
 const LABEL_THRESHOLD = 1.5;
@@ -115,6 +121,11 @@ function buildGraph(
     nodes.push(makeLeafNode(item.id, signalCat, item.label, item.href, 5, 11));
   });
 
+  const labsCat = CATS[3];
+  LABS_LEAVES.forEach((item) => {
+    nodes.push(makeLeafNode(item.id, labsCat, item.label, item.href, 5, 11));
+  });
+
   const edges: GraphEdge[] = [];
 
   const nodeMap = new Map<string, GraphNode>(nodes.map((n) => [n.id, n]));
@@ -169,7 +180,7 @@ export default function HomeGraph({
   const [, setTick]                   = useState(0);
   const [hoverId, setHoverId]         = useState<string | null>(null);
   const [clickedId, setClickedId]     = useState<string | null>(null);
-  const [activeCats, setActiveCats]   = useState({ writing: true, record: true, signal: true });
+  const [activeCats, setActiveCats]   = useState({ writing: true, record: true, signal: true, labs: true });
   const [view, setView]               = useState({ scale: 1, tx: 0, ty: 0 });
   viewRef.current  = view;
   sizeRef.current  = size;

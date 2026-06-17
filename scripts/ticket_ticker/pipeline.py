@@ -320,16 +320,57 @@ def _to_num(val) -> float | None:
 
 
 def to_compact_record(r: dict) -> dict:
-    """Project a full pipeline record to the compact frontend schema."""
+    """Project a full pipeline record to the compact frontend schema (11 fields)."""
+    original_price = _to_num(r.get("original_price"))
     return {
         "event": r.get("event_name_normalized") or r.get("event_name") or "",
+        "location": r.get("location") or None,
         "type": (r.get("message_type") or "").upper(),
         "price": _to_num(r.get("price_per_ticket")),
-        "originalPrice": _to_num(r.get("original_price")),
+        "original_price_inferred": original_price,
+        "price_inference_source": "explicit" if original_price is not None else None,
         "message_date": r.get("message_date") or "",
+        "event_date": r.get("event_date") or None,
+        "num_tickets": _to_num(r.get("num_tickets")),
         "category": r.get("ticket_category") or None,
         "message_hash": r.get("message_hash") or "",
     }
+
+
+# ── Stage 3.5: Dataset inference ─────────────────────────────────────────────
+
+
+def run_price_inference(records: list[dict]) -> list[dict]:
+    """Fill original_price_inferred for SELL records missing it from same (event, category) pair.
+
+    Strategy: use the first explicit price found per (event, category) pair.
+    Multiple explicit prices are not averaged — first-found wins because the
+    distribution within a category is narrow and averaging adds little value.
+    """
+    # Build lookup: (event, category) → first explicit original_price_inferred
+    index: dict[tuple, float] = {}
+    for r in records:
+        if (
+            r.get("type", "").upper() == "SELL"
+            and r.get("original_price_inferred") is not None
+            and r.get("price_inference_source") == "explicit"
+        ):
+            key = (r.get("event"), r.get("category"))
+            if key not in index:
+                index[key] = r["original_price_inferred"]
+
+    # Fill missing prices for SELL records
+    filled = 0
+    for r in records:
+        if r.get("type", "").upper() == "SELL" and r.get("original_price_inferred") is None:
+            key = (r.get("event"), r.get("category"))
+            if key in index:
+                r["original_price_inferred"] = index[key]
+                r["price_inference_source"] = "dataset"
+                filled += 1
+
+    print(f"  [inference] filled {filled} SELL records via dataset inference")
+    return records
 
 
 def load_existing_json(path: str) -> list[dict]:
@@ -383,36 +424,120 @@ def _csv_row_to_pipeline_record(row: dict) -> dict:
     }
 
 
+def _migrate_old_record(r: dict) -> dict:
+    """Migrate a 7-field old-schema compact record to the new 11-field schema."""
+    old_price = _to_num(r.get("originalPrice"))
+    return {
+        "event": r.get("event", ""),
+        "location": None,
+        "type": r.get("type", ""),
+        "price": _to_num(r.get("price")),
+        "original_price_inferred": old_price,
+        "price_inference_source": "explicit" if old_price is not None else None,
+        "message_date": r.get("message_date", ""),
+        "event_date": None,
+        "num_tickets": None,
+        "category": r.get("category") or None,
+        "message_hash": r.get("message_hash", ""),
+    }
+
+
+def _is_valid_date(s: str) -> bool:
+    """Return True if s is a YYYY-MM-DD string (not a stray header row)."""
+    try:
+        datetime.strptime(s.strip(), "%Y-%m-%d")
+        return True
+    except (ValueError, TypeError):
+        return False
+
+
+POST_JAN27_CUTOFF = "2026-01-27"
+
+
 def run_seed(seed_csv: str, existing_path: str | None, output_path: str) -> None:
-    """One-time CSV → JSON conversion. Does not call the Claude API."""
+    """Reseed content/ticket-ticker.json using the Expanded CSV + post-Jan-27 carry-forward.
+
+    Strategy:
+    1. Load Expanded CSV (Nov 2023 – Jan 27) → new-schema baseline via pipeline.
+    2. Load current JSON → extract post-Jan-27 records → migrate to new schema.
+    3. Merge: CSV-derived records + migrated post-Jan-27. CSV takes precedence on hash collision.
+    4. Dedup by message_hash, write output.
+    """
     print(f"\n─── Seed mode: {seed_csv} ───")
 
-    existing = load_existing_json(existing_path) if existing_path else []
-    existing_hashes = {r.get("message_hash", "") for r in existing}
-
+    # ── Step 1: CSV → new-schema compact records ──────────────────────────────
     rows: list[dict] = []
     with open(seed_csv, encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
+            # Skip stray repeated-header rows
+            if not _is_valid_date(row.get("message_date", "")):
+                continue
             rows.append(row)
-
-    print(f"  Loaded {len(rows)} rows from CSV")
+    print(f"  Loaded {len(rows)} valid rows from CSV")
 
     pipeline_records = [_csv_row_to_pipeline_record(r) for r in rows]
     cleaned = cleanup_records(pipeline_records)
 
-    # Filter confidence and duplicates
-    kept = [
-        r for r in cleaned
-        if _to_num(r.get("confidence")) is not None
-        and (_to_num(r.get("confidence")) or 0) >= 0.6
-        and not r.get("is_duplicate")
-        and r.get("message_hash") not in existing_hashes
-    ]
-    print(f"  {len(kept)} new records after confidence/dedup filter")
+    # Dedup within CSV by message_hash (first occurrence wins)
+    seen_hashes: set[str] = set()
+    deduped_csv: list[dict] = []
+    for r in cleaned:
+        h = r.get("message_hash", "")
+        if h and h not in seen_hashes:
+            seen_hashes.add(h)
+            deduped_csv.append(r)
 
-    merged = existing + [to_compact_record(r) for r in kept]
-    write_output(merged, output_path)
+    # Filter by confidence
+    high_conf = [
+        r for r in deduped_csv
+        if (_to_num(r.get("confidence")) or 0) >= 0.6
+    ]
+    print(f"  {len(high_conf)} records at confidence ≥ 0.6 after CSV dedup")
+
+    # Convert all to compact, then run inference over the full batch for best coverage
+    all_csv_compact = [to_compact_record(r) for r in deduped_csv]
+    run_price_inference(all_csv_compact)
+    compact_by_hash = {r["message_hash"]: r for r in all_csv_compact}
+
+    # Keep only high-confidence records for the output
+    csv_compact = [
+        compact_by_hash[r["message_hash"]]
+        for r in high_conf
+        if r.get("message_hash") in compact_by_hash
+    ]
+
+    # ── Step 2: post-Jan-27 carry-forward from current JSON ───────────────────
+    post_jan27: list[dict] = []
+    if existing_path:
+        current = load_existing_json(existing_path)
+        old_post = [r for r in current if r.get("message_date", "") > POST_JAN27_CUTOFF]
+        post_jan27 = [_migrate_old_record(r) for r in old_post]
+        print(f"  {len(post_jan27)} post-Jan-27 records migrated from existing JSON")
+
+    # ── Step 3: Merge — CSV baseline takes precedence on hash collision ───────
+    # Build combined list; then dedup preserving CSV-first order
+    all_records = csv_compact + post_jan27
+    final: list[dict] = []
+    final_hashes: set[str] = set()
+    for r in all_records:
+        h = r.get("message_hash", "")
+        if h not in final_hashes:
+            final_hashes.add(h)
+            final.append(r)
+    print(f"  {len(final)} total records after merge and dedup")
+
+    # ── Step 4: Coverage report ───────────────────────────────────────────────
+    sell_total = sum(1 for r in final if r.get("type") == "SELL")
+    sell_with_price = sum(
+        1 for r in final
+        if r.get("type") == "SELL" and r.get("original_price_inferred") is not None
+    )
+    if sell_total > 0:
+        coverage = sell_with_price / sell_total * 100
+        print(f"  SELL price coverage: {sell_with_price}/{sell_total} = {coverage:.1f}%")
+
+    write_output(final, output_path)
 
 # ── Main pipeline ─────────────────────────────────────────────────────────────
 
@@ -480,6 +605,13 @@ def run_pipeline(
     deduped = [r for r in cleaned if not r.get("is_duplicate")]
     print(f"  {len(deduped)} records after dedup ({len(cleaned) - len(deduped)} flagged)")
 
+    # Stage 3.5 — dataset price inference
+    print("\n─── Stage 3.5: Price inference ───")
+    # Inference runs on compact records; build lookup from the full cleaned set
+    all_compact = [to_compact_record(r) for r in deduped]
+    run_price_inference(all_compact)
+    compact_by_hash = {r["message_hash"]: r for r in all_compact}
+
     # Stage 4 — merge + export
     print("\n─── Stage 4: Merge & export ───")
     high_conf = [
@@ -488,7 +620,11 @@ def run_pipeline(
     ]
     print(f"  {len(high_conf)} records at confidence ≥ 0.6")
 
-    new_compact = [to_compact_record(r) for r in high_conf]
+    new_compact = [
+        compact_by_hash[r["message_hash"]]
+        for r in high_conf
+        if r.get("message_hash") in compact_by_hash
+    ]
     merged = existing + new_compact
     write_output(merged, output_path)
     print(f"\n[OK] Done. {len(new_compact)} new records added, {len(merged)} total.")

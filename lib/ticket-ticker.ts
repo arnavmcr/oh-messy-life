@@ -3,10 +3,14 @@ import path from 'path';
 
 export interface TicketRecord {
   event: string;
+  location: string | null;
   type: 'BUY' | 'SELL';
   price: number | null;
-  originalPrice: number | null;
+  original_price_inferred: number | null;
+  price_inference_source: 'explicit' | 'dataset' | 'price_map' | null;
   message_date: string;
+  event_date: string | null;
+  num_tickets: number | null;
   category: string | null;
 }
 

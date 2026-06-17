@@ -95,7 +95,8 @@ def infer_city_from_text(text: str) -> str | None:
 
 # ── Event name normalization ──────────────────────────────────────────────────
 
-def normalize_event_name(record: dict) -> str | None:
+def normalize_event_name(record: dict) -> tuple[str | None, str | None]:
+    """Return (canonical_event_name, city_or_null). City is always a separate field."""
     raw = record.get("event_name", "") or ""
     raw_lower = raw.lower()
     msg_date = record.get("message_date", "") or ""
@@ -113,22 +114,19 @@ def normalize_event_name(record: dict) -> str | None:
                 year = infer_year_from_windows(msg_date, DGTL_WINDOWS)
                 if year:
                     name = f"{name} {year}"
+            city = None
             if needs_city:
                 city = infer_city_from_text(raw) or infer_city_from_text(orig_msg)
-                if city:
-                    name = f"{name} {city}"
-            return name
+            return name, city
 
-    # Artist check
+    # Artist check — city returned separately, never appended to name
     for keyword, canonical in ARTIST_MAP:
         if keyword in raw_lower:
             city = infer_city_from_text(raw) or infer_city_from_text(orig_msg)
-            if city:
-                return f"{canonical} {city}"
-            return canonical
+            return canonical, city
 
-    # No match — return raw stripped
-    return raw.strip() or None
+    # No match — return raw stripped, no city
+    return raw.strip() or None, None
 
 # ── Pass type detection ───────────────────────────────────────────────────────
 
@@ -197,7 +195,11 @@ def cleanup_records(records: list[dict]) -> list[dict]:
     cleaned = []
 
     for r in records:
-        r["event_name_normalized"] = normalize_event_name(r)
+        canonical, city = normalize_event_name(r)
+        r["event_name_normalized"] = canonical
+        # Only overwrite location if the record doesn't already have one from extraction
+        if not r.get("location") and city:
+            r["location"] = city
         r["pass_type"] = detect_pass_type(r)
         apply_lolla_ga_default(r)
 
