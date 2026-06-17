@@ -171,7 +171,7 @@ status: published
 
 > Showcase work with varying levels of interactivity.
 
-### 2a — Ticket Ticker `[ V1 + V2 LIVE ✓ ]`
+### 2a — Ticket Ticker `[ V1 + V2 + V3 LIVE ✓ ]`
 
 **V1 (shipped 2026-06-16):** WhatsApp-to-chart pipeline. 16,544 records extracted from Mumbai concert ticket resale groups (Nov 2023 – Jun 2026), normalised, seeded to `content/ticket-ticker.json`. SVG bubble chart at `/projects/ticket-ticker` — plotted by buy demand (X), avg seller loss % (Y), bubble size = avg price. Static JSON load, zero new runtime dependencies.
 - [x] `scripts/ticket_ticker/` — 4-stage Python pipeline: extract → normalise → infer → seed (CSV + JSON merge)
@@ -188,6 +188,14 @@ status: published
 - [x] Chart: minDemand filter (default 40), artist→city drill-down with breadcrumb, loss metric uses `original_price_inferred`, event date shown in tooltip
 - [x] Root cleanup — pipeline data files gitignored, handoff doc moved to `docs/`
 - [x] LABS category added to homepage constellation graph with Ticket Ticker node
+
+**V3 (shipped 2026-06-17):** Chart polish, genre colors, stats header.
+- [x] Loss % outlier exclusion — records where `|loss| > 200%` or `< -100%` excluded from `avgLoss` (inference errors); Y axis clamped to `[0, max]`
+- [x] Fixed-step X axis ticks — `0, 500, 1k, 1.5k, 2k` instead of dynamic `niceRange`
+- [x] Genre color coding — `lib/genre-map.ts` maps top 35 events to Pop/Festival/Electronic/Desi/Other; bubbles colored by genre with live legend
+- [x] KPI stat cards (events tracked, total listings, avg seller loss, top demand) — live with filters
+- [x] 3 callout chips above filter bar (Most Wanted · Steepest Loss · Priciest Ticket) — full-corpus, stable across filter changes; clicking enters drill-down
+- [x] Editorial lede paragraph in page header
 
 ### Milestones (remaining)
 - [ ] `/projects` — THE LABS listing page (grid of project cards)

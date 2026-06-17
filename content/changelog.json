@@ -1,5 +1,11 @@
 [
   {
+    "date": "2026-06-17",
+    "type": "SITE",
+    "description": "ticket ticker v3 — genre colors, stat cards, callout chips, no more negative loss %",
+    "href": "/projects/ticket-ticker"
+  },
+  {
     "date": "2026-06-03",
     "type": "SITE",
     "description": "the graph is a constellation now — flat nodes, labels on zoom, smoother on mobile",
