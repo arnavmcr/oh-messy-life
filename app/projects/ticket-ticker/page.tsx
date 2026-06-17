@@ -35,6 +35,9 @@ export default function TicketTickerPage() {
       <p className="font-mono text-[10px] uppercase tracking-widest opacity-40 mt-3">
         Source: 16k+ WhatsApp listings · Nov 2023 – Jun 2026 · Mumbai-focused groups
       </p>
+      <p className="font-body text-base opacity-80 max-w-2xl mt-4 leading-relaxed">
+        Coldplay&apos;s 2024 India tour generated the highest resale demand ever recorded in this dataset — nearly double the next-closest event. Sellers still lost money on average. Festivals like Lollapalooza dominate mid-demand; electronic acts cluster cheap and niche. The further right a bubble sits, the harder it was to find a ticket.
+      </p>
 
       {/* Chart */}
       <div className="mt-10">
