@@ -1,6 +1,18 @@
 [
   {
     "date": "2026-06-17",
+    "type": "RECORD",
+    "description": "may '26 is up — pills, delusion, asymptotes, and quitting cigarettes",
+    "href": "/record/may-26"
+  },
+  {
+    "date": "2026-06-17",
+    "type": "SITE",
+    "description": "writing page is a graph now — footer cleaned up, record entries bigger",
+    "href": "/writing"
+  },
+  {
+    "date": "2026-06-17",
     "type": "SITE",
     "description": "ticket ticker v3 — genre colors, stat cards, callout chips, no more negative loss %",
     "href": "/projects/ticket-ticker"
