@@ -60,6 +60,7 @@ export interface HoverInfo {
   label: string;
   cat: string;
   href: string;
+  tapPos?: { x: number; y: number }; // set when triggered by a touch tap
 }
 
 export interface LeafItem {
@@ -186,6 +187,9 @@ export default function HomeGraph({
   const [, setTick]                   = useState(0);
   const [hoverId, setHoverId]         = useState<string | null>(null);
   const [clickedId, setClickedId]     = useState<string | null>(null);
+  const [tappedId, setTappedId]       = useState<string | null>(null);
+  const isTouchRef = useRef(false);
+  const tapPosRef  = useRef<{ x: number; y: number } | null>(null);
   const [activeCats, setActiveCats]   = useState({ writing: true, record: true, signal: true, labs: true });
   const [view, setView]               = useState({ scale: writingOnly ? 1.8 : 1, tx: 0, ty: 0 });
   viewRef.current  = view;
@@ -322,11 +326,15 @@ export default function HomeGraph({
   };
 
   useEffect(() => {
+    isTouchRef.current = window.matchMedia('(pointer: coarse)').matches;
+  }, []);
+
+  useEffect(() => {
     if (!onHover) return;
-    if (!hoverId) { onHover(null); return; }
+    if (!hoverId) { onHover(null); tapPosRef.current = null; return; }
     const n = nodeMap.get(hoverId);
-    if (!n) { onHover(null); return; }
-    onHover({ id: n.id, label: n.label, cat: n.cat, href: n.href });
+    if (!n) { onHover(null); tapPosRef.current = null; return; }
+    onHover({ id: n.id, label: n.label, cat: n.cat, href: n.href, tapPos: tapPosRef.current ?? undefined });
   }, [hoverId, nodeMap, onHover]);
 
   const tRef       = useRef(0);
@@ -477,6 +485,13 @@ export default function HomeGraph({
       onMouseMove={onPointerMove}
       onMouseUp={onPointerUp}
       onMouseLeave={onPointerUp}
+      onClick={(e) => {
+        // Stage background tap (nodes call stopPropagation, so this only fires on background)
+        if (!dragRef.current.moved && isTouchRef.current) {
+          setTappedId(null);
+          setHoverId(null);
+        }
+      }}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
@@ -544,11 +559,28 @@ export default function HomeGraph({
             const baseOp = dim ? 0.08 : 1;
             const op = baseOp * entryOpacity;
 
-            const onEnter = () => setHoverId(n.id);
-            const onLeave = () => setHoverId(null);
+            const onEnter = () => { if (!isTouchRef.current) setHoverId(n.id); };
+            const onLeave = () => { if (!isTouchRef.current) setHoverId(null); };
             const onClick = (e: React.MouseEvent) => {
               if (dragRef.current.moved) return;
               e.stopPropagation();
+              if (isTouchRef.current) {
+                if (tappedId !== n.id) {
+                  // First tap: show tooltip, don't navigate
+                  const nx = n.x + (n.displayDX ?? 0);
+                  const ny = n.y + (n.displayDY ?? 0);
+                  const screenX = cx + view.tx + nx * view.scale;
+                  const screenY = cy + view.ty + ny * view.scale;
+                  tapPosRef.current = {
+                    x: Math.max(8, Math.min(screenX + 16, size.w - 268)),
+                    y: screenY < 60 ? screenY + 16 : screenY - 52,
+                  };
+                  setTappedId(n.id);
+                  setHoverId(n.id);
+                  return;
+                }
+                // Second tap on same node: navigate
+              }
               setClickedId(n.id);
               const href = n.href;
               setTimeout(() => {
