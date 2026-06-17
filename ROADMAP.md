@@ -167,11 +167,29 @@ status: published
 
 ---
 
-## Phase 2 — Labs (Projects) `[ PLANNED ]`
+## Phase 2 — Labs (Projects) `[ IN PROGRESS ]`
 
 > Showcase work with varying levels of interactivity.
 
-### Milestones
+### 2a — Ticket Ticker `[ V1 + V2 LIVE ✓ ]`
+
+**V1 (shipped 2026-06-16):** WhatsApp-to-chart pipeline. 16,544 records extracted from Mumbai concert ticket resale groups (Nov 2023 – Jun 2026), normalised, seeded to `content/ticket-ticker.json`. SVG bubble chart at `/projects/ticket-ticker` — plotted by buy demand (X), avg seller loss % (Y), bubble size = avg price. Static JSON load, zero new runtime dependencies.
+- [x] `scripts/ticket_ticker/` — 4-stage Python pipeline: extract → normalise → infer → seed (CSV + JSON merge)
+- [x] `lib/ticket-ticker.ts` — `getTicketRecords()`, `TicketRecord` 7-field interface, JSON loader
+- [x] `components/TicketTickerChart.tsx` — SVG bubble chart with event/date-range filters and hover tooltips
+- [x] `app/projects/ticket-ticker/page.tsx` — project page at `/projects/ticket-ticker`
+- [x] Linked from stress-fractures article (`/writing/stress-fractures`)
+
+**V2 (shipped 2026-06-17):** Schema enrichment, data quality, and chart drill-down.
+- [x] 11-field JSON schema — `location` split from `event`, added `event_date`, `num_tickets`, `original_price_inferred`, `price_inference_source`
+- [x] `normalize_event_name()` returns `(canonical, city)` tuple — city no longer fused into event names
+- [x] Dataset price inference: 93.2% SELL coverage (target: ≥85%) via first-found `(event, category)` lookup
+- [x] Reseed: 16,544 records, post-Jan-27 carry-forward preserved; `message_hash` dedup
+- [x] Chart: minDemand filter (default 40), artist→city drill-down with breadcrumb, loss metric uses `original_price_inferred`, event date shown in tooltip
+- [x] Root cleanup — pipeline data files gitignored, handoff doc moved to `docs/`
+- [x] LABS category added to homepage constellation graph with Ticket Ticker node
+
+### Milestones (remaining)
 - [ ] `/projects` — THE LABS listing page (grid of project cards)
 - [ ] `/projects/[slug]` — THE LAB_ENTRY template (MDX for case studies)
 - [ ] Live embed component (sandboxed iframe with fallback)
@@ -259,3 +277,7 @@ status: published
 | 2026-06-11 | Record animations: CSS-first, no animation library | Three patterns (fadeUp, scroll-reveal, vignette) don't justify a motion token layer yet; introduce tokens when a fourth distinct pattern is added site-wide |
 | 2026-06-11 | Record scroll-reveal: IntersectionObserver fires once, CSS transition for visibility | Prevents re-animation on back-scroll; CSS transition avoids new keyframe; `ScrollReveal` is a leaf client component wrapping a server-rendered section tree |
 | 2026-06-11 | Record vignette: page-scoped `::before` on `<main>`, not a fixed overlay | Avoids z-index entanglement with existing `body::after` fog (z-index 0) and `body::before` grain (z-index 1000) |
+| 2026-06-16 | Ticket Ticker: WhatsApp group → static JSON pipeline (no live API) | Data lives in WhatsApp exports, not a live service; static JSON seeded at build time keeps the chart zero-latency and dependency-free |
+| 2026-06-17 | Ticket Ticker: `normalize_event_name()` returns `(canonical, city)` tuple | City was being fused into event names (e.g., "Coldplay Mumbai"), fragmenting artist aggregation; tuple return separates concerns without re-extraction |
+| 2026-06-17 | Ticket Ticker: first-found price inference strategy for `original_price_inferred` | Average-of-SELL prices skews on resale outliers; first explicit value from same `(event, category)` pair is stable and deterministic |
+| 2026-06-17 | Ticket Ticker: `"Unknown"` label for null location in drill-down | Consistent with Null Object pattern used throughout the chart; surfaces location-unattributed records rather than silently dropping them |
