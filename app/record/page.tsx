@@ -136,21 +136,21 @@ export default function RecordPage() {
               <Link
                 key={entry.slug}
                 href={`/record/${entry.slug}`}
-                className="record-entry record-row grid grid-cols-[48px_1fr_auto] gap-4 py-3.5 border-b border-surface-container items-start transition-colors duration-150 -mx-2 px-2"
+                className="record-entry record-row grid grid-cols-[48px_1fr_auto] gap-4 py-4 border-b border-surface-container items-start transition-colors duration-150 -mx-2 px-2"
                 style={{ animationDelay: delay }}
               >
                 {/* Issue number */}
-                <span className="record-entry-num font-mono text-[10px] text-on-surface-variant/40 transition-colors duration-200 pt-0.5">
+                <span className="record-entry-num font-mono text-xs text-on-surface-variant/40 transition-colors duration-200 pt-0.5">
                   {formatIssue(entry.issue)}
                 </span>
 
                 {/* Body */}
                 <div className="min-w-0">
-                  <div className={`record-entry-title font-headline font-semibold text-sm leading-snug tracking-tight transition-colors duration-150 ${ageClass}`}>
+                  <div className={`record-entry-title font-headline font-semibold text-base leading-snug tracking-tight transition-colors duration-150 ${ageClass}`}>
                     {entry.title}
                   </div>
                   {sectionNames && (
-                    <div className="font-mono text-[10px] text-on-surface-variant/50 mt-1 leading-relaxed tracking-wide">
+                    <div className="font-mono text-xs text-on-surface-variant/50 mt-1.5 leading-relaxed tracking-wide">
                       {sectionNames}
                     </div>
                   )}

@@ -27,7 +27,8 @@ const LABS_LEAVES = [
   { id: 'l1', label: 'Ticket Ticker', href: '/projects/ticket-ticker' },
 ];
 
-const LABEL_THRESHOLD = 1.5;
+const LABEL_THRESHOLD_DEFAULT = 1.5;
+const LABEL_THRESHOLD_WRITING = 0.8;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -74,6 +75,7 @@ interface Props {
   writingLeaves?: LeafItem[];
   recordLeaves?: LeafItem[];
   tagEdges?: [string, string][];
+  writingOnly?: boolean;
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -103,6 +105,7 @@ function makeLeafNode(
 function buildGraph(
   writingLeaves: LeafItem[],
   recordLeaves: LeafItem[],
+  writingOnly = false,
 ): { nodes: GraphNode[]; edges: GraphEdge[]; nodeMap: Map<string, GraphNode> } {
   const nodes: GraphNode[] = [];
 
@@ -111,20 +114,22 @@ function buildGraph(
     nodes.push(makeLeafNode(`w${i}`, writingCat, item.title, `/writing/${item.slug}`, 4, 8));
   });
 
-  const recordCat = CATS[1];
-  recordLeaves.forEach((item, i) => {
-    nodes.push(makeLeafNode(`r${i}`, recordCat, item.title, `/record/${item.slug}`, 4, 8));
-  });
+  if (!writingOnly) {
+    const recordCat = CATS[1];
+    recordLeaves.forEach((item, i) => {
+      nodes.push(makeLeafNode(`r${i}`, recordCat, item.title, `/record/${item.slug}`, 4, 8));
+    });
 
-  const signalCat = CATS[2];
-  SIGNAL_LEAVES.forEach((item) => {
-    nodes.push(makeLeafNode(item.id, signalCat, item.label, item.href, 5, 11));
-  });
+    const signalCat = CATS[2];
+    SIGNAL_LEAVES.forEach((item) => {
+      nodes.push(makeLeafNode(item.id, signalCat, item.label, item.href, 5, 11));
+    });
 
-  const labsCat = CATS[3];
-  LABS_LEAVES.forEach((item) => {
-    nodes.push(makeLeafNode(item.id, labsCat, item.label, item.href, 5, 11));
-  });
+    const labsCat = CATS[3];
+    LABS_LEAVES.forEach((item) => {
+      nodes.push(makeLeafNode(item.id, labsCat, item.label, item.href, 5, 11));
+    });
+  }
 
   const edges: GraphEdge[] = [];
 
@@ -168,6 +173,7 @@ export default function HomeGraph({
   writingLeaves,
   recordLeaves,
   tagEdges = [],
+  writingOnly = false,
 }: Props) {
   const wrapRef      = useRef<HTMLDivElement>(null);
   const rafRef       = useRef(0);
@@ -181,7 +187,7 @@ export default function HomeGraph({
   const [hoverId, setHoverId]         = useState<string | null>(null);
   const [clickedId, setClickedId]     = useState<string | null>(null);
   const [activeCats, setActiveCats]   = useState({ writing: true, record: true, signal: true, labs: true });
-  const [view, setView]               = useState({ scale: 1, tx: 0, ty: 0 });
+  const [view, setView]               = useState({ scale: writingOnly ? 1.8 : 1, tx: 0, ty: 0 });
   viewRef.current  = view;
   sizeRef.current  = size;
 
@@ -190,12 +196,13 @@ export default function HomeGraph({
   const [panning, setPanning] = useState(false);
 
   // Stable refs so useMemo deps don't change on every hover re-render
-  const writingRef  = useRef(writingLeaves ?? []);
-  const recordRef   = useRef(recordLeaves ?? []);
-  const tagEdgesRef = useRef(tagEdges);
+  const writingRef    = useRef(writingLeaves ?? []);
+  const recordRef     = useRef(recordLeaves ?? []);
+  const tagEdgesRef   = useRef(tagEdges);
+  const writingOnlyRef = useRef(writingOnly);
 
   const { nodes, edges, adj, tagAdj, nodeMap } = useMemo(() => {
-    const g = buildGraph(writingRef.current, recordRef.current);
+    const g = buildGraph(writingRef.current, recordRef.current, writingOnlyRef.current);
     const te: GraphEdge[] = tagEdgesRef.current.map(([a, b]) => ({ a, b, kind: 'tag' as const, len: 220 }));
     const allEdges = [...g.edges, ...te];
     return {
@@ -218,7 +225,7 @@ export default function HomeGraph({
     ro.observe(el);
     const rect = el.getBoundingClientRect();
     setSize({ w: rect.width, h: rect.height });
-    if (rect.width <= 640) {
+    if (rect.width <= 640 && !writingOnly) {
       setView((v) => (v.scale === 1 ? { ...v, scale: 0.55 } : v));
     }
     return () => ro.disconnect();
@@ -583,7 +590,7 @@ export default function HomeGraph({
                     </circle>
                   )}
                   {/* Label at zoom threshold */}
-                  {view.scale >= LABEL_THRESHOLD && (
+                  {view.scale >= (writingOnly ? LABEL_THRESHOLD_WRITING : LABEL_THRESHOLD_DEFAULT) && (
                     <text
                       y={r + 14}
                       textAnchor="middle"
@@ -610,20 +617,22 @@ export default function HomeGraph({
         <button onClick={resetView} aria-label="reset view">⌂</button>
       </div>
 
-      {/* legend */}
-      <div className="graph-legend" data-no-pan="true">
-        {CATS.map((c) => (
-          <div
-            key={c.id}
-            className={`legend-item ${activeCats[c.id] ? '' : 'dim'}`}
-            onClick={() => toggleCat(c.id)}
-            title={`toggle ${c.label.toLowerCase()}`}
-          >
-            <span className="sw" style={{ background: c.cssColor }} />
-            {c.label}
-          </div>
-        ))}
-      </div>
+      {/* legend — hidden in writingOnly mode (single category, nothing to toggle) */}
+      {!writingOnly && (
+        <div className="graph-legend" data-no-pan="true">
+          {CATS.map((c) => (
+            <div
+              key={c.id}
+              className={`legend-item ${activeCats[c.id] ? '' : 'dim'}`}
+              onClick={() => toggleCat(c.id)}
+              title={`toggle ${c.label.toLowerCase()}`}
+            >
+              <span className="sw" style={{ background: c.cssColor }} />
+              {c.label}
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* zoom badge */}
       <div className="graph-zoom-badge" data-no-pan="true">

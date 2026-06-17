@@ -19,17 +19,7 @@ export default function Footer() {
           <ul>
             <li><Link href="/writing">writing</Link></li>
             <li><Link href="/record">record</Link></li>
-            <li><Link href="/music">signal</Link></li>
             <li><Link href="/projects">labs</Link></li>
-          </ul>
-        </div>
-
-        <div className="footer-col">
-          <h4>signal</h4>
-          <ul>
-            <li><a href="/music/index.html">library</a></li>
-            <li><Link href="/music/gig-archive">gig archive</Link></li>
-            <li><span style={{ opacity: 0.35, cursor: 'not-allowed' }}>t-shirt archive</span></li>
           </ul>
         </div>
 
@@ -38,14 +28,14 @@ export default function Footer() {
           <ul>
             <li><a href="https://arnavmcr.substack.com" target="_blank" rel="noreferrer">substack</a></li>
             <li><a href="https://github.com/arnavmcr" target="_blank" rel="noreferrer">github</a></li>
-            <li><a href="#" target="_blank" rel="noreferrer">letterboxd</a></li>
-            <li><a href="/rss.xml">rss</a></li>
+            <li><a href="https://instagram.com/arnavmcr" target="_blank" rel="noreferrer">instagram</a></li>
+            <li><a href="mailto:arnavmcr@gmail.com">email</a></li>
           </ul>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <span>© 2023 — 2026</span>
+        <span>© 2014 — 2026</span>
         <span>reply or don&rsquo;t, at your own pace</span>
       </div>
     </footer>
