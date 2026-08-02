@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { getConnectedNeighbors, lightenHexColor, PULSE_CYCLE_MS } from '@/lib/graph-pulse';
 
 // ── Static data ───────────────────────────────────────────────────────────────
 
@@ -458,6 +459,15 @@ export default function HomeGraph({
     return s;
   }, [hoverId, adj, tagAdj]);
 
+  // Non-null only when the hovered node has at least one edge — this is what
+  // distinguishes "connected hover" (pulse system) from a plain hover on an
+  // isolated node (unchanged ring behavior).
+  const pulseNeighborIds = useMemo(() => {
+    if (!hoverId) return null;
+    const ids = getConnectedNeighbors(hoverId, adj, tagAdj);
+    return ids.length > 0 ? new Set(ids) : null;
+  }, [hoverId, adj, tagAdj]);
+
   const toggleCat = (id: string) =>
     setActiveCats((s) => ({ ...s, [id]: !s[id as keyof typeof s] }));
 
@@ -522,25 +532,48 @@ export default function HomeGraph({
             const hl = highlightSet ? (highlightSet.has(a.id) && highlightSet.has(b.id)) : false;
             const dim = highlightSet ? !hl : !visible;
             const isTag = e.kind === 'tag';
-            const opacity = !visible ? (isTag ? 0.02 : 0.03) : dim ? (isTag ? 0.03 : 0.05) : hl ? (isTag ? 0.50 : 0.60) : (isTag ? 0.14 : 0.18);
+            const isPulseEdge = !!pulseNeighborIds && hoverId !== null && (e.a === hoverId || e.b === hoverId);
+            const opacity = !visible
+              ? (isTag ? 0.02 : 0.03)
+              : dim
+              ? (isTag ? 0.03 : 0.05)
+              : isPulseEdge
+              ? (isTag ? 0.70 : 0.85)
+              : hl
+              ? (isTag ? 0.50 : 0.60)
+              : (isTag ? 0.14 : 0.18);
             const stroke = isTag ? '#9b7fff' : '#0e1822';
-            const sw = (isTag ? (hl ? 0.6 : 0.35) : (hl ? 0.75 : 0.4)) / Math.max(0.6, view.scale);
+            const sw =
+              (isPulseEdge ? (isTag ? 0.9 : 1.1) : isTag ? (hl ? 0.6 : 0.35) : (hl ? 0.75 : 0.4)) /
+              Math.max(0.6, view.scale);
             const dash = isTag ? '3 6' : 'none';
             const amp = isTag ? 10 : 11;
             const ax = a.x + (a.displayDX ?? 0);
             const ay = a.y + (a.displayDY ?? 0);
             const bx = b.x + (b.displayDX ?? 0);
             const by = b.y + (b.displayDY ?? 0);
+            const edgeId = `edge-${i}`;
+            const originNode = isPulseEdge ? nodeMap.get(hoverId!) : undefined;
+            const dotColor = originNode ? lightenHexColor(originNode.color, 0.55) : stroke;
             return (
-              <path
-                key={i}
-                d={wavyEdgePath(ax, ay, bx, by, tRef.current, amp, i * 0.6)}
-                stroke={stroke}
-                strokeWidth={sw}
-                strokeDasharray={dash}
-                strokeLinecap="round"
-                opacity={opacity}
-              />
+              <g key={i}>
+                <path
+                  id={edgeId}
+                  d={wavyEdgePath(ax, ay, bx, by, tRef.current, amp, i * 0.6)}
+                  stroke={stroke}
+                  strokeWidth={sw}
+                  strokeDasharray={dash}
+                  strokeLinecap="round"
+                  opacity={opacity}
+                />
+                {isPulseEdge && (
+                  <circle r={2.2 / view.scale} fill={dotColor} opacity={0.9}>
+                    <animateMotion dur={`${PULSE_CYCLE_MS}ms`} repeatCount="indefinite">
+                      <mpath href={`#${edgeId}`} />
+                    </animateMotion>
+                  </circle>
+                )}
+              </g>
             );
           })}
         </g>
