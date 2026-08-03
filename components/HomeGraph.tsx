@@ -463,7 +463,7 @@ export default function HomeGraph({
   // distinguishes "connected hover" (pulse system) from a plain hover on an
   // isolated node (unchanged ring behavior).
   const pulseNeighborIds = useMemo(() => {
-    if (!hoverId) return null;
+    if (!hoverId || isTouchRef.current) return null;
     const ids = getConnectedNeighbors(hoverId, adj, tagAdj);
     return ids.length > 0 ? new Set(ids) : null;
   }, [hoverId, adj, tagAdj]);
@@ -532,7 +532,7 @@ export default function HomeGraph({
             const hl = highlightSet ? (highlightSet.has(a.id) && highlightSet.has(b.id)) : false;
             const dim = highlightSet ? !hl : !visible;
             const isTag = e.kind === 'tag';
-            const isPulseEdge = !!pulseNeighborIds && hoverId !== null && (e.a === hoverId || e.b === hoverId);
+            const isPulseEdge = visible && !!pulseNeighborIds && (e.a === hoverId || e.b === hoverId);
             const opacity = !visible
               ? (isTag ? 0.02 : 0.03)
               : dim
@@ -555,6 +555,7 @@ export default function HomeGraph({
             const edgeId = `edge-${i}`;
             const originNode = isPulseEdge ? nodeMap.get(hoverId!) : undefined;
             const dotColor = originNode ? lightenHexColor(originNode.color, 0.55) : stroke;
+            const reversed = e.b === hoverId;
             return (
               <g key={i}>
                 <path
@@ -568,7 +569,11 @@ export default function HomeGraph({
                 />
                 {isPulseEdge && (
                   <circle r={2.2 / view.scale} fill={dotColor} opacity={0.9}>
-                    <animateMotion dur={`${PULSE_CYCLE_MS}ms`} repeatCount="indefinite">
+                    <animateMotion
+                      dur={`${PULSE_CYCLE_MS}ms`}
+                      repeatCount="indefinite"
+                      {...(reversed ? { keyPoints: '1;0', keyTimes: '0;1', calcMode: 'linear' } : {})}
+                    >
                       <mpath href={`#${edgeId}`} />
                     </animateMotion>
                   </circle>
@@ -657,7 +662,7 @@ export default function HomeGraph({
                     r={blobR}
                     fill={`url(#blob-${n.cat})`}
                     className={isPulseOrigin || isPulseTarget ? 'node-pulse-bloom' : undefined}
-                    style={isPulseTarget ? { animationDelay: `${PULSE_CYCLE_MS}ms` } : undefined}
+                    style={isPulseTarget ? { animationDelay: `${PULSE_CYCLE_MS / 2}ms` } : undefined}
                   />
                   {/* Pulsing ring on hover — only for nodes with no connections; connected
                       nodes get the blob bloom above instead. */}
