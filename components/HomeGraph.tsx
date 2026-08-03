@@ -584,6 +584,10 @@ export default function HomeGraph({
             const visible   = isVisible(n);
             const isHover   = hoverId   === n.id;
             const isClicked = clickedId === n.id;
+            // Mutually exclusive: a node's own adj/tagAdj entries never include itself,
+            // so a node can't be both the pulse origin and one of its own targets.
+            const isPulseOrigin = isHover && pulseNeighborIds !== null;
+            const isPulseTarget = pulseNeighborIds !== null && pulseNeighborIds.has(n.id);
             const hl  = highlightSet ? highlightSet.has(n.id) : false;
             const dim = highlightSet ? !hl : !visible;
             const x = n.x + (n.displayDX ?? 0);
@@ -645,10 +649,19 @@ export default function HomeGraph({
                   transformOrigin: 'center',
                   transition: 'transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 }}>
-                  {/* Gradient blob — single element, white center → brand color → transparent */}
-                  <circle r={blobR} fill={`url(#blob-${n.cat})`} />
-                  {/* Pulsing ring on hover */}
-                  {isHover && (
+                  {/* Gradient blob — single element, white center → brand color → transparent.
+                      Breathes via .node-pulse-bloom when this node is the hovered origin of a
+                      connected-node pulse, or a delayed echo of it when this node is one of the
+                      pulse targets (the delay lines the bloom up with the traveling dot's arrival). */}
+                  <circle
+                    r={blobR}
+                    fill={`url(#blob-${n.cat})`}
+                    className={isPulseOrigin || isPulseTarget ? 'node-pulse-bloom' : undefined}
+                    style={isPulseTarget ? { animationDelay: `${PULSE_CYCLE_MS}ms` } : undefined}
+                  />
+                  {/* Pulsing ring on hover — only for nodes with no connections; connected
+                      nodes get the blob bloom above instead. */}
+                  {isHover && !isPulseOrigin && (
                     <circle r={r + 9} fill="none" stroke={n.color} strokeWidth={1.4 / view.scale} opacity="0.6">
                       <animate attributeName="r" from={r + 9} to={r + 26} dur="1.6s" repeatCount="indefinite" />
                       <animate attributeName="opacity" from="0.7" to="0" dur="1.6s" repeatCount="indefinite" />
