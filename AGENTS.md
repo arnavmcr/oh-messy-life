@@ -46,11 +46,16 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - **Heading level is adaptive.** If an entry has no named `###` sections (only `### What is this` and `####` everything else), the parser automatically promotes `####` headings to top-level sections. Entries with named `###` sections (Highlights, Lowlights, etc.) keep `####` as subsections within those sections.
 - Do NOT add `### Links to previous months` sections to new entries — they are stripped anyway.
 - To override section behaviour for one entry, add frontmatter fields rather than editing the parser.
+- **Photo galleries** — for a section with a batch of photos (a travel dump, an event), don't drop them inline as consecutive `![]()` images (next-mdx-remote's `format: 'md'` mode silently drops custom MDX components, so galleries can't be expressed as markdown-native syntax). Instead:
+  1. Add a `galleries` array to frontmatter: `{ id, caption, images: string[] }[]`.
+  2. Drop a `{{gallery:id}}` placeholder on its own line in the section body where the gallery should render.
+  3. `renderSection` in `app/record/[slug]/page.tsx` splits the body on the placeholder and splices in `components/RecordGallery.tsx` — a collage-style grid (mosaic hero tiles, per-photo rotation, cycling tape-strip accents in the four brand colors, occasional `.scribble-circle` doodle). See `content/record/june-july-august-september-26.md` for a worked example.
 
 ## Components
 
 - `ArticleCard.tsx` — 3 variants: `featured`, `compact`, `default`. Use for writing content.
 - `CollapsibleSection.tsx` — client component for the collapsible "What is this" section in journal entries.
+- `RecordGallery.tsx` — collage-style photo grid for record entries, driven by frontmatter `galleries` + `{{gallery:id}}` placeholders (see Content — Record).
 - `Nav.tsx` — fixed header. Sections: WRITING (with dropdown), RECORD (link), coming-soon stubs.
 - Keep components focused. One clear purpose per file.
 

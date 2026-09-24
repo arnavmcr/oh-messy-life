@@ -11,6 +11,12 @@ export interface JournalSection {
   bulletList: boolean;
 }
 
+export interface JournalGallery {
+  id: string;
+  caption: string;
+  images: string[];
+}
+
 export interface JournalEntryMeta {
   slug: string;
   title: string;
@@ -25,6 +31,7 @@ export interface JournalEntryMeta {
 
 export interface JournalEntry extends JournalEntryMeta {
   sections: JournalSection[];
+  galleries: JournalGallery[];
   prev: { slug: string; title: string; issue: number } | null;
   next: { slug: string; title: string; issue: number } | null;
 }
@@ -81,6 +88,18 @@ function parseSections(markdown: string): JournalSection[] {
   flushSection();
 
   return sections;
+}
+
+function parseGalleries(data: Record<string, unknown>): JournalGallery[] {
+  if (!Array.isArray(data.galleries)) return [];
+  return data.galleries.map((g) => {
+    const gallery = g as Record<string, unknown>;
+    return {
+      id: String(gallery.id ?? ''),
+      caption: String(gallery.caption ?? ''),
+      images: Array.isArray(gallery.images) ? gallery.images.map(String) : [],
+    };
+  });
 }
 
 // --- Module-level cache ---
@@ -162,6 +181,7 @@ export function getJournalEntry(slug: string): JournalEntry | null {
     status,
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     sections,
+    galleries: parseGalleries(data),
     ...(data.featured ? { featured: true } : {}),
     ...(data.note ? { note: String(data.note) } : {}),
     prev,

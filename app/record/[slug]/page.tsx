@@ -1,9 +1,10 @@
 import { compileMDX } from 'next-mdx-remote/rsc';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getAllJournalEntries, getJournalEntry, type JournalSection } from '@/lib/journal';
+import { getAllJournalEntries, getJournalEntry, type JournalSection, type JournalGallery } from '@/lib/journal';
 import CollapsibleSection from '@/components/CollapsibleSection';
 import ScrollReveal from '@/components/ScrollReveal';
+import RecordGallery from '@/components/RecordGallery';
 
 // ─── MDX component map (matches writing/[slug]/page.tsx) ─────────────────────
 
@@ -92,21 +93,34 @@ const bulletMdxComponents = {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-async function renderSection(section: JournalSection) {
-  if (section.bulletList) {
-    const { content } = await compileMDX({
-      source: section.body,
-      components: bulletMdxComponents,
-      options: { mdxOptions: { format: 'md' } },
-    });
-    return content;
-  }
-  const { content } = await compileMDX({
-    source: section.body,
-    components: mdxComponents,
-    options: { mdxOptions: { format: 'md' } },
-  });
-  return content;
+// Splits a section body on `{{gallery:id}}` placeholder lines, compiling the
+// surrounding markdown as usual and splicing in a RecordGallery for each match.
+const GALLERY_PLACEHOLDER = /\{\{gallery:([a-z0-9-]+)\}\}/g;
+
+async function renderSection(section: JournalSection, galleries: JournalGallery[]) {
+  const components = section.bulletList ? bulletMdxComponents : mdxComponents;
+  const galleryById = new Map(galleries.map((g) => [g.id, g]));
+
+  const parts = section.body.split(GALLERY_PLACEHOLDER);
+  // parts alternates: [markdown, galleryId, markdown, galleryId, ..., markdown]
+  const rendered = await Promise.all(
+    parts.map(async (part, i) => {
+      const isGalleryId = i % 2 === 1;
+      if (isGalleryId) {
+        const gallery = galleryById.get(part);
+        return gallery ? <RecordGallery key={`gallery-${part}`} gallery={gallery} /> : null;
+      }
+      if (!part.trim()) return null;
+      const { content } = await compileMDX({
+        source: part,
+        components,
+        options: { mdxOptions: { format: 'md' } },
+      });
+      return <div key={`md-${i}`}>{content}</div>;
+    })
+  );
+
+  return rendered;
 }
 
 function formatIssue(n: number): string {
@@ -143,7 +157,9 @@ export default async function EntryPage({ params }: { params: Promise<{ slug: st
   if (!entry) notFound();
 
   // Render all section bodies (async, concurrent via Promise.all)
-  const renderedBodies = await Promise.all(entry.sections.map(renderSection));
+  const renderedBodies = await Promise.all(
+    entry.sections.map((section) => renderSection(section, entry.galleries))
+  );
 
   const formattedDate = formatEntryDate(entry.date);
 
