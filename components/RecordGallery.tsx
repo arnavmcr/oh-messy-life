@@ -10,16 +10,6 @@ function isHero(index: number) {
 export default function RecordGallery({ gallery }: { gallery: JournalGallery }) {
   return (
     <div className="my-8">
-      <div className="inline-block -rotate-1 mb-4">
-        <span
-          className="block w-9 h-3 mb-[-6px] ml-2 opacity-80"
-          style={{ background: TAPE_COLORS[0], transform: 'rotate(-4deg)' }}
-        />
-        <p className="font-body italic text-sm text-on-surface-variant max-w-md">
-          {gallery.caption}
-        </p>
-      </div>
-
       <div className="grid grid-cols-2 sm:grid-cols-4 auto-rows-[110px] sm:auto-rows-[150px] md:auto-rows-[170px] gap-3 sm:gap-4 grid-flow-dense">
         {gallery.images.map((src, i) => {
           const hero = isHero(i);
@@ -58,6 +48,16 @@ export default function RecordGallery({ gallery }: { gallery: JournalGallery }) 
             </a>
           );
         })}
+      </div>
+
+      <div className="-rotate-1 mt-4">
+        <span
+          className="block w-9 h-3 mb-[-6px] ml-2 opacity-80"
+          style={{ background: TAPE_COLORS[0], transform: 'rotate(-4deg)' }}
+        />
+        <p className="font-body italic text-sm text-on-surface-variant">
+          {gallery.caption}
+        </p>
       </div>
     </div>
   );
