@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 const SWIPE_THRESHOLD = 40;
@@ -10,10 +10,21 @@ interface Props {
   index: number;
   onClose: () => void;
   onNavigate: (direction: 1 | -1) => void;
+  // Optional lower-res source per index, used if the primary image fails to
+  // load (e.g. a Google Photos CDN transform that errors for a given photo
+  // even though a smaller thumbnail transform succeeds).
+  fallbackImages?: string[];
 }
 
-export default function Lightbox({ images, index, onClose, onNavigate }: Props) {
+export default function Lightbox({ images, index, onClose, onNavigate, fallbackImages }: Props) {
   const touchStartX = useRef<number | null>(null);
+  const [usingFallback, setUsingFallback] = useState(false);
+  const [broken, setBroken] = useState(false);
+
+  useEffect(() => {
+    setUsingFallback(false);
+    setBroken(false);
+  }, [index]);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -76,13 +87,21 @@ export default function Lightbox({ images, index, onClose, onNavigate }: Props) 
         </button>
       )}
 
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={images[index]}
-        alt=""
-        className="max-h-[85vh] max-w-[90vw] object-contain select-none"
-        onClick={(e) => e.stopPropagation()}
-      />
+      {broken ? (
+        <p className="font-mono text-xs uppercase tracking-widest text-white/50">Photo unavailable</p>
+      ) : (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={usingFallback && fallbackImages ? fallbackImages[index] : images[index]}
+          alt=""
+          className="max-h-[85vh] max-w-[90vw] object-contain select-none"
+          onClick={(e) => e.stopPropagation()}
+          onError={() => {
+            if (fallbackImages && !usingFallback) setUsingFallback(true);
+            else setBroken(true);
+          }}
+        />
+      )}
 
       {images.length > 1 && (
         <button

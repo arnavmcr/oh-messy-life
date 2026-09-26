@@ -1,6 +1,8 @@
 'use client';
 
+import { useCallback, useState } from 'react';
 import { thumbUrl, fullUrl } from '@/lib/gig-photos';
+import Lightbox from '@/components/Lightbox';
 
 const ROTATIONS = [-3, -2, -1, 0, 1, 2, 3];
 
@@ -9,6 +11,18 @@ interface Props {
 }
 
 export default function GigPolaroidWall({ photos }: Props) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const navigate = useCallback(
+    (direction: 1 | -1) => {
+      setOpenIndex((current) => {
+        if (current === null) return current;
+        return (current + direction + photos.length) % photos.length;
+      });
+    },
+    [photos.length]
+  );
+
   return (
     <div className="columns-2 md:columns-3 lg:columns-4 gap-6">
       {photos.map((base, index) => {
@@ -17,12 +31,11 @@ export default function GigPolaroidWall({ photos }: Props) {
         const hasScanLine = index % 7 === 3;
 
         return (
-          <a
+          <button
             key={base}
-            href={fullUrl(base)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block break-inside-avoid mb-6 hover:z-10 hover:scale-105 transition-all duration-300"
+            type="button"
+            onClick={() => setOpenIndex(index)}
+            className="group block w-full text-left break-inside-avoid mb-6 hover:z-10 hover:scale-105 transition-all duration-300"
           >
             <div
               className={`relative ${hasTape ? 'tape-effect' : ''}`}
@@ -40,9 +53,19 @@ export default function GigPolaroidWall({ photos }: Props) {
                 />
               </div>
             </div>
-          </a>
+          </button>
         );
       })}
+
+      {openIndex !== null && (
+        <Lightbox
+          images={photos.map(fullUrl)}
+          fallbackImages={photos.map(thumbUrl)}
+          index={openIndex}
+          onClose={() => setOpenIndex(null)}
+          onNavigate={navigate}
+        />
+      )}
     </div>
   );
 }

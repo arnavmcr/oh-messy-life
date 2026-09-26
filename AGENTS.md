@@ -56,7 +56,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - `ArticleCard.tsx` — 3 variants: `featured`, `compact`, `default`. Use for writing content.
 - `CollapsibleSection.tsx` — client component for the collapsible "What is this" section in journal entries.
 - `RecordGallery.tsx` — collage-style photo grid for record entries, driven by frontmatter `galleries` + `{{gallery:id}}` placeholders (see Content — Record). Client component (needs click state for the lightbox).
-- `Lightbox.tsx` — full-screen photo viewer opened by `RecordGallery` (prev/next arrows, arrow-key nav, swipe, Escape/backdrop to close). Rendered via `createPortal(..., document.body)` — required because `ScrollReveal`'s `transform` on section wrappers creates a new containing block, which traps naively-nested `position: fixed` elements instead of covering the viewport.
+- `Lightbox.tsx` — full-screen photo viewer, shared by `RecordGallery` and `GigPolaroidWall` (prev/next arrows, arrow-key nav, swipe, Escape/backdrop to close). Rendered via `createPortal(..., document.body)` — required because `ScrollReveal`'s `transform` on section wrappers creates a new containing block, which traps naively-nested `position: fixed` elements instead of covering the viewport. Accepts an optional `fallbackImages` array (lower-res source per index) — `GigPolaroidWall` uses this since some Google Photos CDN full-res transforms 404 even when the thumbnail transform for the same photo succeeds; on double failure it shows a "Photo unavailable" message rather than a blank frame.
+- `GigPolaroidWall.tsx` — masonry wall for `/music/gig-archive`, photos sourced from `lib/gig-photos.ts` (Google Photos CDN URLs, not local files). Click opens `Lightbox`.
 - `Nav.tsx` — fixed header. Sections: WRITING (with dropdown), RECORD (link), coming-soon stubs.
 - Keep components focused. One clear purpose per file.
 
