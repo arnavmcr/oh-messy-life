@@ -55,7 +55,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 - `ArticleCard.tsx` — 3 variants: `featured`, `compact`, `default`. Use for writing content.
 - `CollapsibleSection.tsx` — client component for the collapsible "What is this" section in journal entries.
-- `RecordGallery.tsx` — collage-style photo grid for record entries, driven by frontmatter `galleries` + `{{gallery:id}}` placeholders (see Content — Record).
+- `RecordGallery.tsx` — collage-style photo grid for record entries, driven by frontmatter `galleries` + `{{gallery:id}}` placeholders (see Content — Record). Client component (needs click state for the lightbox).
+- `Lightbox.tsx` — full-screen photo viewer opened by `RecordGallery` (prev/next arrows, arrow-key nav, swipe, Escape/backdrop to close). Rendered via `createPortal(..., document.body)` — required because `ScrollReveal`'s `transform` on section wrappers creates a new containing block, which traps naively-nested `position: fixed` elements instead of covering the viewport.
 - `Nav.tsx` — fixed header. Sections: WRITING (with dropdown), RECORD (link), coming-soon stubs.
 - Keep components focused. One clear purpose per file.
 
