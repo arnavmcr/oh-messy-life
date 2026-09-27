@@ -1,5 +1,17 @@
 [
   {
+    "date": "2026-09-26",
+    "type": "SITE",
+    "description": "galleries open full-screen now — click a photo, swipe or arrow through the rest (record + gig archive)",
+    "href": "/music/gig-archive"
+  },
+  {
+    "date": "2026-09-24",
+    "type": "RECORD",
+    "description": "june-july-august-septemberish '26 is up — nyc, the pnw, singapore, and a scrapbook of 43 photos",
+    "href": "/record/june-july-august-september-26"
+  },
+  {
     "date": "2026-06-17",
     "type": "RECORD",
     "description": "may '26 is up — pills, delusion, asymptotes, and quitting cigarettes",
