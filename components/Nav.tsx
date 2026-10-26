@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import DarkModeToggle from './DarkModeToggle';
 
@@ -13,12 +14,19 @@ const NAV_LINKS = [
 
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   // Lock body scroll while drawer is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
+
+  // .nav-bar has backdrop-filter, which makes it a containing block for
+  // position: fixed descendants (same trap as docs/solutions/design-patterns/
+  // fixed-position-trapped-by-transformed-ancestor-2026-09-26.md). Portal the
+  // drawer/backdrop to document.body, client-side only, to escape it.
+  useEffect(() => { setMounted(true); }, []);
 
   return (
     <nav className="nav-bar">
@@ -57,41 +65,46 @@ export default function Nav() {
         </button>
       </div>
 
-      {/* Backdrop — tapping closes the drawer */}
-      <div
-        className={`nav-backdrop ${menuOpen ? 'open' : ''}`}
-        onClick={() => setMenuOpen(false)}
-        aria-hidden="true"
-      />
-
-      {/* Slide-out drawer — always rendered so CSS transition plays on close */}
-      <div className={`nav-drawer ${menuOpen ? 'open' : ''}`} aria-hidden={!menuOpen}>
-        <div className="nav-drawer-head">
-          <span style={{ fontFamily: 'var(--font-mono-stack)', fontSize: '11px', opacity: 0.5, letterSpacing: '0.1em' }}>
-            oh messy life
-          </span>
-          <button
+      {mounted && createPortal(
+        <>
+          {/* Backdrop — tapping closes the drawer */}
+          <div
+            className={`nav-backdrop ${menuOpen ? 'open' : ''}`}
             onClick={() => setMenuOpen(false)}
-            aria-label="close menu"
-            className="nav-drawer-close"
-          >
-            ✕
-          </button>
-        </div>
+            aria-hidden="true"
+          />
 
-        <nav className="nav-drawer-links">
-          {NAV_LINKS.map(({ href, label, cls }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`nav-link ${cls}`}
-              onClick={() => setMenuOpen(false)}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
-      </div>
+          {/* Slide-out drawer — always rendered so CSS transition plays on close */}
+          <div className={`nav-drawer ${menuOpen ? 'open' : ''}`} aria-hidden={!menuOpen}>
+            <div className="nav-drawer-head">
+              <span style={{ fontFamily: 'var(--font-mono-stack)', fontSize: '11px', opacity: 0.5, letterSpacing: '0.1em' }}>
+                oh messy life
+              </span>
+              <button
+                onClick={() => setMenuOpen(false)}
+                aria-label="close menu"
+                className="nav-drawer-close"
+              >
+                ✕
+              </button>
+            </div>
+
+            <nav className="nav-drawer-links">
+              {NAV_LINKS.map(({ href, label, cls }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`nav-link ${cls}`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </>,
+        document.body
+      )}
     </nav>
   );
 }
