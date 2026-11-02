@@ -558,7 +558,10 @@ def run_pipeline(
         print("[ERROR] anthropic package not installed. Run: pip install anthropic")
         sys.exit(1)
 
-    client = anthropic.Anthropic(api_key=api_key)
+    # Observed requests occasionally hang well past the SDK's own retry/timeout
+    # handling (one stalled 50+ min with no server response). A short explicit
+    # timeout lets extract_chunk's own MAX_RETRIES loop recover instead of hanging.
+    client = anthropic.Anthropic(api_key=api_key, timeout=90.0)
 
     # Load existing records and build hash set
     existing = load_existing_json(existing_path) if existing_path else []
