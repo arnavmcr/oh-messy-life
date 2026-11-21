@@ -27,7 +27,9 @@ export default function ScrollReveal({ children, delay }: ScrollRevealProps) {
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      // threshold 0 + bottom rootMargin: a fractional threshold never fires for
+      // sections taller than the viewport (e.g. photo-heavy bullet lists).
+      { threshold: 0, rootMargin: '0px 0px -10% 0px' }
     );
 
     observer.observe(el);

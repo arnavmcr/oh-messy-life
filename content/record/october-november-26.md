@@ -13,6 +13,16 @@ tags:
   - music
 ---
 
+### What is this and why am I doing this?
+
+Hello. This is a monthly newsletter update thingi that I'd like to do to stay more connected with my friends. It is also my attempt at vulnerability, which I'm working on. If you are reading this, you are important to me and our friendship is something I value. Thank you for taking the time out.
+
+This will also not be good writing, but it will be simple and unnuanced.
+
+**Also - feel free to reply/not reply at your own pace/convenience.** The goal with this is not to force conversation or engage. It is to asynchronously, honestly and (within reasonable bounds) meaningfully remain "in touch" or connected with people I care about.
+
+---
+
 #### Wherever you go, there you are
 
 If I spent September in anticipation of some big grand confirmation of a beginning, October (and November) was a stream of reminders that the beginning has already begun. In moments of sobriety, between my colour-coded calendar and endless to-do list, it is clear that this is it: I have been subsumed and swept, been bent almost to breaking. I am here, there I am.
