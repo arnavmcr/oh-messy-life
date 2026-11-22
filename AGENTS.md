@@ -53,6 +53,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 - **Single captioned photos** — for individual scrapbook-style photos that each need their own caption (e.g. "Other random things"), drop `{{photo:/images/slug/01.jpg|Caption text}}` on its own line (caption optional). `renderSection` renders it via `components/ScrapPhoto.tsx` — a taped, tilted print that alternates left/right. Leave a blank line before/after so surrounding bullet lists end cleanly. Use `galleries` instead when photos share one caption.
 
+- **Ambient audio** — optional per-entry sound. Set `stinger: /audio/<slug>/stinger.mp3` in frontmatter (plays on arrival, on by default; `components/EntryAudio.tsx` also renders the SOUND ON/OFF toggle, state in `lib/ambient-audio.ts`). Add a third field to a photo — `{{photo:src|caption|/audio/<slug>/clip.mp3}}` — and tapping it plays that clip. Generate clips with `python3 scripts/ambient/generate.py` (dry run shows cost; `--yes` spends API credit; needs `ELEVENLABS_API_KEY` in `.env.local`). Music API needs a paid plan, so all clips use the sound-effects endpoint.
+
 ## Components
 
 - `ArticleCard.tsx` — 3 variants: `featured`, `compact`, `default`. Use for writing content.

@@ -4,6 +4,7 @@ date: '2026-10-01'
 slug: october-november-26
 issue: 25
 status: published
+stinger: /audio/october-november-26/stinger.mp3
 tags:
   - personal
   - journal
@@ -39,7 +40,7 @@ Even if my lifelong search for the hipster cool and the fabled authenticity of s
 
 If all of October was confirmation of being subsumed as I so craved, I found some recluse in the dark rooms and hardstyle techno of the _underground_ at Pawnshop in Taipei. A night filled with commitment, experience and being tethered (as I prescribed some months ago in Around the World in 80 Raves) confirmed that my life's purpose is perhaps not to be in management consulting. Instead, it is to peel the stickers placed on my phone camera and navigate out of a room of half-naked men to watch the sun rise beyond the empty streets in a foreign land.
 
-![](/images/october-november-26/01.jpg)
+{{photo:/images/october-november-26/01.jpg||/audio/october-november-26/pawnshop.mp3}}
 
 Aside: As our little contingent made our way to Pawnshop in the wee hours of the night, we were failed by the ATM machine that refused withdrawal via any kind of card. Our knight in shining armour didn't look a thing like Jesus, but spoke American Gujarati and reeked of tequila. Thank you legend Alek Kaswala for lending a group of strangers 4000 Taiwanese Dollars, bau saras bau saras. If anyone in the US needs an immigration lawyer, Alek Kaswala is your guy
 
@@ -100,7 +101,7 @@ I may not miss it, and I may not remember it either, but if you see me bawling m
 
 - Yes, my nickname is Infantino and no I am not balding
 
-{{photo:/images/october-november-26/09.jpg|Played a DJ set and the Singapore cops came is this the underground}}
+{{photo:/images/october-november-26/09.jpg|Played a DJ set and the Singapore cops came is this the underground|/audio/october-november-26/cops.mp3}}
 
 {{photo:/images/october-november-26/10.jpg}}
 
@@ -113,7 +114,7 @@ I may not miss it, and I may not remember it either, but if you see me bawling m
 
 {{photo:/images/october-november-26/12.jpg|Also Gerard Way is the most beautiful man in the world}}
 
-{{photo:/images/october-november-26/13.jpg|Watched the tides shift, then shift again and then shift again until I realised I'd rather just jump in}}
+{{photo:/images/october-november-26/13.jpg|Watched the tides shift, then shift again and then shift again until I realised I'd rather just jump in|/audio/october-november-26/tides.mp3}}
 
 {{photo:/images/october-november-26/14.jpg|If you ever visit Phuket, forget ping pong shows and phi phi islands. Make your way to Tops Daily, Nai Thon Beach}}
 

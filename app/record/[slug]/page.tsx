@@ -6,6 +6,7 @@ import CollapsibleSection from '@/components/CollapsibleSection';
 import ScrollReveal from '@/components/ScrollReveal';
 import RecordGallery from '@/components/RecordGallery';
 import ScrapPhoto from '@/components/ScrapPhoto';
+import EntryAudio from '@/components/EntryAudio';
 
 // ─── MDX component map (matches writing/[slug]/page.tsx) ─────────────────────
 
@@ -129,10 +130,16 @@ async function renderSection(section: JournalSection, galleries: JournalGallery[
       const gallery = galleryById.get(arg.trim());
       if (gallery) out.push(<RecordGallery key={`gallery-${arg}`} gallery={gallery} />);
     } else if (kind === 'photo') {
-      const [src, ...captionBits] = arg.split('|');
-      const caption = captionBits.join('|').trim();
+      // {{photo:src|caption|audio}} — caption and audio are optional
+      const [src, caption = '', audio = ''] = arg.split('|').map((x) => x.trim());
       out.push(
-        <ScrapPhoto key={`photo-${i}`} src={src.trim()} caption={caption || undefined} index={photoIndex++} />
+        <ScrapPhoto
+          key={`photo-${i}`}
+          src={src}
+          caption={caption || undefined}
+          audio={audio || undefined}
+          index={photoIndex++}
+        />
       );
     }
   }
@@ -181,6 +188,7 @@ export default async function EntryPage({ params }: { params: Promise<{ slug: st
 
   return (
     <main className="relative min-h-screen pt-12 pb-32 px-6 md:px-12 max-w-3xl mx-auto">
+      {entry.stinger && <EntryAudio src={entry.stinger} />}
 
       {/* ── Entry Header ─────────────────────────────────────────────── */}
       <header className="mb-16 border-b-2 border-primary pb-8">

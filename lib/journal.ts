@@ -32,6 +32,7 @@ export interface JournalEntryMeta {
 export interface JournalEntry extends JournalEntryMeta {
   sections: JournalSection[];
   galleries: JournalGallery[];
+  stinger?: string;
   prev: { slug: string; title: string; issue: number } | null;
   next: { slug: string; title: string; issue: number } | null;
 }
@@ -182,6 +183,7 @@ export function getJournalEntry(slug: string): JournalEntry | null {
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     sections,
     galleries: parseGalleries(data),
+    ...(data.stinger ? { stinger: String(data.stinger) } : {}),
     ...(data.featured ? { featured: true } : {}),
     ...(data.note ? { note: String(data.note) } : {}),
     prev,
