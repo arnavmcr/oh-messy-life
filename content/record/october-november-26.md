@@ -87,28 +87,34 @@ I may not miss it, and I may not remember it either, but if you see me bawling m
 - Watching the F1 with my mum was very special!
 - My mum enjoyed watching the Killers with me, but was happiest when I left halfway through Lana Del Rey so she could have her Tumblr moment herself
 - One day I will finish my piece on Rainbow Disco Club. But today, I look back at last year in Goa and this October in Singapore as markers of some collective Asian identity. Cannot wait for Goa in December!
-- Me and my last two brain cells in our natural habitat
-- ![](/images/october-november-26/04.jpg)
-- The most incredible link up in Taipei. Perhaps the real typhoon
-- ![](/images/october-november-26/05.jpg)
-- Clearly I am doing a lot of studying
-- ![](/images/october-november-26/06.jpg)
-- Clearly I am sleeping well
-- ![](/images/october-november-26/07.jpg)
-- ![](/images/october-november-26/08.jpg)
+
+{{photo:/images/october-november-26/04.jpg|Me and my last two brain cells in our natural habitat}}
+
+{{photo:/images/october-november-26/05.jpg|The most incredible link up in Taipei. Perhaps the real typhoon}}
+
+{{photo:/images/october-november-26/06.jpg|Clearly I am doing a lot of studying}}
+
+{{photo:/images/october-november-26/07.jpg|Clearly I am sleeping well}}
+
+{{photo:/images/october-november-26/08.jpg}}
+
 - Yes, my nickname is Infantino and no I am not balding
-- Played a DJ set and the Singapore cops came is this the underground
-- ![](/images/october-november-26/09.jpg)![](/images/october-november-26/10.jpg)
+
+{{photo:/images/october-november-26/09.jpg|Played a DJ set and the Singapore cops came is this the underground}}
+
+{{photo:/images/october-november-26/10.jpg}}
+
 - From March 2025:
 
   > I outgrew Green Day in college, around the time I found the hipster and the cool. At a time when you could really be anyone, I forgot Green Day as I did supporting Chelsea, or listening to My Chemical Romance or any of the things essential to my childhood and late schooling years.
 - I watched My Chemical Romance!! I often debate changing my Instagram username, but I am glad I have not and will not, it was every bit as worth it as I imagined it would be
-- ![](/images/october-november-26/11.jpg)
-- Also Gerard Way is the most beautiful man in the world
-- ![](/images/october-november-26/12.jpg)
-- Watched the tides shift, then shift again and then shift again until I realised I'd rather just jump in
-- ![](/images/october-november-26/13.jpg)
-- If you ever visit Phuket, forget ping pong shows and phi phi islands. Make your way to Tops Daily, Nai Thon Beach
-- ![](/images/october-november-26/14.jpg)
-- Wore a shirt after months
-- ![](/images/october-november-26/15.jpg)
+
+{{photo:/images/october-november-26/11.jpg}}
+
+{{photo:/images/october-november-26/12.jpg|Also Gerard Way is the most beautiful man in the world}}
+
+{{photo:/images/october-november-26/13.jpg|Watched the tides shift, then shift again and then shift again until I realised I'd rather just jump in}}
+
+{{photo:/images/october-november-26/14.jpg|If you ever visit Phuket, forget ping pong shows and phi phi islands. Make your way to Tops Daily, Nai Thon Beach}}
+
+{{photo:/images/october-november-26/15.jpg|Wore a shirt after months}}

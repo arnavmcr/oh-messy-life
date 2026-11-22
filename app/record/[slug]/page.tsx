@@ -5,6 +5,7 @@ import { getAllJournalEntries, getJournalEntry, type JournalSection, type Journa
 import CollapsibleSection from '@/components/CollapsibleSection';
 import ScrollReveal from '@/components/ScrollReveal';
 import RecordGallery from '@/components/RecordGallery';
+import ScrapPhoto from '@/components/ScrapPhoto';
 
 // ─── MDX component map (matches writing/[slug]/page.tsx) ─────────────────────
 
@@ -93,24 +94,21 @@ const bulletMdxComponents = {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-// Splits a section body on `{{gallery:id}}` placeholder lines, compiling the
-// surrounding markdown as usual and splicing in a RecordGallery for each match.
-const GALLERY_PLACEHOLDER = /\{\{gallery:([a-z0-9-]+)\}\}/g;
+// Splits a section body on `{{gallery:id}}` / `{{photo:/path.jpg|caption}}`
+// placeholder lines, compiling the surrounding markdown as usual and splicing
+// in a RecordGallery or ScrapPhoto for each match.
+const PLACEHOLDER = /\{\{(gallery|photo):([^}]+)\}\}/g;
 
 async function renderSection(section: JournalSection, galleries: JournalGallery[]) {
   const components = section.bulletList ? bulletMdxComponents : mdxComponents;
   const galleryById = new Map(galleries.map((g) => [g.id, g]));
 
-  const parts = section.body.split(GALLERY_PLACEHOLDER);
-  // parts alternates: [markdown, galleryId, markdown, galleryId, ..., markdown]
+  // split with two capture groups yields:
+  // [markdown, kind, arg, markdown, kind, arg, ..., markdown]
+  const parts = section.body.split(PLACEHOLDER);
   const rendered = await Promise.all(
     parts.map(async (part, i) => {
-      const isGalleryId = i % 2 === 1;
-      if (isGalleryId) {
-        const gallery = galleryById.get(part);
-        return gallery ? <RecordGallery key={`gallery-${part}`} gallery={gallery} /> : null;
-      }
-      if (!part.trim()) return null;
+      if (i % 3 !== 0 || !part.trim()) return null; // kind / arg slots are handled below
       const { content } = await compileMDX({
         source: part,
         components,
@@ -120,7 +118,25 @@ async function renderSection(section: JournalSection, galleries: JournalGallery[
     })
   );
 
-  return rendered;
+  // Interleave placeholders (kind at i+1, arg at i+2 after each markdown part).
+  let photoIndex = 0;
+  const out: React.ReactNode[] = [];
+  for (let i = 0; i < parts.length; i += 3) {
+    out.push(rendered[i]);
+    const kind = parts[i + 1];
+    const arg = parts[i + 2];
+    if (kind === 'gallery') {
+      const gallery = galleryById.get(arg.trim());
+      if (gallery) out.push(<RecordGallery key={`gallery-${arg}`} gallery={gallery} />);
+    } else if (kind === 'photo') {
+      const [src, ...captionBits] = arg.split('|');
+      const caption = captionBits.join('|').trim();
+      out.push(
+        <ScrapPhoto key={`photo-${i}`} src={src.trim()} caption={caption || undefined} index={photoIndex++} />
+      );
+    }
+  }
+  return out;
 }
 
 function formatIssue(n: number): string {

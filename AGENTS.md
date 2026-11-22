@@ -51,6 +51,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
   2. Drop a `{{gallery:id}}` placeholder on its own line in the section body where the gallery should render.
   3. `renderSection` in `app/record/[slug]/page.tsx` splits the body on the placeholder and splices in `components/RecordGallery.tsx` — a collage-style grid (mosaic hero tiles, per-photo rotation, cycling tape-strip accents in the four brand colors, occasional `.scribble-circle` doodle). See `content/record/june-july-august-september-26.md` for a worked example.
 
+- **Single captioned photos** — for individual scrapbook-style photos that each need their own caption (e.g. "Other random things"), drop `{{photo:/images/slug/01.jpg|Caption text}}` on its own line (caption optional). `renderSection` renders it via `components/ScrapPhoto.tsx` — a taped, tilted print that alternates left/right. Leave a blank line before/after so surrounding bullet lists end cleanly. Use `galleries` instead when photos share one caption.
+
 ## Components
 
 - `ArticleCard.tsx` — 3 variants: `featured`, `compact`, `default`. Use for writing content.
