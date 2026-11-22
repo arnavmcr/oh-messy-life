@@ -1,11 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import { playClip } from '@/lib/ambient-audio';
 
 // Single scrapbook-style photo with its own caption: a taped, slightly tilted
 // print that alternates sides down the page. Rendered from
 // `{{photo:src|caption|audio}}` placeholders in record entries. If `audio` is
-// set, tapping the print plays that clip (a hidden easter egg, no visible hint).
+// set, a pulsing play badge invites a tap, which plays that clip.
 
 const TAPE_COLORS = ['var(--coral)', 'var(--violet)', 'var(--kelp)', 'var(--wine)'];
 const ROTATIONS = [-2, 1.5, -1, 2.5, -1.5, 1];
@@ -26,6 +27,11 @@ export default function ScrapPhoto({
   const onRight = index % 2 === 1;
   const rotation = ROTATIONS[index % ROTATIONS.length];
   const tapeColor = TAPE_COLORS[index % TAPE_COLORS.length];
+  const [tapped, setTapped] = useState(false);
+  const play = () => {
+    setTapped(true);
+    if (audio) void playClip(audio);
+  };
 
   return (
     <figure
@@ -38,9 +44,10 @@ export default function ScrapPhoto({
           ? {
               role: 'button',
               tabIndex: 0,
-              onClick: () => void playClip(audio),
+              onClick: play,
+              title: 'Tap to play',
               onKeyDown: (e: React.KeyboardEvent) => {
-                if (e.key === 'Enter' || e.key === ' ') void playClip(audio);
+                if (e.key === 'Enter' || e.key === ' ') play();
               },
             }
           : {})}
@@ -51,6 +58,17 @@ export default function ScrapPhoto({
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt={caption ?? ''} loading="lazy" className="block w-full h-auto" />
+        {audio && (
+          <span
+            aria-hidden
+            className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center"
+          >
+            {!tapped && <span className="absolute inset-0 rounded-full bg-primary opacity-60 animate-ping" />}
+            <span className="relative flex h-10 w-10 items-center justify-center rounded-full bg-primary text-surface text-sm shadow-md">
+              ▶
+            </span>
+          </span>
+        )}
         {caption && (
           <figcaption className="font-body italic text-sm text-on-surface-variant mt-3 px-1 leading-snug">
             {caption}
